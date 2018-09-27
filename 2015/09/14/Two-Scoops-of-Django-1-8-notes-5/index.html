@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="9. FBVs最佳实践9.1 FBVs的优势虽然FBVs不能像CBVs一样有继承。但它确实有更显著的功能优势写FBVs的时候我们遵循以下指南：  越少代码越好 杜绝重复的代码 Views应该处理演示逻辑。如果有必要的话，试着把业务逻辑放在models中或者forms中 保证views的简洁 用他们写自定义的403，404，500错误处理 使用复杂的嵌套-如果要避免阻塞的话  9.2 传递HttpR">
+<meta name="keywords" content="Django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Two Scoops of Django 1.8 学习笔记五">
+<meta property="og:url" content="https://morningchen.com/2015/09/14/Two-Scoops-of-Django-1-8-notes-5/index.html">
+<meta property="og:site_name" content="xixijun blog">
+<meta property="og:description" content="9. FBVs最佳实践9.1 FBVs的优势虽然FBVs不能像CBVs一样有继承。但它确实有更显著的功能优势写FBVs的时候我们遵循以下指南：  越少代码越好 杜绝重复的代码 Views应该处理演示逻辑。如果有必要的话，试着把业务逻辑放在models中或者forms中 保证views的简洁 用他们写自定义的403，404，500错误处理 使用复杂的嵌套-如果要避免阻塞的话  9.2 传递HttpR">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/view+modelform_flow.png">
+<meta property="og:updated_time" content="2018-09-27T03:56:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Two Scoops of Django 1.8 学习笔记五">
+<meta name="twitter:description" content="9. FBVs最佳实践9.1 FBVs的优势虽然FBVs不能像CBVs一样有继承。但它确实有更显著的功能优势写FBVs的时候我们遵循以下指南：  越少代码越好 杜绝重复的代码 Views应该处理演示逻辑。如果有必要的话，试着把业务逻辑放在models中或者forms中 保证views的简洁 用他们写自定义的403，404，500错误处理 使用复杂的嵌套-如果要避免阻塞的话  9.2 传递HttpR">
+<meta name="twitter:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/view+modelform_flow.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://morningchen.com/2015/09/14/Two-Scoops-of-Django-1-8-notes-5/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Two Scoops of Django 1.8 学习笔记五 | xixijun blog</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67508730-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-67508730-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5e3bddc5c3dafc5836408f4b8507b101";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xixijun blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://morningchen.com/2015/09/14/Two-Scoops-of-Django-1-8-notes-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xixijun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xixijun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Two Scoops of Django 1.8 学习笔记五
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-09-14 23:38:38" itemprop="dateCreated datePublished" datetime="2015-09-14T23:38:38+08:00">2015-09-14</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/" itemprop="url" rel="index"><span itemprop="name">Backend</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/09/14/Two-Scoops-of-Django-1-8-notes-5/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/09/14/Two-Scoops-of-Django-1-8-notes-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2015/09/14/Two-Scoops-of-Django-1-8-notes-5/" class="leancloud_visitors" data-flag-title="Two Scoops of Django 1.8 学习笔记五">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">17k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">16 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="9-FBVs最佳实践"><a href="#9-FBVs最佳实践" class="headerlink" title="9. FBVs最佳实践"></a>9. FBVs最佳实践</h2><h3 id="9-1-FBVs的优势"><a href="#9-1-FBVs的优势" class="headerlink" title="9.1 FBVs的优势"></a>9.1 FBVs的优势</h3><p>虽然FBVs不能像CBVs一样有继承。但它确实有更显著的功能优势<br>写FBVs的时候我们遵循以下指南：</p>
+<ul>
+<li>越少代码越好</li>
+<li>杜绝重复的代码</li>
+<li>Views应该处理演示逻辑。如果有必要的话，试着把业务逻辑放在models中或者forms中</li>
+<li>保证views的简洁</li>
+<li>用他们写自定义的403，404，500错误处理</li>
+<li>使用复杂的嵌套-如果要避免阻塞的话</li>
+</ul>
+<h3 id="9-2-传递HttpRequest对象"><a href="#9-2-传递HttpRequest对象" class="headerlink" title="9.2 传递HttpRequest对象"></a>9.2 传递HttpRequest对象</h3><p>有些时候我们想在views中重用代码，但是并没有想中间件和上下文处理器一样把它和全局功能联系起来。<br>在这本书的开头，我们建议创建跨项目的功能函数。<br>对于多数功能函数而言，我们从<code>django.http.HttpRequest</code>对象中拿到一个或多个属性，来收集数据或者执行操作。<br>通过把request对象作为首要参数，我们能在更多的方法上拥有更简单的参数。这意味着我们只需要传一个HttpRequest对象就可以了<br><a id="more"></a></p>
+<pre><code># sprinkles/utils.py
+
+from django.core.exceptions import PermissionDenied
+
+def check_sprinkle_rights(request):
+    if request.user.can_sprinkle or request.user.is_staff:
+        return request
+
+    # Return a HTTP 403 back to the user
+    raise PermissionDenied
+</code></pre><p><code>check_sprinkle_rights()</code>这个函数的作用是检查用户的权限，抛出<code>django.core.exceptions.PermissionDenied</code>异常</p>
+<p>你会注意到我们返回了一个HttpRequest对象，而不是返回任意的值或者返回None。我们这样做的原因是，python作为动态类型的语言，我们能给HttpRequest加上额外的属性。看下面的例子：</p>
+<pre><code># sprinkles/utils.py
+
+from django.core.exceptions import PermissionDenied
+
+def check_sprinkles(request):
+    if request.user.can_sprinkle or request.user.is_staff:
+        # By adding this value here it means our display templates
+        #   can be more generic. We don&apos;t need to have
+        {% raw %}
+            #   {% if request.user.can_sprinkle or request.user.is_staff %}
+            #   instead just using
+            #   {% if request.can_sprinkle %}
+            {% endraw %}
+        request.can_sprinkle = True
+        return request
+
+    # Return a HTTP 403 back to the user
+    raise PermissionDenied
+</code></pre><p>还有一个原因要简单说下。同时，我们看下views的代码</p>
+<pre><code># sprinkles/views.py
+
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render
+
+from .utils import check_sprinkles
+from .models import Sprinkle
+
+def sprinkle_list(request):
+    &quot;&quot;&quot;Standard list view&quot;&quot;&quot;
+
+    request = check_sprinkles(request)
+
+    return render(request,
+        &quot;sprinkles/sprinkle_list.html&quot;,
+        {&quot;sprinkles&quot;: Sprinkle.objects.all()})
+
+def sprinkle_detail(request, pk):
+    &quot;&quot;&quot;Standard detail view&quot;&quot;&quot;
+
+    request = check_sprinkles(request)
+
+    sprinkle = get_object_or_404(Sprinkle, pk=pk)
+
+    return render(request, &quot;sprinkles/sprinkle_detail.html&quot;,
+        {&quot;sprinkle&quot;: sprinkle})
+
+def sprinkle_preview(request):
+    &quot;&quot;&quot;&quot;preview of new sprinkle, but without the
+            check_sprinkles function being used.
+    &quot;&quot;&quot;
+    sprinkle = Sprinkle.objects.all()
+    return render(request,
+        &quot;sprinkles/sprinkle_preview.html&quot;,
+        {&quot;sprinkle&quot;: sprinkle})
+</code></pre><p>这个方法的另一个特点是可以集成到CBVs里：</p>
+<pre><code># sprinkles/views.py
+from django.views.generic import DetailView
+
+from .utils import check_sprinkles
+from .models import Sprinkle
+
+class SprinkleDetail(DetailView):
+    &quot;&quot;&quot;Standard detail view&quot;&quot;&quot;
+
+    model = Sprinkle
+
+    def dispatch(self, request, *args, **kwargs):
+        request = check_sprinkles(request)
+        return super(SprinkleDetail, self).dispatch(
+                                request, *args, **kwargs)
+</code></pre><h3 id="9-3-Decorators-Are-Sweet"><a href="#9-3-Decorators-Are-Sweet" class="headerlink" title="9.3 Decorators Are Sweet"></a>9.3 Decorators Are Sweet</h3><p>在计算机科学的说法中，给编程语言加上语法糖的做法是为了让事情更容易理解和表达。在python中，装饰器的功能添加可以让人类阅读起来更清晰更甜美。 下面是装饰器用于FBVs的样板：</p>
+<pre><code># simple decorator template
+import functools
+
+def decorator(view_func):
+    @functools.wraps(view_func)
+    def new_view_func(request, *args, **kwargs):
+        # You can modify the request (HttpRequest) object here.
+        response = view_func(request, *args, **kwargs)
+        # You can modify the response (HttpResponse) object here.
+        return response
+    return new_view_func
+</code></pre><p>举个具体的例子：</p>
+<pre><code># sprinkles/decorators.py
+from functools import wraps
+
+from . import utils
+
+# based off the decorator template from Example 8.5
+def check_sprinkles(view_func):
+    &quot;&quot;&quot;Check if a user can add sprinkles&quot;&quot;&quot;
+    @wraps(view_func)
+    def new_view_func(request, *args, **kwargs):
+        # Act on the request object with utils.can_sprinkle()
+        request = utils.can_sprinkle(request)
+
+        # Call the view function
+        response = view_func(request, *args, **kwargs)
+
+        # Return the HttpResponse object
+        return response
+    return new_view_func
+</code></pre><p>上面写好了一个装饰器函数。我们把他用到view里：</p>
+<pre><code># views.py
+from django.shortcuts import get_object_or_404, render
+
+from .decorators import check_sprinkles
+from .models import Sprinkle
+
+# Attach the decorator to the view
+@check_sprinkles
+def sprinkle_detail(request, pk):
+    &quot;&quot;&quot;Standard detail view&quot;&quot;&quot;
+
+    sprinkle = get_object_or_404(Sprinkle, pk=pk)
+
+    return render(request, &quot;sprinkles/sprinkle_detail.html&quot;,
+        {&quot;sprinkle&quot;: sprinkle})
+</code></pre><h4 id="装饰器的扩展阅读资料"><a href="#装饰器的扩展阅读资料" class="headerlink" title="装饰器的扩展阅读资料"></a>装饰器的扩展阅读资料</h4><ul>
+<li>Decorator Explained<br><a href="http://www.jeffknupp.com/blog/2013/11/29/improve-your-python-decorators-explained/" target="_blank" rel="noopener">http://www.jeffknupp.com/blog/2013/11/29/improve-your-python-decorators-explained/</a></li>
+<li>Decorator and Functional Python<br><a href="http://www.brianholdefehr.com/decorators-and-functional-python" target="_blank" rel="noopener">http://www.brianholdefehr.com/decorators-and-functional-python</a></li>
+<li>Decorator Cheat Sheet by author Daniel Roy Greenfeld<br><a href="http://www.pydanny.com/python-decorator-cheatsheet.html" target="_blank" rel="noopener">http://www.pydanny.com/python-decorator-cheatsheet.html</a></li>
+<li>本书的附录C</li>
+</ul>
+<h3 id="9-4-传递HttpResponse对象"><a href="#9-4-传递HttpResponse对象" class="headerlink" title="9.4 传递HttpResponse对象"></a>9.4 传递HttpResponse对象</h3><p>就像用HttpRequest对象一样，我们也可以在函数之间传递HttpResponse对象。<br>一个可供选择的<code>Middleware.process_request()</code>的方法。</p>
+<ul>
+<li><a href="https://docs.djangoproject.com/en/1.8/topics/http/middleware/#process-response" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/topics/http/middleware/#process-response</a></li>
+</ul>
+<h2 id="10-CBVs最佳实践"><a href="#10-CBVs最佳实践" class="headerlink" title="10. CBVs最佳实践"></a>10. CBVs最佳实践</h2><p>Django提供了一个标准方式来写CBVs。事实上，在前面章节提到过，django的视图事实上就是一个调用， 他接受一个请求对象，返回一个响应对象。对于FBVs来说，这个调用就是视图函数；对于CBVs来说， 它提供了一个<code>as_view()</code>的类方法来返回这个调用。这个机制是在<code>django.views.generic.View</code>中实现的。 所有的CBVs都应该直接或者间接的继承这个类。<br>Django 也提供了一系列的通用类视图(generic class-based views, GCBVs)，它能实现在大多数web项目中实现通用的模式。</p>
+<h3 id="10-1-CBVs指南"><a href="#10-1-CBVs指南" class="headerlink" title="10.1 CBVs指南"></a>10.1 CBVs指南</h3><ul>
+<li>越少代码越好</li>
+<li>杜绝重复的代码</li>
+<li>Views应该处理演示逻辑。如果有必要的话，试着把业务逻辑放在models中或者forms中</li>
+<li>保证views的简洁</li>
+<li>不要用CBVs写自定义的403,404,500错误处理程序。用FBVs代替</li>
+<li>更简洁的 mixins</li>
+</ul>
+<h3 id="10-2-Using-Mixins-With-CBVs"><a href="#10-2-Using-Mixins-With-CBVs" class="headerlink" title="10.2 Using Mixins With CBVs"></a>10.2 Using Mixins With CBVs</h3><p>编程中，mixin是一个类，它提供一些功能来被继承，但并不意味着它能实例化自己。 Mixins能增加类的功能和表现。<br>我们能使用mixins的功能来给我们的apps构建自己的view classes。那么是按照什么顺序继承的呢？ 它遵循python的方法解析顺序(method resolution order)，最简单的定义是，按照下列规则从左到右依次执行：</p>
+<ol>
+<li>django本身提供的base view classes总是在右边</li>
+<li>Mixins在base view的左边</li>
+<li>Mixins应该继承自python的内建object</li>
+</ol>
+<pre><code>from django.views.generic import TemplateView
+
+class FreshFruitMixin(object):
+
+    def get_context_data(self, **kwargs):
+        context = super(FreshFruitMixin,
+                    self).get_context_data(**kwargs)
+        context[&quot;has_fresh_fruit&quot;] = True
+        return context
+
+class FruityFlavorView(FreshFruitMixin, TemplateView):
+    template_name = &quot;fruity_flavor.html&quot;
+</code></pre><p>在这个例子中，FruityFlavorView继承自 FreshFruitMixin和 TemplateView，<br>因为 TemplateView是Django提供的base view class，因此它在最右边(规则1)，<br>它左边是 FreshFruitMixin(规则2)。最后 FreshFruitMixin继承自object(规则3)</p>
+<h3 id="10-3-哪种任务用哪个GCBV"><a href="#10-3-哪种任务用哪个GCBV" class="headerlink" title="10.3 哪种任务用哪个GCBV?"></a>10.3 哪种任务用哪个GCBV?</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>用途</th>
+<th>Two Scoops 的例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>View</td>
+<td>能使用在任何地方</td>
+<td>看10.6节</td>
+</tr>
+<tr>
+<td>RedirectView</td>
+<td>重定向到其他的URL</td>
+<td>将用户从’/log-in/‘页面带到’/login/‘页面</td>
+</tr>
+<tr>
+<td>TemplateView</td>
+<td>呈现一个HTML模板</td>
+<td>‘/about/‘页面</td>
+</tr>
+<tr>
+<td>ListView</td>
+<td>列出一系列对象</td>
+<td>各种冰淇淋口味的列表</td>
+</tr>
+<tr>
+<td>DetailView</td>
+<td>呈现一个对象</td>
+<td>冰淇淋口味的详情</td>
+</tr>
+<tr>
+<td>FormView</td>
+<td>提交一个表单</td>
+<td>站点的联系或者email表单</td>
+</tr>
+<tr>
+<td>CreateView</td>
+<td>创建一个对象</td>
+<td>创建一个新的冰淇淋口味</td>
+</tr>
+<tr>
+<td>UpdateView</td>
+<td>更新一个对象</td>
+<td>更新一个已存在的冰淇淋口味</td>
+</tr>
+<tr>
+<td>DeleteView</td>
+<td>删除一个对象</td>
+<td>删除一个不好吃的冰淇淋口味，比如说香草牛排味</td>
+</tr>
+<tr>
+<td>Generic date views</td>
+<td>用于一段时间内的对象展示</td>
+<td>创建一个公共的历史记录，它能显示冰淇淋口味是什么时候添加到数据库的</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10-4-CBVs的常规tips"><a href="#10-4-CBVs的常规tips" class="headerlink" title="10.4 CBVs的常规tips"></a>10.4 CBVs的常规tips</h3><p>这一章涵盖了大多数CBV 和GCBV实现的有用的技巧。</p>
+<h4 id="10-4-1-通过身份认证制约用户访问CBV-GCBV"><a href="#10-4-1-通过身份认证制约用户访问CBV-GCBV" class="headerlink" title="10.4.1 通过身份认证制约用户访问CBV/GCBV"></a>10.4.1 通过身份认证制约用户访问CBV/GCBV</h4><p>Django的CBV文档给出了一个有用的例子，使用<code>django.contrib.auth.decorators.login_required</code>装饰器。<br><a href="https://docs.djangoproject.com/en/1.8/topics/class-based-views/intro/#decorating-class-based-views" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/topics/class-based-views/intro/#decorating-class-based-views</a></p>
+<p>幸运的是，django第三方app <a href="https://github.com/brack3t/django-braces" target="_blank" rel="noopener">django-braces</a>提供了一个<code>LogubRequireMixin</code>实现方式。</p>
+<pre><code># flavors/views.py
+from django.views.generic import DetailView
+
+from braces.views import LoginRequiredMixin
+
+from .models import Flavor
+
+class FlavorDetailView(LoginRequiredMixin, DetailView):
+    model = Flavor
+</code></pre><p>别忘了Mixin顺序：</p>
+<ul>
+<li>LoginRequiredMixin 一定是在最左边</li>
+<li>Base view class 一定实在最右边</li>
+</ul>
+<p>如果打乱了顺序，将会得到不可预测的结果</p>
+<h4 id="10-4-2-在数据有效的表单上执行自定义操作"><a href="#10-4-2-在数据有效的表单上执行自定义操作" class="headerlink" title="10.4.2 在数据有效的表单上执行自定义操作"></a>10.4.2 在数据有效的表单上执行自定义操作</h4><pre><code>from django.views.generic import CreateView
+
+from braces.views import LoginRequiredMixin
+
+from .models import Flavor
+
+class FlavorCreateView(LoginRequiredMixin, CreateView):
+    model = Flavor
+    fields = (&apos;title&apos;, &apos;slug&apos;, &apos;scoops_remaining&apos;)
+
+    def form_valid(self, form):
+        # Do custom logic here
+        return super(FlavorCreateView, self).form_valid(form)
+</code></pre><p>为了在已验证有效的表单数据上执行自定义的逻辑，简单的加上<code>form_valid()</code>逻辑就好了。<br><code>form_valid()</code>的返回值应该是个<code>django.http.HttpResponseRedirect</code></p>
+<h4 id="10-4-3-在数据无效的表单上执行自定义操作"><a href="#10-4-3-在数据无效的表单上执行自定义操作" class="headerlink" title="10.4.3 在数据无效的表单上执行自定义操作"></a>10.4.3 在数据无效的表单上执行自定义操作</h4><p>这个方法返回一个<code>django.http.HttpResponse</code></p>
+<pre><code>from django.views.generic import CreateView
+
+from braces.views import LoginRequiredMixin
+
+from .models import Flavor
+
+class FlavorCreateView(LoginRequiredMixin, CreateView):
+    model = Flavor
+
+    def form_invalid(self, form):
+        # Do custom logic here
+        return super(FlavorCreateView, self).form_invalid(form)
+</code></pre><h4 id="10-4-4-使用view对象"><a href="#10-4-4-使用view对象" class="headerlink" title="10.4.4 使用view对象"></a>10.4.4 使用view对象</h4><p>如果你正在使用CBVs来渲染内容，考虑下使用view对象它自己来提供访问属性和方法，<br>这样就可以被其他属性和方法调用。它们也可以在模板中被调用，例子：</p>
+<pre><code>from django.utils.functional import cached_property
+from django.views.generic import UpdateView, TemplateView
+
+from braces.views import LoginRequiredMixin
+
+from .models import Flavor
+from .tasks import update_users_who_favorited
+
+class FavoriteMixin(object):
+
+    @cached_property
+    def likes_and_favorites(self):
+        &quot;&quot;&quot;Returns a dictionary of likes and favorites&quot;&quot;&quot;
+        likes = self.object.likes()
+        favorites = self.object.favorites()
+        return {
+            &quot;likes&quot;: likes,
+            &quot;favorites&quot;: favorites,
+            &quot;favorites_count&quot;: favorites.count(),
+
+        }
+
+class FlavorUpdateView(LoginRequiredMixin, FavoriteMixin, UpdateView):
+    model = Flavor
+    fields = (&apos;title&apos;, &apos;slug&apos;, &apos;scoops_remaining&apos;)
+
+    def form_valid(self, form):
+        update_users_who_favorited(
+            instance=self.object,
+            favorites=self.likes_and_favorites[&apos;favorites&apos;]
+        )
+        return super(FlavorCreateView, self).form_valid(form)
+
+class FlavorDetailView(LoginRequiredMixin, FavoriteMixin, TemplateView):
+    model = Flavor
+</code></pre><p>这个flavors app模板能访问这个属性了：</p>
+<pre><code>{% raw %}
+    {# flavors/base.html #}
+    {% extends "base.html" %}
+
+    {% block likes_and_favorites %}
+    {% endraw %}
+&lt;ul&gt;
+  &lt;li&gt;Likes: {% raw %}{{ view.likes_and_favorites.likes }}{% endraw %}&lt;/li&gt;
+  &lt;li&gt;Favorites: {% raw %}{{ view.likes_and_favorites.favorites_count }}{% endraw %}&lt;/li&gt;
+&lt;/ul&gt;
+{% raw %}
+    {% endblock likes_and_favorites %}
+    {% endraw %}
+</code></pre><h3 id="10-5-GCBVs和表单是如何兼容的"><a href="#10-5-GCBVs和表单是如何兼容的" class="headerlink" title="10.5 GCBVs和表单是如何兼容的"></a>10.5 GCBVs和表单是如何兼容的</h3><p>首先我们定义一个flavor model用在这一章的view中：</p>
+<pre><code># flavors/models.py
+from django.core.urlresolvers import reverse
+from django.db import models
+
+STATUS = (
+    (0, &quot;zero&quot;),
+    (1, &quot;one&quot;),
+)
+
+class Flavor(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
+    scoops_remaining = models.IntegerField(default=0, choices=STATUS)
+
+    def get_absolute_url(self):
+        return reverse(&quot;flavors:detail&quot;, kwargs={&quot;slug&quot;: self.slug})
+</code></pre><p>现在我们来探讨一些普遍的表单场景</p>
+<h4 id="10-5-1-Views-ModelForm的例子"><a href="#10-5-1-Views-ModelForm的例子" class="headerlink" title="10.5.1 Views + ModelForm的例子"></a>10.5.1 Views + ModelForm的例子</h4><p>这是最简单也是最普遍的表单场景。通常当你创建一个model时，你可能想增加一个新的记录或者<br>更新已存在的记录。</p>
+<p>在这个例子中，我们会知道如何构造一系列的views，这些view可以创建、修改、展示flavor记录。<br>我们也会演示如何提供确认变更。下面是我们需要的views:</p>
+<ol>
+<li>FlavorCreateView 对应在一个表单中添加新口味</li>
+<li>FlavorUpdateView 对应在一个表单中编辑口味</li>
+<li>FlavorDetailView 对应用于风味创作和风味更新的确认页面</li>
+</ol>
+<p><img src="http://7xi9tp.com1.z0.glb.clouddn.com/view+modelform_flow.png" alt="views+modelform_flow"></p>
+<p>需要注意的是我们要尽可能的紧扣Django的命名约定。这三个view分别是Django中CreateView, UpdateView和DetailView的子类。<br>很容易就能写出这些views，因为Django给我们提供了大部分的用法：</p>
+<pre><code># flavors/views.py
+from django.views.generic import CreateView, UpdateView, DetailView
+
+from braces.views import LoginRequiredMixin
+
+from .models import Flavor
+
+class FlavorCreateView(LoginRequiredMixin, CreateView):
+    model = Flavor
+    fields = (&apos;title&apos;, &apos;slug&apos;, &apos;scoops_remaining&apos;)
+
+class FlavorUpdateView(LoginRequiredMixin, UpdateView):
+    model = Flavor
+    fields = (&apos;title&apos;, &apos;slug&apos;, &apos;scoops_remaining&apos;)
+
+class FlavorDetailView(DetailView):
+    model = Flavor
+</code></pre><p>但是有个问题，当我们写出这些view的urls.py和必要的模板时，会发现这个问题：</p>
+<ul>
+<li>这个FlavorDetailView 不是一个确认页面</li>
+</ul>
+<p>幸运的是，我们只需要小小的修改一下就好了。</p>
+<p>修改的第一步是使用<code>django.contrib.messages</code>来告知用户只需要增加或者修改这个falvor来访问FlavorDetailView。<br>我们需要重写<code>FlavorCreateView.form_valid()</code>和<code>FlavorUpdateView.form_valid()</code>方法。<br>只需要给这两个views加上<code>FlavorActionMixin</code>就可以了，简直方便得不行。</p>
+<pre><code># flavors/views.py
+
+from django.contrib import messages
+from django.views.generic import CreateView, UpdateView, DetailView
+
+from braces.views import LoginRequiredMixin
+
+from .models import Flavor
+
+class FlavorActionMixin(object):
+
+    fields = (&apos;title&apos;, &apos;slug&apos;, &apos;scoops_remaining&apos;)
+
+    @property
+    def success_msg(self):
+        return NotImplemented
+
+    def form_valid(self, form):
+        messages.info(self.request, self.success_msg)
+        return super(FlavorActionMixin, self).form_valid(form)
+
+class FlavorCreateView(LoginRequiredMixin, FlavorActionMixin,
+                        CreateView):
+    model = Flavor
+    success_msg = &quot;Flavor created!&quot;
+
+class FlavorUpdateView(LoginRequiredMixin, FlavorActionMixin,
+                        UpdateView):
+    model = Flavor
+    success_msg = &quot;Flavor updated!&quot;
+
+class FlavorDetailView(DetailView):
+    model = Flavor
+</code></pre><p>在本章之前，我们举了一个简单的例子，如何在GCBV中覆写<code>form_valid()</code>。<br>这里，我们通过给多个views创建一个mixin继承的方式来复用<code>form_valid()</code>。</p>
+<p>现在我们使用django的消息框架来给用户展示确认消息。<code>FlavorActionMixin</code>的作用是根据用户动作的执行来排列一个确认消息，</p>
+<p>flavor被添加或修改后，一个消息列表被传递到了<code>FlavorDetailView</code>的上下文。<br>我们给view的模板加上下面的代码，再创建或者修改flavor就能看到这些消息：</p>
+<pre><code>{% raw %}
+    {# templates/flavors/flavor_detail.html #}
+    {% if messages %}
+    {% endraw %}
+    &lt;ul class=&quot;messages&quot;&gt;
+{% raw %}
+            {% for message in messages %}
+    {% endraw %}
+        &lt;li id=&quot;{% raw %}message_{{ forloop.counter }}{% endraw %}&quot;
+            {% raw %}
+                {% if message.tags %} class="{{ message.tags }}"
+                    {% endif %}>
+                {{ message }}
+                {% endraw %}
+        &lt;/li&gt;
+{% raw %}
+            {% endfor %}
+    {% endraw %}
+    &lt;/ul&gt;
+{% raw %}
+    {% endif %}
+    {% endraw %}
+</code></pre><p>回顾下，这个例子再次演示了如何覆写<code>form_valid</code>方法，合并到mixin中，<br>如何合并多个mixins到一个view，并且给出了非常有用的<code>django.contrib.messages</code>框架的快速介绍</p>
+<h4 id="10-5-2-Views-Form的例子"><a href="#10-5-2-Views-Form的例子" class="headerlink" title="10.5.2 Views + Form的例子"></a>10.5.2 Views + Form的例子</h4><p>对于ModelForm有时候你更想使用Form，搜索表单是一个特别好的使用案例，你可能还会碰上其他的真实场景。</p>
+<p>在这个例子中，我们将会创建一个简单的flavor搜索表单。它不会改变任何flavor数据。<br>只会查询ORM，然后在搜索结果页面把数据展示出来。</p>
+<p>有很多复杂的方法可以实现，但是对于我们这个简单的例子，只需要加上一个view就足够。<br>我们把<code>FlavorListView</code>用作搜索页面和搜索结果页面。</p>
+<p>这种场景下，我们会把<code>q</code>用作查询参数，倾向于使用<code>GET</code>请求，因为我们不涉及到添加，修改，删除对象的操作，因此不必使用<code>POST</code>请求。</p>
+<p>为了返回匹配的搜索结果，我们需要修改标准查询集(queryset)。我们在<code>flavor/view.py</code>中添加下面代码：</p>
+<pre><code>from django.views.generic import ListView
+
+from .models import Flavor
+
+class FlavorListView(ListView):
+    model = Flavor
+
+    def get_queryset(self):
+        # Fetch the queryset from the parent get_queryset
+        queryset = super(FlavorListView, self).get_queryset()
+
+        # Get the q GET parameter
+        q = self.request.GET.get(&quot;q&quot;)
+        if q:
+            # Return a filtered queryset
+            return queryset.filter(title__icontains=q)
+        # Return the base queryset
+        return queryset
+</code></pre><p>搜索表单应该看起来和下面差不多：</p>
+<pre><code>{% raw %}
+    {# templates/flavors/_flavor_search.html #}
+    {% comment %}
+        Usage: {% include "flavors/_flavor_search.html" %}
+    {% endcomment %}
+    {% endraw %}
+&lt;form action=&quot;{% raw %}{% url "flavor_list" %}{% endraw %}&quot; method=&quot;GET&quot;&gt;
+    &lt;input type=&quot;text&quot; name=&quot;q&quot; /&gt;
+    &lt;button type=&quot;submit&quot;&gt;search&lt;/button&gt;
+&lt;/form&gt;
+</code></pre><h3 id="10-6-只使用django-views-generic-View"><a href="#10-6-只使用django-views-generic-View" class="headerlink" title="10.6 只使用django.views.generic.View"></a>10.6 只使用django.views.generic.View</h3><p>只在项目中使用<code>django.views.generic.View</code>也是完全可能的。它没有我们想象得那么极端。</p>
+<p>如果用FBVs来写的话，需要多个if嵌套HTTP方法，<code>if request.method == ...</code>。<br>但是按照下面的方式来写的话，开发者理解起来毫无困难：</p>
+<pre><code>from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect
+from django.views.generic import View
+
+from braces.views import LoginRequiredMixin
+
+from .forms import FlavorForm
+from .models import Flavor
+
+class FlavorView(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        # Handles display of the Flavor object
+        flavor = get_object_or_404(Flavor, slug=kwargs[&apos;slug&apos;])
+        return render(request,
+            &quot;flavors/flavor_detail.html&quot;,
+                {&quot;flavor&quot;: flavor}
+            )
+
+    def post(self, request, *args, **kwargs):
+        # Handles updates of the Flavor object
+        flavor = get_object_or_404(Flavor, slug=kwargs[&apos;slug&apos;])
+        form = FlavorForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect(&quot;flavors:detail&quot;, flavor.slug)
+</code></pre><p>我们发现在项目中使用<code>django.views.generic.View</code>类，用GET方法来展现JSON,PDF或者其他非HTML内容是非常有用的。<br>我们用来在FBVs中渲染CSV, Excel, PDF文件的技巧在CBVs中也可以实现。</p>
+<pre><code>from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.views.generic import View
+
+from braces.views import LoginRequiredMixin
+
+from .models import Flavor
+from .reports import make_flavor_pdf
+
+class PDFFlavorView(LoginRequiredMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        # Get the flavor
+        flavor = get_object_or_404(Flavor, slug=kwargs[&apos;slug&apos;])
+
+        # create the response
+        response = HttpResponse(content_type=&apos;application/pdf&apos;)
+
+        # generate the PDF stream and attach to the response
+        response = make_flavor_pdf(response, flavor)
+
+        return response
+</code></pre><p>这个例子相当直接，但是如果我们需要更多的mixins，处理更多的自定义逻辑的话，相比其他厚重的views，<code>django.views.generic</code>的简洁性能帮助我们更容易的处理。</p>
+<h3 id="10-7-更多资源"><a href="#10-7-更多资源" class="headerlink" title="10.7 更多资源"></a>10.7 更多资源</h3><ul>
+<li><a href="https://docs.djangoproject.com/en/1.8/topics/class-based-views/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/topics/class-based-views/</a></li>
+<li><a href="https://docs.djangoproject.com/en/1.8/topics/class-based-views/generic-display/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/topics/class-based-views/generic-display/</a></li>
+<li><a href="https://docs.djangoproject.com/en/1.8/topics/class-based-views/generic-editing/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/topics/class-based-views/generic-editing/</a></li>
+<li><a href="https://docs.djangoproject.com/en/1.8/topics/class-based-views/mixins/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/topics/class-based-views/mixins/</a></li>
+<li><a href="https://docs.djangoproject.com/en/1.8/ref/class-based-views/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/ref/class-based-views/</a></li>
+<li><a href="http://ccbv.co.uk/" target="_blank" rel="noopener">http://ccbv.co.uk/</a></li>
+<li><a href="http://www.pydanny.com/tag/class-based-views.html" target="_blank" rel="noopener">http://www.pydanny.com/tag/class-based-views.html</a></li>
+</ul>
+<p>其他有用的CBV库</p>
+<ul>
+<li>django-extra-views</li>
+<li>django-vanilla-views</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Django/" rel="tag"># Django</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/12/Two-Scoops-of-Django-1-8-notes-4/" rel="next" title="Two Scoops of Django 1.8 学习笔记四">
+                <i class="fa fa-chevron-left"></i> Two Scoops of Django 1.8 学习笔记四
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/16/install-sentry-on-centos/" rel="prev" title="Install Sentry and Supervisor on Centos">
+                Install Sentry and Supervisor on Centos <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="xixijun" />
+            
+              <p class="site-author-name" itemprop="name">xixijun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/chen2aaron" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#9-FBVs最佳实践"><span class="nav-number">1.</span> <span class="nav-text">9. FBVs最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-FBVs的优势"><span class="nav-number">1.1.</span> <span class="nav-text">9.1 FBVs的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-传递HttpRequest对象"><span class="nav-number">1.2.</span> <span class="nav-text">9.2 传递HttpRequest对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-3-Decorators-Are-Sweet"><span class="nav-number">1.3.</span> <span class="nav-text">9.3 Decorators Are Sweet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#装饰器的扩展阅读资料"><span class="nav-number">1.3.1.</span> <span class="nav-text">装饰器的扩展阅读资料</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-4-传递HttpResponse对象"><span class="nav-number">1.4.</span> <span class="nav-text">9.4 传递HttpResponse对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-CBVs最佳实践"><span class="nav-number">2.</span> <span class="nav-text">10. CBVs最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-CBVs指南"><span class="nav-number">2.1.</span> <span class="nav-text">10.1 CBVs指南</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-Using-Mixins-With-CBVs"><span class="nav-number">2.2.</span> <span class="nav-text">10.2 Using Mixins With CBVs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-哪种任务用哪个GCBV"><span class="nav-number">2.3.</span> <span class="nav-text">10.3 哪种任务用哪个GCBV?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-4-CBVs的常规tips"><span class="nav-number">2.4.</span> <span class="nav-text">10.4 CBVs的常规tips</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#10-4-1-通过身份认证制约用户访问CBV-GCBV"><span class="nav-number">2.4.1.</span> <span class="nav-text">10.4.1 通过身份认证制约用户访问CBV/GCBV</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-4-2-在数据有效的表单上执行自定义操作"><span class="nav-number">2.4.2.</span> <span class="nav-text">10.4.2 在数据有效的表单上执行自定义操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-4-3-在数据无效的表单上执行自定义操作"><span class="nav-number">2.4.3.</span> <span class="nav-text">10.4.3 在数据无效的表单上执行自定义操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-4-4-使用view对象"><span class="nav-number">2.4.4.</span> <span class="nav-text">10.4.4 使用view对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-5-GCBVs和表单是如何兼容的"><span class="nav-number">2.5.</span> <span class="nav-text">10.5 GCBVs和表单是如何兼容的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#10-5-1-Views-ModelForm的例子"><span class="nav-number">2.5.1.</span> <span class="nav-text">10.5.1 Views + ModelForm的例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-5-2-Views-Form的例子"><span class="nav-number">2.5.2.</span> <span class="nav-text">10.5.2 Views + Form的例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-6-只使用django-views-generic-View"><span class="nav-number">2.6.</span> <span class="nav-text">10.6 只使用django.views.generic.View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-7-更多资源"><span class="nav-number">2.7.</span> <span class="nav-text">10.7 更多资源</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xixijun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">135k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:03</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://xixijun.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://morningchen.com/2015/09/14/Two-Scoops-of-Django-1-8-notes-5/';
+        this.page.identifier = '2015/09/14/Two-Scoops-of-Django-1-8-notes-5/';
+        this.page.title = 'Two Scoops of Django 1.8 学习笔记五';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xixijun.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz",
+                'X-LC-Key': "NuDvIccEvUY0BdEjgiH3xd4F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

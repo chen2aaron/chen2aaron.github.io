@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="6. Model 最佳实践Models是大多数django项目的基础，在创建Model的时候请三思而后行，充分考虑之后再创建大而全的Model。 6.1 基础6.1.1 拆分拥有过多models的app如果一个app有20+ models,考虑下能不能把这些models拆分到更小的app里面，因为这可能意味着你的app做了太多的事情。在实际中，我们一般会将这个数值减小至每个app不超过5个mode">
+<meta name="keywords" content="Django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Two Scoops of Django 1.8 学习笔记二">
+<meta property="og:url" content="https://morningchen.com/2015/09/07/Two-Scoops-of-Django-1-8-notes-2/index.html">
+<meta property="og:site_name" content="xixijun blog">
+<meta property="og:description" content="6. Model 最佳实践Models是大多数django项目的基础，在创建Model的时候请三思而后行，充分考虑之后再创建大而全的Model。 6.1 基础6.1.1 拆分拥有过多models的app如果一个app有20+ models,考虑下能不能把这些models拆分到更小的app里面，因为这可能意味着你的app做了太多的事情。在实际中，我们一般会将这个数值减小至每个app不超过5个mode">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-27T03:56:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Two Scoops of Django 1.8 学习笔记二">
+<meta name="twitter:description" content="6. Model 最佳实践Models是大多数django项目的基础，在创建Model的时候请三思而后行，充分考虑之后再创建大而全的Model。 6.1 基础6.1.1 拆分拥有过多models的app如果一个app有20+ models,考虑下能不能把这些models拆分到更小的app里面，因为这可能意味着你的app做了太多的事情。在实际中，我们一般会将这个数值减小至每个app不超过5个mode">
+
+
+
+
+
+
+  <link rel="canonical" href="https://morningchen.com/2015/09/07/Two-Scoops-of-Django-1-8-notes-2/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Two Scoops of Django 1.8 学习笔记二 | xixijun blog</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67508730-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-67508730-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5e3bddc5c3dafc5836408f4b8507b101";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xixijun blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://morningchen.com/2015/09/07/Two-Scoops-of-Django-1-8-notes-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xixijun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xixijun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Two Scoops of Django 1.8 学习笔记二
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-09-07 17:27:03" itemprop="dateCreated datePublished" datetime="2015-09-07T17:27:03+08:00">2015-09-07</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/" itemprop="url" rel="index"><span itemprop="name">Backend</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/09/07/Two-Scoops-of-Django-1-8-notes-2/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/09/07/Two-Scoops-of-Django-1-8-notes-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2015/09/07/Two-Scoops-of-Django-1-8-notes-2/" class="leancloud_visitors" data-flag-title="Two Scoops of Django 1.8 学习笔记二">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6.1k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="6-Model-最佳实践"><a href="#6-Model-最佳实践" class="headerlink" title="6. Model 最佳实践"></a>6. Model 最佳实践</h2><p>Models是大多数django项目的基础，在创建Model的时候请三思而后行，充分考虑之后再创建大而全的Model。</p>
+<h3 id="6-1-基础"><a href="#6-1-基础" class="headerlink" title="6.1 基础"></a>6.1 基础</h3><h4 id="6-1-1-拆分拥有过多models的app"><a href="#6-1-1-拆分拥有过多models的app" class="headerlink" title="6.1.1 拆分拥有过多models的app"></a>6.1.1 拆分拥有过多models的app</h4><p>如果一个app有20+ models,考虑下能不能把这些models拆分到更小的app里面，因为这可能意味着你的app做了太多的事情。<br>在实际中，我们一般会将这个数值减小至每个app不超过5个models</p>
+<h4 id="6-1-2-谨慎使用model继承"><a href="#6-1-2-谨慎使用model继承" class="headerlink" title="6.1.2 谨慎使用model继承"></a>6.1.2 谨慎使用model继承</h4><p>Django中的model继承是一个棘手的问题，Django提供了三种继承方式：</p>
+<ul>
+<li>Abstract base classes</li>
+<li>Multi-table inheritance</li>
+<li>Proxy models</li>
+</ul>
+<p>他们之间的具体优缺点比较如下：</p>
+<a id="more"></a>
+<table>
+<thead>
+<tr>
+<th>model继承类型</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>不使用model继承：如果models有一个共同的字段，给每个model都赋予那个字段</td>
+<td>便于理解models和数据库表之间的关系</td>
+<td>过多的字段穿插在models中，不利于维护</td>
+</tr>
+<tr>
+<td>Abstract base classes(抽象基类)：仅用于衍生模型</td>
+<td>一个抽象父类中拥有共同的字段，从而减少了我们的输入。</td>
+<td>不能单独使用父类。</td>
+</tr>
+<tr>
+<td>Multi-table inheritance（多表继承）：用于将父类子类联系起来，隐晦的意思就是OneToOneField</td>
+<td>给了每个model一张表，因此我们既能查询父类也可以查询子类。而且我们从父类中得到了一个子对象：parent.child</td>
+<td>增加了大量的开销，因为上一个子表的每个查询需要加入到所有父表。我们强烈建议不要使用多表继承。</td>
+</tr>
+<tr>
+<td>Proxy models（代理模型）：仅用于原始模型</td>
+<td>让我们拥有具备不同Python行为的model别名。</td>
+<td>我们不能修改model的字段</td>
+</tr>
+</tbody>
+</table>
+<p>那么具体什么时候该使用哪一种 model继承呢？下面提供一个简单的规则：</p>
+<ul>
+<li>如果models之间只有极小的重叠部分（比如说两个模型只有一两个共同的字段），那么就不必使用 model继承，给每个model都加上那个字段就好啦</li>
+<li>如果models之间有很多重叠部分，而且这些重复的字段的维护会给我们造成困惑和意想不到的错误，<br>那么在大多数情况下就需要考虑代码重构了。因此我们把这些共同的字段写到Abstract base classes中</li>
+<li>Proxy models 是一个偶尔有用的便捷功能，但是他和其他两种 model继承方式有非常大的不同</li>
+<li>每个人都应该避免使用Multi-table inheritance，取而代之的是使用 OneToOneField 和 ForeignKey</li>
+</ul>
+<h4 id="6-1-3-实践中的-model继承-TimeStampedModel"><a href="#6-1-3-实践中的-model继承-TimeStampedModel" class="headerlink" title="6.1.3 实践中的 model继承: TimeStampedModel"></a>6.1.3 实践中的 model继承: TimeStampedModel</h4><p>在Django项目中大多数 model都会包含一个能创建和修改的时间戳字段。最好的方法就是写一个TimeStampedModel</p>
+<pre><code># core/models.py
+from django.db import models
+
+class TimeStampedModel(models.Model):
+    &quot;&quot;&quot;
+    An abstract base class model that provides
+    self-updating created and modified fields.
+    &quot;&quot;&quot;
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+</code></pre><p>注意上面代码的最后2句，他把这个model转化成了abstract base class.<br>我们定义一个继承TimeStampedModel的新的class的之后，运行migrate,<br>Django不会在数据库创建一张名为 core_timestampedmodel的表。</p>
+<pre><code># flavors/models.py
+
+from django.db import models
+from core.models import TimeStampedModel
+
+class Flavor(TimeStampedModel):
+    title = models.CharField(max_length=200)
+</code></pre><p>Flavor继承自 TimeStampedModel 当我们migrate的时候只会创建一张名为 flavors_flavor的表。这说明Abstract base classes不会单独的创建一张表，简直完美。</p>
+<h4 id="6-1-4-Database-Migrations-数据迁移"><a href="#6-1-4-Database-Migrations-数据迁移" class="headerlink" title="6.1.4 Database Migrations 数据迁移"></a>6.1.4 Database Migrations 数据迁移</h4><p>创建迁移文件的tips：</p>
+<ul>
+<li>创建一个新的app 或者 model之后，花一点点时间来给这个 model创建一个初始的 django.db.migrations。我们只需要python manage.py makemigrations</li>
+<li>在运行之前检查一下生成的migration代码，特别是涉及到较复杂的改变的时候。并且复查一下SQL</li>
+<li>用<a href="https://docs.djangoproject.com/en/1.8/ref/settings/#std:setting-MIGRATION_MODULES" target="_blank" rel="noopener">MIGRATION_MODULES</a> 来管理那些没有自己的django.db.migrations风格的迁移文件</li>
+<li>不用担心创建了多少个迁移文件，如果数量太过笨拙，使用 <a href="https://docs.djangoproject.com/en/1.8/topics/migrations/#squashing-migrations" target="_blank" rel="noopener">squashmigrations</a>使他们就范</li>
+</ul>
+<p>migrations的部署和管理：</p>
+<ul>
+<li>在项目部署之前，一定要检查是否可以回滚migrations。</li>
+<li>如果一个项目有上百万条数据，在生产环境服务器上运行migration之前，请在staging服务器上做粗犷测试，在真实数据上跑migrations会比预想中花更多更多更多时间！</li>
+<li><p>如果你在用Mysql:</p>
+<ol>
+<li>在任一架构改变之前必须拆分数据库，MYSQL缺乏围绕架构更改的事务支持，因此不可能回滚</li>
+<li>如果可以的话，在执行修改之前把这个项目设置成只读模式</li>
+<li>如果不小心，在庞大的表中修改了架构，那么将会花很长的时间，不是几秒几分的概念，而是几小时</li>
+</ol>
+</li>
+</ul>
+<h3 id="6-2-Django-Model-设计"><a href="#6-2-Django-Model-设计" class="headerlink" title="6.2 Django Model 设计"></a>6.2 Django Model 设计</h3><p>如何设计一个好的django models 是最难的主题之一</p>
+<h4 id="6-2-1-规范化开端"><a href="#6-2-1-规范化开端" class="headerlink" title="6.2.1 规范化开端"></a>6.2.1 规范化开端</h4><p>开始之前，请熟悉下数据库标准化(Database normalization)</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Database_normalization" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Database_normalization</a></li>
+<li><a href="https://en.wikibooks.org/wiki/Relational_Database_Design/Normalization" target="_blank" rel="noopener">https://en.wikibooks.org/wiki/Relational_Database_Design/Normalization</a></li>
+</ul>
+<h4 id="6-2-2-什么时候用null和blank"><a href="#6-2-2-什么时候用null和blank" class="headerlink" title="6.2.2 什么时候用null和blank"></a>6.2.2 什么时候用null和blank</h4><table>
+<thead>
+<tr>
+<th>字段类型</th>
+<th>设置 null=True</th>
+<th>设置 blank=True</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CharField, TextField, SlugField, EmailField, CommaSepararedIntegerField, UUIDField</td>
+<td>不行</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>FileField, ImageField</td>
+<td>不行</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>BooleanField</td>
+<td>不行 用NullBooleanField代替</td>
+<td>不行</td>
+</tr>
+<tr>
+<td>IntegerField, FloatField, DecimalField, DurationField, etc</td>
+<td>可以</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>DateTimeField, DateField, TimeField, etc</td>
+<td>可以</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>ForeignKey, ManyToManyField, OneToOneField</td>
+<td>可以</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>GenericIPAddressField</td>
+<td>可以</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>IPAddressField</td>
+<td>已弃用  用GenericIPAddressField代替</td>
+<td>已弃用  用GenericIPAddressField代替</td>
+</tr>
+</tbody>
+</table>
+<h4 id="6-2-3-避免使用Generic-Relations"><a href="#6-2-3-避免使用Generic-Relations" class="headerlink" title="6.2.3 避免使用Generic Relations"></a>6.2.3 避免使用Generic Relations</h4><p>使用Generic Relations的弊大于利，简而言之：</p>
+<ul>
+<li>避免使用 Generic Relations 和 GenericForeignKey</li>
+<li>如果你觉得你需要使用 Generic Relations的话，看看能不能通过更好的 model设计或者 PostgreSQL里的新字段代替</li>
+<li>如果必须要用，尝试使用现成的第三方app，第三方app提供的隔离将有助于保证数据更干净</li>
+</ul>
+<h4 id="6-2-4-PostgreSQL中的特别字段什么时候用null和blank"><a href="#6-2-4-PostgreSQL中的特别字段什么时候用null和blank" class="headerlink" title="6.2.4 PostgreSQL中的特别字段什么时候用null和blank"></a>6.2.4 PostgreSQL中的特别字段什么时候用null和blank</h4><table>
+<thead>
+<tr>
+<th>字段类型</th>
+<th>设置 null=True</th>
+<th>设置 blank=True</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ArrayField</td>
+<td>可以</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>HStoreField</td>
+<td>可以</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>IntegerRangeField, BigIntegerRangeField, FloatRangeField</td>
+<td>可以</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>DateTimeRangeField, DateRangeField</td>
+<td>可以</td>
+<td>可以</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-3-The-Model-meta-API"><a href="#6-3-The-Model-meta-API" class="headerlink" title="6.3 The Model _meta API"></a>6.3 The Model <code>_meta</code> API</h3><p>Django 1.8之前，Model <code>_meta</code> API 都还是非官方的，即使修改了api的内容也不会提及。<br>最初的目的只是让Model它自己储存一些额外的信息，然而这一功能已经证实<code>_meta</code>是相当有用的，所以现在有API文档了</p>
+<p>大多数项目里你都不会需要 <code>_meta</code>，它的主要用途是，当你需要</p>
+<ul>
+<li>得到model的字段列表</li>
+<li>得到class的特定字段（或者它的继承链，或者它的派生）</li>
+<li>在跨未来的django版本中，确保如何让你得到这些信息保持不变</li>
+</ul>
+<p>例如下面这些例子：</p>
+<ul>
+<li>构造一个django model的自省工具</li>
+<li>构造自定义的表单库</li>
+<li>创建一个类管理员工具来与django model进行编辑和交互</li>
+<li>写一个可视化的或者具有分析力的库</li>
+</ul>
+<p>扩展阅读：</p>
+<ul>
+<li>Model <code>_meta</code> 文档: <a href="https://docs.djangoproject.com/en/1.8/ref/models/meta/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/ref/models/meta/</a></li>
+<li>django 1.8 的更新说明中关于 model <code>_meta</code> 的解释<a href="https://docs.djangoproject.com/en/1.8/releases/1.8/#model-meta-api" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/releases/1.8/#model-meta-api</a></li>
+</ul>
+<h3 id="6-4-Model-Managers-模型管理器"><a href="#6-4-Model-Managers-模型管理器" class="headerlink" title="6.4 Model Managers 模型管理器"></a>6.4 Model Managers 模型管理器</h3><p>每当我们用django的ORM来查询model的时候， 我们都会用到一个名叫 Model Managers的接口来与数据库进行交互, Model Managers可以说是这个模型类的所有可能的实例。<br>Django给每个model都提供了一个默认的 Model Managers，但是我们依然可以定义自己的Model Managers.</p>
+<pre><code>from django.db import models
+from django.utils import timezone
+
+class PublishedManager(models.Manager):
+
+    use_for_related_fields = True
+
+    def published(self, **kwargs):
+        return self.filter(pub_date__lte=timezone.now(), **kwargs)
+
+class FlavorReview(models.Model):
+    review = models.CharField(max_length=255)
+    pub_date = models.DateTimeField()
+
+    # add our custom model manager
+    objects = PublishedManager()
+</code></pre><p>现在如果我们想要先显示所有的评论，然后显示已发布的评论，可以这样做</p>
+<pre><code>&gt;&gt;&gt; from reviews.models import FlavorReview
+&gt;&gt;&gt; FlavorReview.objects.count()
+35
+&gt;&gt;&gt; FlavorReview.objects.published().count()
+31
+</code></pre><p>很简单不是吗？但是如果你只是增加了第二个Model Managers，你可能会用到下面的方法：</p>
+<pre><code># Bad example
+&gt;&gt;&gt; from reviews.models import FlavorReview
+&gt;&gt;&gt; FlavorReview.objects.filter().count()
+35
+&gt;&gt;&gt; FlavorReview.published().filter.count()
+31
+</code></pre><p>表面上看来，取代默认的Model Managers 是常理的做法，不幸的是，在实际的项目开发中当我们用到这个方法的时候应该非常的小心。为啥？</p>
+<ul>
+<li>第一，当我们用model继承的时候，abstract base classes的子类接受来自他们父类的manager，但是concrete base classes就不会。</li>
+<li>第二，应用到model class的第一个manager会被django当作默认的manager，这显然打破了python的模式，导致会从QuerySet中出现不可预知的结果<br>了解到以上知识之后，你应该在自定义model manager之前先定义好<code>objects = models.Managers()</code></li>
+</ul>
+<p>扩展阅读：<a href="https://docs.djangoproject.com/en/1.8/topics/db/managers/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/topics/db/managers/</a></p>
+<h3 id="6-5-理解-Fat-Models"><a href="#6-5-理解-Fat-Models" class="headerlink" title="6.5 理解 Fat Models"></a>6.5 理解 Fat Models</h3><p>之前提到过 Fat Models，意思是不要把数据相关的代码都放在Views和Templates里面，<br>而是将他们的逻辑封装在models methods, classmethods, properties,甚至可以是manager method里。<br>这样，任意一个views或者任务都可以用这个相同的逻辑。例如我们有个Ice Cream的评论model，我们可能会接触到以下的方法：</p>
+<ul>
+<li><code>Review.create_review(cls, user, rating, title, description)</code><br>  一个创建评论的方法，从HTML和REST视图调用model class本身，以及一个接受电子表格的导入工具</li>
+<li><code>review.product_average</code>一个评论的实例属性，返回这个评论项目的平均排名。用于审查的细节视图，以便读者不离开页面就能感受到整体的意见</li>
+<li><code>review.found_useful(self, user, yes)</code>这个方法可以设置成是或者否，让读者发现评论是否有用。用于详情和列表视图，来实现HTML和REST</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Django/" rel="tag"># Django</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/02/Two-Scoops-of-Django-1-8-notes-1/" rel="next" title="Two Scoops of Django 1.8 学习笔记一">
+                <i class="fa fa-chevron-left"></i> Two Scoops of Django 1.8 学习笔记一
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/10/Two-Scoops-of-Django-1-8-notes-3/" rel="prev" title="Two Scoops of Django 1.8  学习笔记三">
+                Two Scoops of Django 1.8  学习笔记三 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="xixijun" />
+            
+              <p class="site-author-name" itemprop="name">xixijun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/chen2aaron" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Model-最佳实践"><span class="nav-number">1.</span> <span class="nav-text">6. Model 最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-基础"><span class="nav-number">1.1.</span> <span class="nav-text">6.1 基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-1-拆分拥有过多models的app"><span class="nav-number">1.1.1.</span> <span class="nav-text">6.1.1 拆分拥有过多models的app</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-2-谨慎使用model继承"><span class="nav-number">1.1.2.</span> <span class="nav-text">6.1.2 谨慎使用model继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-3-实践中的-model继承-TimeStampedModel"><span class="nav-number">1.1.3.</span> <span class="nav-text">6.1.3 实践中的 model继承: TimeStampedModel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-4-Database-Migrations-数据迁移"><span class="nav-number">1.1.4.</span> <span class="nav-text">6.1.4 Database Migrations 数据迁移</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-Django-Model-设计"><span class="nav-number">1.2.</span> <span class="nav-text">6.2 Django Model 设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-1-规范化开端"><span class="nav-number">1.2.1.</span> <span class="nav-text">6.2.1 规范化开端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-2-什么时候用null和blank"><span class="nav-number">1.2.2.</span> <span class="nav-text">6.2.2 什么时候用null和blank</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-3-避免使用Generic-Relations"><span class="nav-number">1.2.3.</span> <span class="nav-text">6.2.3 避免使用Generic Relations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-4-PostgreSQL中的特别字段什么时候用null和blank"><span class="nav-number">1.2.4.</span> <span class="nav-text">6.2.4 PostgreSQL中的特别字段什么时候用null和blank</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-The-Model-meta-API"><span class="nav-number">1.3.</span> <span class="nav-text">6.3 The Model _meta API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-Model-Managers-模型管理器"><span class="nav-number">1.4.</span> <span class="nav-text">6.4 Model Managers 模型管理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-理解-Fat-Models"><span class="nav-number">1.5.</span> <span class="nav-text">6.5 理解 Fat Models</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xixijun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">135k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:03</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://xixijun.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://morningchen.com/2015/09/07/Two-Scoops-of-Django-1-8-notes-2/';
+        this.page.identifier = '2015/09/07/Two-Scoops-of-Django-1-8-notes-2/';
+        this.page.title = 'Two Scoops of Django 1.8 学习笔记二';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xixijun.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz",
+                'X-LC-Key': "NuDvIccEvUY0BdEjgiH3xd4F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

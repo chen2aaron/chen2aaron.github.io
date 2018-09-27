@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="写作目的本文章是对Django搭建简易博客教程的学习总结，并记录我在做此项目中遇到的一些问题，希望通过它加深自己对Django以及Python的理解。 运行环境 Mac OS X Yosemite 10.10.2 iTerm + zsh + oh-my-zsh Sublime Text 3 Python 2.7.9 Django 1.8 bootstrap-admin 0.3.5 Markdown">
+<meta name="keywords" content="Django,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django学习笔记part1">
+<meta property="og:url" content="https://morningchen.com/2015/04/07/Django-notes-part1/index.html">
+<meta property="og:site_name" content="xixijun blog">
+<meta property="og:description" content="写作目的本文章是对Django搭建简易博客教程的学习总结，并记录我在做此项目中遇到的一些问题，希望通过它加深自己对Django以及Python的理解。 运行环境 Mac OS X Yosemite 10.10.2 iTerm + zsh + oh-my-zsh Sublime Text 3 Python 2.7.9 Django 1.8 bootstrap-admin 0.3.5 Markdown">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/QQ20150407-2@2x.png">
+<meta property="og:updated_time" content="2018-09-27T03:50:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Django学习笔记part1">
+<meta name="twitter:description" content="写作目的本文章是对Django搭建简易博客教程的学习总结，并记录我在做此项目中遇到的一些问题，希望通过它加深自己对Django以及Python的理解。 运行环境 Mac OS X Yosemite 10.10.2 iTerm + zsh + oh-my-zsh Sublime Text 3 Python 2.7.9 Django 1.8 bootstrap-admin 0.3.5 Markdown">
+<meta name="twitter:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/QQ20150407-2@2x.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://morningchen.com/2015/04/07/Django-notes-part1/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Django学习笔记part1 | xixijun blog</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67508730-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-67508730-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5e3bddc5c3dafc5836408f4b8507b101";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xixijun blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://morningchen.com/2015/04/07/Django-notes-part1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xixijun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xixijun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Django学习笔记part1
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-04-07 21:28:18" itemprop="dateCreated datePublished" datetime="2015-04-07T21:28:18+08:00">2015-04-07</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/" itemprop="url" rel="index"><span itemprop="name">Backend</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/04/07/Django-notes-part1/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/04/07/Django-notes-part1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2015/04/07/Django-notes-part1/" class="leancloud_visitors" data-flag-title="Django学习笔记part1">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">7.1k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="写作目的"><a href="#写作目的" class="headerlink" title="写作目的"></a>写作目的</h2><p>本文章是对<a href="http://andrew-liu.gitbooks.io/django-blog/content/" target="_blank" rel="noopener">Django搭建简易博客教程</a>的学习总结，并记录我在做此项目中遇到的一些问题，希望通过它加深自己对Django以及Python的理解。</p>
+<h2 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h2><ul>
+<li>Mac OS X Yosemite 10.10.2</li>
+<li>iTerm + zsh + oh-my-zsh</li>
+<li>Sublime Text 3</li>
+<li>Python 2.7.9</li>
+<li>Django 1.8</li>
+<li>bootstrap-admin 0.3.5</li>
+<li>Markdown 2.6.1</li>
+<li>pip 6.0.8</li>
+<li>setuptools 12.0.5</li>
+<li>virtualenv 12.0.7</li>
+</ul>
+<a id="more"></a>
+<h2 id="知识总结"><a href="#知识总结" class="headerlink" title="知识总结"></a>知识总结</h2><ul>
+<li>立项：django-admin.py startproject mysite</li>
+<li>建库：python manage.py migrate</li>
+<li>运行：python manage.py runserver</li>
+<li>app：python manage.py startapp items</li>
+<li>改模：在models.py中加app。</li>
+<li>改库：python manage.py makemigrations</li>
+<li>更新：python manage.py migrate</li>
+</ul>
+<h2 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h2><h3 id="1-创建一个项目-startproject"><a href="#1-创建一个项目-startproject" class="headerlink" title="1. 创建一个项目(startproject)"></a>1. 创建一个项目(startproject)</h3><p>首先新建一个DjangoProjects文件夹用来存放以后做的Django项目，因为如果当你已经做好了一个项目，想把它移动到别的文件夹时，会报unable to open database file的错误，解决起来好麻烦。</p>
+<p>然后在这个文件夹中运行：</p>
+<pre><code>➜  DjangoProjects  django-admin.py startproject mysite
+</code></pre><p>Mac下与Linux不同，是不自带tree命令的，因此为了便于查看目录结构，安装创建树形结构命令</p>
+<pre><code>$ brew install tree
+</code></pre><p>tree一下mysite目录得到以下结构</p>
+<pre><code>➜  DjangoProjects  tree mysite
+mysite
+├── manage.py
+└── mysite
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+
+1 directory, 5 files
+</code></pre><ul>
+<li><p>manage.py</p>
+<p>  manage.py是Python脚本文件，与Django的命令行工具django-admin.py配合，可以对建立的工程进行管理配置，比如startapp,runserver。</p>
+</li>
+<li><p>__init__.py</p>
+<p>  文件__init__.py是个空文件，它可以向Python编译器表明当前文件夹下的内容是Python工程模块，此文件每个包的目录下都有一个，想调用文件？必须有它。</p>
+</li>
+<li><p>settings.py</p>
+<p>  这是Django工程的配置文件，与工程相关的工程模块和数据库全局配置信息都在settings.py中设置。</p>
+</li>
+<li><p>urls.py</p>
+<p>  文件urls.py负责配置URL的地址映射以及管理URL的地址格式。</p>
+</li>
+<li><p>wsgi.py</p>
+<p>  服务器网关接口(Web Server Gateway Interface)缩写为WSGI，用来连接你的项目和相关Web服务器，可以与apache交互使用。</p>
+</li>
+</ul>
+<h3 id="2-数据库安装-migrate"><a href="#2-数据库安装-migrate" class="headerlink" title="2. 数据库安装(migrate)"></a>2. 数据库安装(migrate)</h3><p>配置setting.py</p>
+<pre><code>DATABASES = {
+    &apos;default&apos;: {
+        &apos;ENGINE&apos;: &apos;django.db.backends.sqlite3&apos;,
+        &apos;NAME&apos;: os.path.join(BASE_DIR, &apos;db.sqlite3&apos;),
+    }
+}
+</code></pre><p>作为一个初学者，我选择了配置里默认使用SQLite数据库。</p>
+<p>ENGINE选择了默认的sqlite3。</p>
+<p>NAME是这个文件的绝对路径，包括文件名。默认的值os.path.join(BASE_DIR, ‘db.sqlite3’)将在你的项目目录上储存这个数据库文件。如果你不使用SQLite作为你的数据库，必须添加USER，PASSWORD，HOST等额外的设置。</p>
+<p>运行migrate命令创建一个与数据库对应的表</p>
+<pre><code>➜  mysite  python manage.py migrate
+Operations to perform:
+  Synchronize unmigrated apps: staticfiles, messages
+  Apply all migrations: admin, contenttypes, auth, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+  Installing custom SQL...
+Running migrations:
+  Rendering model states... DONE
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying sessions.0001_initial... OK
+</code></pre><p>这样在我们的文件夹中就多了一个db.sqlite3的文件</p>
+<p>migrate命令会查询mysite/settings.py文件里INSTALLED_APPS设置的内容，并根据INSTALLED_APPS的设置创建必要的数据库表。它还会侦测应用中模型的变化并在数据库中进行相应的数据迁移</p>
+<h3 id="3-运行开发服务器-runserver"><a href="#3-运行开发服务器-runserver" class="headerlink" title="3. 运行开发服务器(runserver)"></a>3. 运行开发服务器(runserver)</h3><p>来验证一下Django项目的工作情况</p>
+<pre><code>➜  mysite  python manage.py runserver
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 07, 2015 - 15:47:36
+Django version 1.8, using settings &apos;mysite.settings&apos;
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</code></pre><p>OK,浏览器里输入<a href="http://127.0.0.1:8000/" target="_blank" rel="noopener">http://127.0.0.1:8000/</a></p>
+<p>如果提示：Error: That port is already in use.<br>那么就要更改端口</p>
+<p>默认地，runserver命令会在内部IP的8000端口启动开发服务器。</p>
+<p>如果你想改变服务器的端口，把要使用的端口作为一个命令行参数就行。例如，这个命令会在8080端口上启动服务器：</p>
+<pre><code>$ python manage.py runserver 8080
+</code></pre><p>　　如果你想改变服务器的IP地址，把IP地址和端口号放到一起就行。比如你想监听所有的外网IP（如果你想在另外一台电脑上炫耀你的工作。），使用：</p>
+<pre><code>$ python manage.py runserver 0.0.0.0:8000
+</code></pre><p>把你的ip地址加上8000端口号就可以在别的电脑上访问了，例如:192.168.1.101:8000</p>
+<h3 id="4-创建一个应用-startapp"><a href="#4-创建一个应用-startapp" class="headerlink" title="4. 创建一个应用(startapp)"></a>4. 创建一个应用(startapp)</h3><p>现在，一个“项目”已经建立起来，下面确保在和manage.py相同的目录下，创建你的items应用：</p>
+<pre><code>➜  mysite  python manage.py startapp items
+</code></pre><p>看下目录结构：</p>
+<pre><code>.
+├── items
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── migrations
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── tests.py
+│   └── views.py
+├── manage.py
+└── mysite
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    └── wsgi.py
+</code></pre><p>我们的items应用将基于这个目录结构。</p>
+<h4 id="创建模型"><a href="#创建模型" class="headerlink" title="创建模型"></a>创建模型</h4><p>在items应用中，创建一个模型：Article（文章）。它有四个字段：博客的题目，标签，日期，正文。</p>
+<p>这些内容都是由简单的Python类来表现的。编辑items/models.py文件，并让它看起来像这样：</p>
+<pre><code>from django.db import models
+
+# Create your models here.
+class Article(models.Model) :
+    title = models.CharField(max_length = 100)  #博客题目
+    category = models.CharField(max_length = 50, blank = True)  #博客标签
+    date_time = models.DateTimeField(auto_now_add = True)  #博客日期
+    content = models.TextField(blank = True, null = True)  #博客文章正文
+
+    def __unicode__(self) :
+        return self.title
+
+    class Meta:  #按时间下降排序
+        ordering = [&apos;-date_time&apos;]
+</code></pre><p>这里面的逻辑是这样的：<br><img src="http://7xi9tp.com1.z0.glb.clouddn.com/QQ20150407-2@2x.png" alt="models"></p>
+<h4 id="激活模型"><a href="#激活模型" class="headerlink" title="激活模型"></a>激活模型</h4><p>上面的那点模型代码给Django提供了大量的信息。有了这些代码，Django就能够：</p>
+<ul>
+<li>为这个应用创建数据库表结构（CREATE TABLE语句）。</li>
+<li>为Article对象创建一组用于访问数据库的Python API。</li>
+<li>方便以后我们快速的在后台发布文章，给我们搭好了一个发布文章的框架。</li>
+</ul>
+<p>现在编辑一下配置文件mysite/setting.py，主要是在INSTALLED_APPS设置中加入字符串’items’，其中我摘录的下面几个是比较常用的配置。</p>
+<pre><code>INSTALLED_APPS = (
+    &apos;django.contrib.admin&apos;, ＃管理界面
+    &apos;django.contrib.auth&apos;, ＃身份认证系统
+    &apos;django.contrib.contenttypes&apos;, ＃内容类型框架
+    &apos;django.contrib.sessions&apos;, ＃会话框架
+    &apos;django.contrib.messages&apos;, ＃消息框架
+    &apos;django.contrib.staticfiles&apos;, ＃用来管理静态文件的框架
+    &apos;items&apos;, ＃添加一个app，与刚刚创建的items联系
+)
+
+
+
+TEMPLATES = [
+    {
+        &apos;BACKEND&apos;: &apos;django.template.backends.django.DjangoTemplates&apos;,
+        &apos;DIRS&apos;: [], ＃告知以后创建项目文件夹的位置，用于以后创建html模板使用
+        &apos;APP_DIRS&apos;: True,
+        &apos;OPTIONS&apos;: {
+            &apos;context_processors&apos;: [
+                &apos;django.template.context_processors.debug&apos;,
+                &apos;django.template.context_processors.request&apos;,
+                &apos;django.contrib.auth.context_processors.auth&apos;,
+                &apos;django.contrib.messages.context_processors.messages&apos;,
+            ],
+        },
+    },
+]
+
+
+
+TIME_ZONE = &apos;Asia/Shanghai&apos; ＃时区设置，这里默认是UTC世界标准时间，我们把时区改成Asia/Shanghai
+</code></pre><p>运行makemigrations命令，对模型做了一些更改，并将这些更改存储为迁移文件。</p>
+<pre><code>➜  mysite  python manage.py makemigrations items
+Migrations for &apos;items&apos;:
+  0001_initial.py:
+    - Create model Article
+</code></pre><p>如果出现错误：</p>
+<blockquote>
+<p>SyntaxError: Non-ASCII character</p>
+</blockquote>
+<p>说明没有在models.py开头加入#coding: utf-8，它本身不支持中文输入。</p>
+<p>运行migrate命令，使你的数据库表和你改动后的模型进行同步。</p>
+<pre><code>➜  mysite  python manage.py migrate
+Operations to perform:
+  Synchronize unmigrated apps: staticfiles, messages
+  Apply all migrations: admin, items, contenttypes, auth, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+  Installing custom SQL...
+Running migrations:
+  Rendering model states... DONE
+  Applying items.0001_initial... OK
+</code></pre><h4 id="玩转API"><a href="#玩转API" class="headerlink" title="玩转API"></a>玩转API</h4><p>首先进入Python的交互式命令行，玩转这些Django提供给你的API。</p>
+<pre><code>➜  mysite  python manage.py shell
+Python 2.7.9 (default, Apr  2 2015, 01:07:27)
+[GCC 4.2.1 Compatible Apple LLVM 6.0 (clang-600.0.57)] on darwin
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+(InteractiveConsole)
+</code></pre><p>接着给数据库添加条目</p>
+<pre><code>&gt;&gt;&gt; from items.models import Article
+&gt;&gt;&gt; Article.objects.create(title = &apos;Hello World&apos;, category = &apos;Python&apos;, content = &apos;我们来做一个简单的数据库增加操作&apos;)
+
+&lt;Article: Hello World&gt;
+
+&gt;&gt;&gt; Article.objects.all() #查看全部对象, 返回一个列表, 无对象返回空list
+
+[&lt;Article: Hello World&gt;]
+
+&gt;&gt;&gt; Article.objects.get(id = 1) #返回符合条件的对象
+
+&lt;Article: Hello World&gt;
+</code></pre><p>觉得麻烦也没关系，其实这添加的条目都可以在Django自动生成的管理界面上进行查看添加及修改。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Django/" rel="tag"># Django</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/26/best-app-for-mac/" rel="next" title="Best app for Mac">
+                <i class="fa fa-chevron-left"></i> Best app for Mac
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/08/Django-MVC/" rel="prev" title="Django框架－MVC模式">
+                Django框架－MVC模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="xixijun" />
+            
+              <p class="site-author-name" itemprop="name">xixijun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/chen2aaron" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写作目的"><span class="nav-number">1.</span> <span class="nav-text">写作目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行环境"><span class="nav-number">2.</span> <span class="nav-text">运行环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识总结"><span class="nav-number">3.</span> <span class="nav-text">知识总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体步骤"><span class="nav-number">4.</span> <span class="nav-text">具体步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建一个项目-startproject"><span class="nav-number">4.1.</span> <span class="nav-text">1. 创建一个项目(startproject)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-数据库安装-migrate"><span class="nav-number">4.2.</span> <span class="nav-text">2. 数据库安装(migrate)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-运行开发服务器-runserver"><span class="nav-number">4.3.</span> <span class="nav-text">3. 运行开发服务器(runserver)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-创建一个应用-startapp"><span class="nav-number">4.4.</span> <span class="nav-text">4. 创建一个应用(startapp)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建模型"><span class="nav-number">4.4.1.</span> <span class="nav-text">创建模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#激活模型"><span class="nav-number">4.4.2.</span> <span class="nav-text">激活模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#玩转API"><span class="nav-number">4.4.3.</span> <span class="nav-text">玩转API</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xixijun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">135k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:03</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://xixijun.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://morningchen.com/2015/04/07/Django-notes-part1/';
+        this.page.identifier = '2015/04/07/Django-notes-part1/';
+        this.page.title = 'Django学习笔记part1';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xixijun.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz",
+                'X-LC-Key': "NuDvIccEvUY0BdEjgiH3xd4F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

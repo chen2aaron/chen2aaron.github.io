@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言最近刚把Django的官方文档的重要部分看完，准备开始刷《Two Scoops of Django 1.8》这本书进行进阶，写的真的好好啊～ 核心思想 Keep It Simple, Stupid Fat Models, Utility Modules, Thin Views, Stupid Templates Start With Django by Default Be Familiar">
+<meta name="keywords" content="Django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Two Scoops of Django 1.8 学习笔记一">
+<meta property="og:url" content="https://morningchen.com/2015/09/02/Two-Scoops-of-Django-1-8-notes-1/index.html">
+<meta property="og:site_name" content="xixijun blog">
+<meta property="og:description" content="前言最近刚把Django的官方文档的重要部分看完，准备开始刷《Two Scoops of Django 1.8》这本书进行进阶，写的真的好好啊～ 核心思想 Keep It Simple, Stupid Fat Models, Utility Modules, Thin Views, Stupid Templates Start With Django by Default Be Familiar">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-27T03:56:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Two Scoops of Django 1.8 学习笔记一">
+<meta name="twitter:description" content="前言最近刚把Django的官方文档的重要部分看完，准备开始刷《Two Scoops of Django 1.8》这本书进行进阶，写的真的好好啊～ 核心思想 Keep It Simple, Stupid Fat Models, Utility Modules, Thin Views, Stupid Templates Start With Django by Default Be Familiar">
+
+
+
+
+
+
+  <link rel="canonical" href="https://morningchen.com/2015/09/02/Two-Scoops-of-Django-1-8-notes-1/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Two Scoops of Django 1.8 学习笔记一 | xixijun blog</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67508730-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-67508730-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5e3bddc5c3dafc5836408f4b8507b101";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xixijun blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://morningchen.com/2015/09/02/Two-Scoops-of-Django-1-8-notes-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xixijun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xixijun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Two Scoops of Django 1.8 学习笔记一
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-09-02 09:27:06" itemprop="dateCreated datePublished" datetime="2015-09-02T09:27:06+08:00">2015-09-02</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/" itemprop="url" rel="index"><span itemprop="name">Backend</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/09/02/Two-Scoops-of-Django-1-8-notes-1/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/09/02/Two-Scoops-of-Django-1-8-notes-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2015/09/02/Two-Scoops-of-Django-1-8-notes-1/" class="leancloud_visitors" data-flag-title="Two Scoops of Django 1.8 学习笔记一">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6.9k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近刚把Django的官方文档的重要部分看完，准备开始刷《Two Scoops of Django 1.8》这本书进行进阶，写的真的好好啊～</p>
+<h2 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h2><ul>
+<li>Keep It Simple, Stupid</li>
+<li>Fat Models, Utility Modules, Thin Views, Stupid Templates</li>
+<li>Start With Django by Default</li>
+<li>Be Familiar with Django’s Design Philosophies</li>
+<li>The Twelve-Factor App</li>
+</ul>
+<h2 id="1-编码风格"><a href="#1-编码风格" class="headerlink" title="1. 编码风格"></a>1. 编码风格</h2><h3 id="1-1-易读性"><a href="#1-1-易读性" class="headerlink" title="1.1 易读性"></a>1.1 易读性</h3><ul>
+<li>避免简写的变量名</li>
+<li>写出你的函数变量名</li>
+<li>记录你的classes 和 methods</li>
+<li>给代码注释</li>
+<li>将重复的代码重构到函数或者方法里</li>
+<li>保持函数和方法的简短，一个好的检验方法是，不用滚动就可以看到整个函数或方法</li>
+</ul>
+<a id="more"></a>
+<h3 id="1-2-参考PEP8-编码规范"><a href="#1-2-参考PEP8-编码规范" class="headerlink" title="1.2 参考PEP8 编码规范"></a>1.2 参考PEP8 编码规范</h3><ul>
+<li>每层4个空格缩进</li>
+<li>每个class 间隔2行</li>
+<li>class里的method间隔1行</li>
+<li>每行限制在79个字符以内</li>
+</ul>
+<h3 id="1-3-import顺序"><a href="#1-3-import顺序" class="headerlink" title="1.3 import顺序"></a>1.3 import顺序</h3><ol>
+<li>standard library</li>
+<li>core Django</li>
+<li>third-party App</li>
+<li>your apps</li>
+</ol>
+<h3 id="1-4-使用明确的相对的import"><a href="#1-4-使用明确的相对的import" class="headerlink" title="1.4 使用明确的相对的import"></a>1.4 使用明确的相对的import</h3><p>不要硬编码</p>
+<pre><code>from cones.models import Wafflecone
+</code></pre><p>要介样</p>
+<pre><code>from .models import Wafflecone
+</code></pre><h3 id="1-5-避免使用import"><a href="#1-5-避免使用import" class="headerlink" title="1.5 避免使用import *"></a>1.5 避免使用import *</h3><p>不要介样</p>
+<pre><code>from django.db.models import *
+</code></pre><p>要介样</p>
+<pre><code>from django.db import models
+</code></pre><h3 id="1-6-Django-Coding-Style"><a href="#1-6-Django-Coding-Style" class="headerlink" title="1.6 Django Coding Style"></a>1.6 Django Coding Style</h3><ul>
+<li><a href="https://docs.djangoproject.com/en/1.8/internals/contributing/writing-code/coding-style/" target="_blank" rel="noopener">Django官方代码风格</a></li>
+<li>URL Pattern名 用下划线( _ )不要用破折号( - )</li>
+<li>模板名 用下划线( _ )不要用破折号( - )</li>
+</ul>
+<h3 id="1-7-选择一个-JS-HTML-CSS-代码样式手册"><a href="#1-7-选择一个-JS-HTML-CSS-代码样式手册" class="headerlink" title="1.7 选择一个 JS, HTML, CSS 代码样式手册"></a>1.7 选择一个 JS, HTML, CSS 代码样式手册</h3><p>JS:</p>
+<ul>
+<li><a href="https://github.com/rwaldron/idiomatic.js/" target="_blank" rel="noopener">idiomatic.js</a></li>
+<li><a href="https://github.com/madrobby/pragmatic.js" target="_blank" rel="noopener">pragmatic.js</a></li>
+<li><a href="https://github.com/airbnb/javascript" target="_blank" rel="noopener">airbnb</a></li>
+<li><a href="https://github.com/felixge/node-style-guide" target="_blank" rel="noopener">node.js</a></li>
+<li><a href="http://javascript.crockford.com/code.html" target="_blank" rel="noopener">Code Conventions for the JavaScript Programming Language</a></li>
+</ul>
+<p>HTML CSS:</p>
+<ul>
+<li><a href="http://codeguide.co/" target="_blank" rel="noopener">Code Guide by @mdo</a></li>
+<li><a href="https://github.com/necolas/idiomatic-css" target="_blank" rel="noopener">idiomatic-css</a></li>
+</ul>
+<h2 id="2-最佳的-Django环境设置"><a href="#2-最佳的-Django环境设置" class="headerlink" title="2. 最佳的 Django环境设置"></a>2. 最佳的 Django环境设置</h2><ul>
+<li><p>每个地方都使用同一个数据库引擎</p>
+<p>  无论是本地开发环境还是生产环境都要保持使用同一种数据库引擎，<br>  很多开发者在开发环境使用SQLite3，而在生产环境使用PostgreSQL，这是非常不好的。</p>
+</li>
+<li><p>用Pip 和 Virtualenv 进行环境隔离</p>
+</li>
+<li>通过pip 安装django和其他依赖</li>
+<li>使用git当作版本控制</li>
+</ul>
+<h2 id="3-Django-项目布局"><a href="#3-Django-项目布局" class="headerlink" title="3. Django 项目布局"></a>3. Django 项目布局</h2><p>django默认的布局不咋地，<br>我们更倾向的项目布局是三层结构</p>
+<ul>
+<li>repository_root</li>
+<li>django_project_root</li>
+<li>configuration_root</li>
+</ul>
+<p>第一层repository_root是我们项目的绝对根目录，里面除了有django_project_root之外，<br>还有其他一些至关重要的组件，比如README.rst, docs/, gitignore, requirements.txt,<br>常见的错误是把django_project_root当作repository_root</p>
+<p>第二层django_project_root才是我们的django项目目录，所有的python代码都应该在里面</p>
+<p>第三层configuration_root是settings模块和 base URLConf(urls.py)放的地方，<br>他必须是一个有效的python包(里面有<strong>init</strong>.py)</p>
+<p>一个例子</p>
+<pre><code>icecreamratings_project/
+    .gitignore
+    Makefile
+    docs/
+    README.rst
+    requirements.txt
+    icecreamratings/
+        manage.py
+        media/
+        products/
+        profiles/
+        ratings/
+        static/
+        templates/
+        config/
+            __init__.py
+            settings/
+            urls.py
+            wsgi.py
+</code></pre><p>可以通过Cookiecutter生成项目样板</p>
+<pre><code>➜  ~  pip install cookiecutter
+Collecting cookiecutter
+  Downloading cookiecutter-1.0.0-py2.py3-none-any.whl
+Collecting PyYAML&gt;=3.10 (from cookiecutter)
+  Downloading PyYAML-3.11.tar.gz (248kB)
+    100% |████████████████████████████████| 249kB 550kB/s
+Collecting mock (from cookiecutter)
+  Downloading mock-1.3.0-py2.py3-none-any.whl (56kB)
+    100% |████████████████████████████████| 57kB 1.6MB/s
+Collecting click&lt;4.0 (from cookiecutter)
+  Downloading click-3.3-py2.py3-none-any.whl (58kB)
+    100% |████████████████████████████████| 61kB 3.3MB/s
+Collecting binaryornot&gt;=0.2.0 (from cookiecutter)
+  Downloading binaryornot-0.4.0-py2.py3-none-any.whl
+Requirement already satisfied (use --upgrade to upgrade): jinja2&gt;=2.7 in /usr/local/lib/python2.7/site-packages (from cookiecutter)
+Collecting funcsigs (from mock-&gt;cookiecutter)
+  Downloading funcsigs-0.4-py2.py3-none-any.whl
+Requirement already satisfied (use --upgrade to upgrade): pbr&gt;=0.11 in /usr/local/lib/python2.7/site-packages (from mock-&gt;cookiecutter)
+Requirement already satisfied (use --upgrade to upgrade): six&gt;=1.7 in /usr/local/lib/python2.7/site-packages (from mock-&gt;cookiecutter)
+Requirement already satisfied (use --upgrade to upgrade): chardet&gt;=2.0.0 in /usr/local/lib/python2.7/site-packages (from binaryornot&gt;=0.2.0-&gt;cookiecutter)
+Requirement already satisfied (use --upgrade to upgrade): markupsafe in /usr/local/lib/python2.7/site-packages (from jinja2&gt;=2.7-&gt;cookiecutter)
+Requirement already satisfied (use --upgrade to upgrade): pip in /usr/local/lib/python2.7/site-packages (from pbr&gt;=0.11-&gt;mock-&gt;cookiecutter)
+Installing collected packages: PyYAML, funcsigs, mock, click, binaryornot, cookiecutter
+  Running setup.py install for PyYAML
+Successfully installed PyYAML-3.11 binaryornot-0.4.0 click-3.3 cookiecutter-1.0.0 funcsigs-0.4 mock-1.3.0
+➜  ~  cookiecutter https://github.com/pydanny/cookiecutter-django.git
+Cloning into &apos;cookiecutter-django&apos;...
+remote: Counting objects: 3385, done.
+remote: Compressing objects: 100% (138/138), done.
+remote: Total 3385 (delta 81), reused 0 (delta 0), pack-reused 3244
+Receiving objects: 100% (3385/3385), 643.77 KiB | 247.00 KiB/s, done.
+Resolving deltas: 100% (2042/2042), done.
+Checking connectivity... done.
+project_name (default is &quot;project_name&quot;)? balala
+repo_name (default is &quot;balala&quot;)? snir
+author_name (default is &quot;Your Name&quot;)? chencheng
+email (default is &quot;Your email&quot;)? chan4aaron@163.com
+description (default is &quot;A short description of the project.&quot;)? just for fun
+domain_name (default is &quot;example.com&quot;)? morningchen.com
+version (default is &quot;0.1.0&quot;)?
+timezone (default is &quot;UTC&quot;)? Asia/Shanghai
+now (default is &quot;2015/01/13&quot;)? 2015/09/06
+year (default is &quot;2015&quot;)?
+use_whitenoise (default is &quot;y&quot;)? n
+use_celery (default is &quot;n&quot;)? y
+use_maildump (default is &quot;n&quot;)? y
+use_sentry (default is &quot;n&quot;)? y
+windows (default is &quot;n&quot;)?
+➜  ~  cd snir
+</code></pre><p>现在一个完整的项目模板就生成了。</p>
+<h2 id="4-Django-APP设计基础"><a href="#4-Django-APP设计基础" class="headerlink" title="4. Django APP设计基础"></a>4. Django APP设计基础</h2><p>对一个新手开发者来说，常常会对django的’app’这个单词产生疑惑，<br>在我们深入app设计之前，明确一些定义非常重要。</p>
+<ul>
+<li>A Django project: 由django框架驱动的一个网页应用程序</li>
+<li>Django apps: 代表项目一个方面的小型库</li>
+<li>INSTALLED_APPS: setting中的app list</li>
+<li>Third-party Django packages: 已经被python打包工具打包好的简洁,可插拔,可复用的django apps</li>
+</ul>
+<h3 id="Django-App设计的黄金定律"><a href="#Django-App设计的黄金定律" class="headerlink" title="Django App设计的黄金定律"></a>Django App设计的黄金定律</h3><blockquote>
+<p>Write program do one thing and do it well.</p>
+</blockquote>
+<p>其本质就是每个app只专注它自己的任务，如果一个app你不能用一句简单的话概括，<br>那可能意味着这个app太大了，你需要打散它。</p>
+<h3 id="如何命名你的Django-app"><a href="#如何命名你的Django-app" class="headerlink" title="如何命名你的Django app"></a>如何命名你的Django app</h3><p>每个人都有自己的编码风格，有的人喜欢用炫酷的命名，我们更倾向于平淡，显而易见的命名。<br>比如说flavors, animals, blog, polls, dreams, estimates, finances。</p>
+<p>一个棒棒的，显而易见的app命名让这个项目更易于维护.使用有效的、遵循PEP8规范的命名：简短、小写，不要有数字、破折号、句号、空格和其他特殊字符。<br>可以使用下划线让单词的易读性更强</p>
+<h2 id="5-配置文件和依赖文件"><a href="#5-配置文件和依赖文件" class="headerlink" title="5. 配置文件和依赖文件"></a>5. 配置文件和依赖文件</h2><p>我们应该遵循以下最佳实现：</p>
+<ul>
+<li>所有的配置文件都要有版本控制</li>
+<li>Don’t repeat yourself (DRY原则)</li>
+<li>保证secret key 安全(一定一定一定要把他隔离在版本控制器的外面!!!!!!)</li>
+</ul>
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p>为了隔离开发环境和生产环境的配置文件，用settings/文件夹取代settings.py</p>
+<pre><code>settings/
+    __init__.py
+    base.py
+    local.py
+    staging.py
+    test.py
+    production.py
+</code></pre><ul>
+<li>base.py 共用的配置文件</li>
+<li>local.py 本地开发环境的配置文件，不同于production.py的是里面有DEBUG模块，像django-debug-toolbar这样的日志级别的开发者工具</li>
+<li>staging.py 在网站生产服务器上跑的半私人化的版本</li>
+<li>test.py 跑测试用的</li>
+<li>production.py 生产环境下的配置文件</li>
+</ul>
+<p>运行本地脚本和服务器</p>
+<pre><code>python manage.py shell --settings=twoscoops.settings.local
+python manage.py runserver --settings=twoscoops.settings.local
+</code></pre><p>有时候一个大项目，不同的开发者有不同的配置，但是他们共用一个dev.py文件。<br>所以我们可以给不同的开发者设置不同的配置文件。</p>
+<pre><code>settings/
+    __init__.py
+    base.py
+    local.py
+    staging.py
+    test.py
+    production.py
+    dev_cc.py
+    dev_audreyr.py
+</code></pre><p>dev_cc.py 和 dev_audreyr 分别是cc和audreyr这两位开发者的配置文件，<br>这样就解决了这个问题，并且项目组成员还可以互相检查看看谁缺少了什么至关重要的组件</p>
+<p>从代码中隔离出下面的配置，比如说：</p>
+<ul>
+<li>数据库，Memcached，以及其他 后端服务 的配置</li>
+<li>第三方服务的证书，如 Amazon S3、Twitter 等</li>
+<li>每份部署特有的配置，如域名等</li>
+</ul>
+<p>配置文件遵循以下原则</p>
+<ul>
+<li><a href="http://12factor.net/zh_cn/config" target="_blank" rel="noopener">12factor-config</a></li>
+</ul>
+<h3 id="依赖文件"><a href="#依赖文件" class="headerlink" title="依赖文件"></a>依赖文件</h3><p>依赖文件requirements.txt可以用文件requirements/代替，<br>以区分本地和生产环境，结构如下</p>
+<pre><code>requirements/
+    base.txt
+    local.txt
+    staging.txt
+    production.txt
+</code></pre><p>下面是local.txt的内容</p>
+<pre><code>-r base.txt
+django-debug-toolbar==1.3.0
+</code></pre><p>安装本地环境依赖：</p>
+<pre><code>$ pip install -r requirements/local.txt
+</code></pre><h3 id="setting里的文件路径"><a href="#setting里的文件路径" class="headerlink" title="setting里的文件路径"></a>setting里的文件路径</h3><p>MEDIA_ROOT, STATIC_ROOT, TEMPLATES等等不要硬编码</p>
+<p>用django的第三方app <a href="https://github.com/joke2k/django-environ" target="_blank" rel="noopener">django-environ</a>可以很好的解决这个问题，<br>具体用法看官方说明</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Django/" rel="tag"># Django</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/06/Django-QuerySets-notes/" rel="next" title="Django - QuerySets学习笔记">
+                <i class="fa fa-chevron-left"></i> Django - QuerySets学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/07/Two-Scoops-of-Django-1-8-notes-2/" rel="prev" title="Two Scoops of Django 1.8 学习笔记二">
+                Two Scoops of Django 1.8 学习笔记二 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="xixijun" />
+            
+              <p class="site-author-name" itemprop="name">xixijun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/chen2aaron" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#核心思想"><span class="nav-number">2.</span> <span class="nav-text">核心思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-编码风格"><span class="nav-number">3.</span> <span class="nav-text">1. 编码风格</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-易读性"><span class="nav-number">3.1.</span> <span class="nav-text">1.1 易读性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-参考PEP8-编码规范"><span class="nav-number">3.2.</span> <span class="nav-text">1.2 参考PEP8 编码规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-import顺序"><span class="nav-number">3.3.</span> <span class="nav-text">1.3 import顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-使用明确的相对的import"><span class="nav-number">3.4.</span> <span class="nav-text">1.4 使用明确的相对的import</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-避免使用import"><span class="nav-number">3.5.</span> <span class="nav-text">1.5 避免使用import *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-Django-Coding-Style"><span class="nav-number">3.6.</span> <span class="nav-text">1.6 Django Coding Style</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-选择一个-JS-HTML-CSS-代码样式手册"><span class="nav-number">3.7.</span> <span class="nav-text">1.7 选择一个 JS, HTML, CSS 代码样式手册</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-最佳的-Django环境设置"><span class="nav-number">4.</span> <span class="nav-text">2. 最佳的 Django环境设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Django-项目布局"><span class="nav-number">5.</span> <span class="nav-text">3. Django 项目布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Django-APP设计基础"><span class="nav-number">6.</span> <span class="nav-text">4. Django APP设计基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-App设计的黄金定律"><span class="nav-number">6.1.</span> <span class="nav-text">Django App设计的黄金定律</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何命名你的Django-app"><span class="nav-number">6.2.</span> <span class="nav-text">如何命名你的Django app</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-配置文件和依赖文件"><span class="nav-number">7.</span> <span class="nav-text">5. 配置文件和依赖文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件"><span class="nav-number">7.1.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖文件"><span class="nav-number">7.2.</span> <span class="nav-text">依赖文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setting里的文件路径"><span class="nav-number">7.3.</span> <span class="nav-text">setting里的文件路径</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xixijun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">135k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:03</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://xixijun.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://morningchen.com/2015/09/02/Two-Scoops-of-Django-1-8-notes-1/';
+        this.page.identifier = '2015/09/02/Two-Scoops-of-Django-1-8-notes-1/';
+        this.page.title = 'Two Scoops of Django 1.8 学习笔记一';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xixijun.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz",
+                'X-LC-Key': "NuDvIccEvUY0BdEjgiH3xd4F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

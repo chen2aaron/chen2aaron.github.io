@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="安装➜  brew install postgres ==&amp;gt; Downloading https://homebrew.bintray.com/bottles/postgresql-9.4.4.yosemite.bottle.tar. ######################################################################## 100.0%">
+<meta name="keywords" content="PostgreSQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Install PostgreSQL on Mac OS">
+<meta property="og:url" content="https://morningchen.com/2015/09/23/Install-PostgreSQL-on-Mac-OS/index.html">
+<meta property="og:site_name" content="xixijun blog">
+<meta property="og:description" content="安装➜  brew install postgres ==&amp;gt; Downloading https://homebrew.bintray.com/bottles/postgresql-9.4.4.yosemite.bottle.tar. ######################################################################## 100.0%">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-27T03:52:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Install PostgreSQL on Mac OS">
+<meta name="twitter:description" content="安装➜  brew install postgres ==&amp;gt; Downloading https://homebrew.bintray.com/bottles/postgresql-9.4.4.yosemite.bottle.tar. ######################################################################## 100.0%">
+
+
+
+
+
+
+  <link rel="canonical" href="https://morningchen.com/2015/09/23/Install-PostgreSQL-on-Mac-OS/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Install PostgreSQL on Mac OS | xixijun blog</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67508730-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-67508730-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5e3bddc5c3dafc5836408f4b8507b101";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xixijun blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://morningchen.com/2015/09/23/Install-PostgreSQL-on-Mac-OS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xixijun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xixijun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Install PostgreSQL on Mac OS
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-09-23 10:25:15" itemprop="dateCreated datePublished" datetime="2015-09-23T10:25:15+08:00">2015-09-23</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/DevOps/" itemprop="url" rel="index"><span itemprop="name">DevOps</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/09/23/Install-PostgreSQL-on-Mac-OS/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/09/23/Install-PostgreSQL-on-Mac-OS/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2015/09/23/Install-PostgreSQL-on-Mac-OS/" class="leancloud_visitors" data-flag-title="Install PostgreSQL on Mac OS">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">14k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">13 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><pre><code>➜  brew install postgres
+==&gt; Downloading https://homebrew.bintray.com/bottles/postgresql-9.4.4.yosemite.bottle.tar.
+######################################################################## 100.0%
+==&gt; Pouring postgre&lt;kbd&gt;b&lt;/kbd&gt;sql-9.4.4.yosemite.bottle.tar.gz
+==&gt; Caveats
+If builds of PostgreSQL 9 are failing and you have version 8.x installed,
+you may need to remove the previous version first. See:
+  https://github.com/Homebrew/homebrew/issues/2510
+
+To migrate existing data from a previous major version (pre-9.4) of PostgreSQL, see:
+  https://www.postgresql.org/docs/9.4/static/upgrading.html
+
+
+To have launchd start postgresql at login:
+    ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
+Then to load postgresql now:
+    launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+Or, if you don&apos;t want/need launchctl, you can just run:
+    postgres -D /usr/local/var/postgres
+==&gt; /usr/local/Cellar/postgresql/9.4.4/bin/initdb /usr/local/var/postgres
+==&gt; Summary
+🍺  /usr/local/Cellar/postgresql/9.4.4: 3014 files, 40M
+</code></pre><a id="more"></a>
+<h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><pre><code>initdb /usr/local/var/postgres
+ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+</code></pre><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><pre><code>vi .zshrc
+
+export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin
+alias postgres.server=&quot;sudo -u postgres pg_ctl -D /Library/PostgreSQL/9.4/data&quot;
+</code></pre><h3 id="启动停止服务"><a href="#启动停止服务" class="headerlink" title="启动停止服务"></a>启动停止服务</h3><pre><code>postgres.server start
+postgres.server stop
+</code></pre><h3 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h3><pre><code># 创建默认名为user的数据库
+createdb
+# 创建指定名为play的数据库
+createdb play
+# 用superuser创建数据库
+createdb -U postgres databasename
+</code></pre><h3 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h3><pre><code>dropdb -U postgres databasename
+</code></pre><h3 id="创建用户赋予权限"><a href="#创建用户赋予权限" class="headerlink" title="创建用户赋予权限"></a>创建用户赋予权限</h3><pre><code>createuser -U postgres username
+psql database -c &quot;GRANT ALL ON ALL TABLES IN SCHEMA public to user;&quot;
+psql database -c &quot;GRANT ALL ON ALL SEQUENCES IN SCHEMA public to user;&quot;
+psql database -c &quot;GRANT ALL ON ALL FUNCTIONS IN SCHEMA public to user;&quot;
+</code></pre><h3 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h3><pre><code># user的命令行
+psql
+# play的命令行
+psql play
+# 查看所有数据库
+psql -l
+
+# 以某个用户连接某个数据库
+psql -U username -d databasename
+
+# 查看版本号
+
+select version()
+PostgreSQL 9.5.1 on x86_64-apple-darwin14.5.0, compiled by Apple LLVM version 7.0.0 (clang-700.1.76), 64-bit
+select postgis_full_version()
+POSTGIS=&quot;2.2.1 r14555&quot; GEOS=&quot;3.5.0-CAPI-1.9.0 r4084&quot; PROJ=&quot;Rel. 4.9.2, 08 September 2015&quot; GDAL=&quot;GDAL 1.11.3, released 2015/09/16&quot; LIBXML=&quot;2.9.2&quot; LIBJSON=&quot;0.11&quot; RASTER
+</code></pre><p>alter table cities add id serial primary key;</p>
+<h2 id="PostgreSQL-高级特性"><a href="#PostgreSQL-高级特性" class="headerlink" title="PostgreSQL 高级特性"></a>PostgreSQL 高级特性</h2><h3 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> myview <span class="keyword">AS</span></span><br><span class="line">    <span class="keyword">SELECT</span> city, temp_lo, temp_hi, prcp, <span class="built_in">date</span>, location</span><br><span class="line">        <span class="keyword">FROM</span> weather, cities</span><br><span class="line">        <span class="keyword">WHERE</span> city = <span class="keyword">name</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> myview;</span><br></pre></td></tr></table></figure>
+<h3 id="外键"><a href="#外键" class="headerlink" title="外键"></a>外键</h3><h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><p>BEGIN, COMMIT, ROLLBACK TO, SAVEPOINT</p>
+<p>事务是所有数据库系统的一个基本概念。一次事务的要点就是把多个步骤捆绑成一个单一的、 不成功则成仁的操作。其它并发的事务是看不到在这些步骤之间的中间状态的，并且如果发生了一些问题， 导致该事务无法完成，那么所有这些步骤都完全不会影响数据库。</p>
+<p>事务被认为是原子的： 从其它事务的角度来看，它要么是全部发生，要么完全不发生。</p>
+<p>一个事务型数据库保证一个事务所做的所有更新在事务发出完成响应之前都记录到永久的存储中(也就是磁盘)。</p>
+<p>事务型数据库的另外一个重要的性质和原子更新的概念关系密切：当多个事务并发地运行的时候， 每个事务都不应看到其它事务所做的未完成的变化。</p>
+<p>一个打开的事务所做的更新在它完成之前是无法被其它事务看到的，而到提交的时候所有更新同时可见。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BEGIN</span>;</span><br><span class="line"><span class="keyword">UPDATE</span> accounts <span class="keyword">SET</span> balance = balance - <span class="number">100.00</span></span><br><span class="line">    <span class="keyword">WHERE</span> <span class="keyword">name</span> = <span class="string">'Alice'</span>;</span><br><span class="line"><span class="comment">-- 等等</span></span><br><span class="line"><span class="keyword">COMMIT</span>;</span><br></pre></td></tr></table></figure>
+<p>如果在该事务的过程中，我们决定不做提交(可能是我们刚发现 Alice 的余额是负数)， 那么我们可以发出ROLLBACK而不是COMMIT命令， 那么到目前为止我们的所有更新都会被取消。</p>
+<p>PostgreSQL 实际上把每个 SQL 语句当做在一个事务中执行来看待。 如果你没有发出BEGIN命令，那么每个独立的语句都被一个隐含的BEGIN 和(如果成功的话)COMMIT包围。一组包围在BEGIN和COMMIT 之间的语句有时候被称做事务块。</p>
+<p>我们可以通过使用保存点的方法，在一个事务里更加精细地控制其中的语句。 保存点允许你选择性地抛弃事务中的某些部分，而提交剩下的部分。在用SAVEPOINT 定义了一个保存点后，如果需要，你可以使用ROLLBACK TO回滚到该保存点。 则该事务在定义保存点到 ROLLBACK TO 之间的所有数据库更改都被抛弃， 但是在保存点之前的修改将被保留。</p>
+<h3 id="窗口函数"><a href="#窗口函数" class="headerlink" title="窗口函数"></a>窗口函数</h3><p>OVER<br>聚合函数+over()<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> depname, empno, salary, <span class="keyword">avg</span>(salary) <span class="keyword">OVER</span> (<span class="keyword">PARTITION</span> <span class="keyword">BY</span> depname) <span class="keyword">FROM</span> empsalary;</span><br><span class="line">算出每个部门的平均工资</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> depname, empno, salary, <span class="keyword">rank</span>() <span class="keyword">OVER</span> (<span class="keyword">PARTITION</span> <span class="keyword">BY</span> depname <span class="keyword">ORDER</span> <span class="keyword">BY</span> salary <span class="keyword">DESC</span>, empno) <span class="keyword">FROM</span> empsalary;</span><br><span class="line">rank：每个部门人员的权重，按照over里的方式排序</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> depname, empno, salary, enroll_date, pos</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">  (<span class="keyword">SELECT</span> depname, empno, salary, enroll_date,</span><br><span class="line">          <span class="keyword">rank</span>() <span class="keyword">OVER</span> (<span class="keyword">PARTITION</span> <span class="keyword">BY</span> depname <span class="keyword">ORDER</span> <span class="keyword">BY</span> salary <span class="keyword">DESC</span>, empno) <span class="keyword">AS</span> pos</span><br><span class="line">     <span class="keyword">FROM</span> empsalary</span><br><span class="line">  ) <span class="keyword">AS</span> ss</span><br><span class="line"><span class="keyword">WHERE</span> pos &lt; <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">子查询：查询rank&lt;3的行</span><br></pre></td></tr></table></figure></p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>INHERITS<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> cities (</span><br><span class="line">  <span class="keyword">name</span>       <span class="built_in">text</span>,</span><br><span class="line">  population <span class="built_in">real</span>,</span><br><span class="line">  altitude   <span class="built_in">int</span>     <span class="comment">-- (单位是英尺)</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> capitals (</span><br><span class="line">  state      <span class="built_in">char</span>(<span class="number">2</span>)</span><br><span class="line">) INHERITS (cities);</span><br></pre></td></tr></table></figure></p>
+<p>capitals继承了其父表 cities的所有字段,州首府有一个额外的字段 state显示其所处的州</p>
+<h2 id="词法结构"><a href="#词法结构" class="headerlink" title="词法结构"></a>词法结构</h2><h3 id="标识符和关键字"><a href="#标识符和关键字" class="headerlink" title="标识符和关键字"></a>标识符和关键字</h3><p>SQL 标识符和关键字必须以一个字母(a-z 以及带变音符的字母和非拉丁字母)或下划线开头， 随后的字符可以是字母、下划线、数字(0-9)、 美元符号($)</p>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> empsalary(<span class="built_in">int</span>) <span class="keyword">RETURNS</span> empsalary                                                                                                                                                                                                                           <span class="keyword">AS</span> $$ <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> empsalary <span class="keyword">WHERE</span> empno = $<span class="number">1</span> $$                                                                                                                                                                                                                               <span class="keyword">LANGUAGE</span> <span class="keyword">SQL</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a>调用函数</h3><h4 id="位置表示法"><a href="#位置表示法" class="headerlink" title="位置表示法"></a>位置表示法</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> concat_lower_or_upper(a <span class="built_in">text</span>, b <span class="built_in">text</span>, uppercase <span class="built_in">boolean</span> <span class="keyword">DEFAULT</span> <span class="literal">false</span>)                                                                                                                                                                                   <span class="keyword">RETURNS</span> <span class="built_in">text</span>                                                                                                                                                                                                                                                                    <span class="keyword">AS</span>                                                                                                                                                                                                                                                                              $$                                                                                                                                                                                                                                                                                <span class="keyword">SELECT</span> <span class="keyword">CASE</span>                                                                                                                                                                                                                                                                            <span class="keyword">WHEN</span> $<span class="number">3</span> <span class="keyword">THEN</span> <span class="keyword">UPPER</span>($<span class="number">1</span> || <span class="string">' '</span> || $<span class="number">2</span>)                                                                                                                                                                                                                                             <span class="keyword">ELSE</span> <span class="keyword">LOWER</span>($<span class="number">1</span> || <span class="string">' '</span> || $<span class="number">1</span>)                                                                                                                                                                                                                                                     <span class="keyword">END</span>;                                                                                                                                                                                                                                                                   $$                                                                                                                                                                                                                                                                              LANGUAGE SQL IMMUTABLE STRICT;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">select</span> concat_lower_or_upper(<span class="string">'a'</span>, <span class="string">'b'</span>);</span><br><span class="line"> concat_lower_or_upper</span><br><span class="line"><span class="comment">-----------------------</span></span><br><span class="line"> a a</span><br><span class="line">(1 row)</span><br></pre></td></tr></table></figure>
+<h4 id="名称表示法"><a href="#名称表示法" class="headerlink" title="名称表示法"></a>名称表示法</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> concat_lower_or_upper(a := <span class="string">'Hello'</span>, b := <span class="string">'World'</span>, uppercase := <span class="literal">true</span>);</span><br><span class="line"> concat_lower_or_upper</span><br><span class="line"><span class="comment">-----------------------</span></span><br><span class="line"> HELLO WORLD</span><br><span class="line">(1 row)</span><br></pre></td></tr></table></figure>
+<h4 id="混合表示法"><a href="#混合表示法" class="headerlink" title="混合表示法"></a>混合表示法</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> concat_lower_or_upper(<span class="string">'Hello'</span>, <span class="string">'World'</span>, uppercase := <span class="literal">true</span>);</span><br><span class="line"> concat_lower_or_upper</span><br><span class="line"><span class="comment">-----------------------</span></span><br><span class="line"> HELLO WORLD</span><br><span class="line">(1 row)</span><br></pre></td></tr></table></figure>
+<h2 id="数据定义"><a href="#数据定义" class="headerlink" title="数据定义"></a>数据定义</h2><h3 id="缺省值"><a href="#缺省值" class="headerlink" title="缺省值"></a>缺省值</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> products (</span><br><span class="line">    product_no <span class="built_in">integer</span> <span class="keyword">DEFAULT</span> <span class="keyword">nextval</span>(<span class="string">'products_product_no_seq'</span>),</span><br><span class="line">    ...</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>缩写<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> products (</span><br><span class="line">    product_no <span class="built_in">SERIAL</span>,</span><br><span class="line">    ...</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<h3 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h3><ul>
+<li>检查约束<ul>
+<li>CHECK (price &gt; 0)  字段约束</li>
+<li>CONSTRAINT positive_price CHECK (price &gt; 0)  命名约束</li>
+<li>CHECK (price &gt; discounted_price)  表约束</li>
+<li>CHECK (discounted_price &gt; 0 AND price &gt; discounted_price)</li>
+</ul>
+</li>
+<li>非空约束<ul>
+<li>NOT NULL</li>
+</ul>
+</li>
+<li>唯一约束<ul>
+<li>UNIQUE</li>
+<li>UNIQUE (a, b, c)</li>
+</ul>
+</li>
+<li>主键<ul>
+<li>PRIMARY KEY (与 UNIQUE NOT NULL 等价)</li>
+<li>PRIMARY KEY (a, b, c)</li>
+</ul>
+</li>
+<li>外键<ul>
+<li>REFERENCES products (product_no) 如果缺少字段列表的话，就会引用被引用表的主键</li>
+<li>FOREIGN KEY (b, c) REFERENCES other_table (c1, c2)</li>
+<li>ON DELETE RESTRICT  限制删除：禁止删除被引用的行</li>
+<li>ON DELETE CASCADE  级联删除：在删除一个被引用的行的时候，所有引用它的行也会被自动删除</li>
+<li>SET NULL  删除后的设置为 NULL</li>
+<li>SET DEFAULT 删除后设置为 默认值DEFAULT</li>
+</ul>
+</li>
+<li>排除约束<ul>
+<li>EXCLUDE</li>
+</ul>
+</li>
+</ul>
+<h3 id="修改表"><a href="#修改表" class="headerlink" title="修改表"></a>修改表</h3><ul>
+<li>增加字段<ul>
+<li>ALTER TABLE products ADD COLUMN description text;</li>
+</ul>
+</li>
+<li>删除字段<ul>
+<li>ALTER TABLE products DROP COLUMN description;</li>
+<li>ALTER TABLE products DROP COLUMN description CASCADE;</li>
+</ul>
+</li>
+<li>增加约束<ul>
+<li>ALTER TABLE products ADD CHECK (name &lt;&gt; ‘’);</li>
+<li>ALTER TABLE products ADD CONSTRAINT some_name UNIQUE (product_no);</li>
+<li>ALTER TABLE products ADD FOREIGN KEY (product_group_id) REFERENCES product_groups;</li>
+<li>ALTER TABLE products ALTER COLUMN product_no SET NOT NULL;</li>
+</ul>
+</li>
+<li>删除约束<ul>
+<li>ALTER TABLE products DROP CONSTRAINT some_name;</li>
+<li>ALTER TABLE products DROP CONSTRAINT some_name CASCADE;</li>
+<li>ALTER TABLE products ALTER COLUMN product_no DROP NOT NULL;</li>
+</ul>
+</li>
+<li>修改缺省值<ul>
+<li>ALTER TABLE products ALTER COLUMN price SET DEFAULT 7.77;</li>
+<li>ALTER TABLE products ALTER COLUMN price DROP DEFAULT;</li>
+</ul>
+</li>
+<li>修改字段数据类型<ul>
+<li>ALTER TABLE products ALTER COLUMN price TYPE numeric(10,2);</li>
+</ul>
+</li>
+<li>重命名字段<ul>
+<li>ALTER TABLE products RENAME COLUMN product_no TO product_number;</li>
+</ul>
+</li>
+<li>重命名表<ul>
+<li>ALTER TABLE products RENAME TO items;</li>
+</ul>
+</li>
+</ul>
+<h3 id="架构schema"><a href="#架构schema" class="headerlink" title="架构schema"></a>架构schema</h3><h4 id="自定义schema"><a href="#自定义schema" class="headerlink" title="自定义schema"></a>自定义schema</h4><p>用途：</p>
+<ul>
+<li>允许多个用户使用一个数据库而不会干扰其它用户。</li>
+<li>把数据库对象组织成逻辑组，让它们更便于管理。</li>
+<li>第三方的应用可以放在不同的模式中，这样它们就不会和其它对象的名字冲突。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">database.schema.table</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">SCHEMA</span> myschema;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> myschema.mytable (</span><br><span class="line"> ...</span><br><span class="line">);</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">SCHEMA</span> myschema;</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">SCHEMA</span> myschema <span class="keyword">CASCADE</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">SCHEMA</span> schemaname AUTHORIZATION username;</span><br></pre></td></tr></table></figure>
+<h4 id="The-Public-Schema"><a href="#The-Public-Schema" class="headerlink" title="The Public Schema"></a>The Public Schema</h4><p>CREATE TABLE products ( … );<br>CREATE TABLE public.products ( … );</p>
+<h4 id="The-Schema-Search-Path"><a href="#The-Schema-Search-Path" class="headerlink" title="The Schema Search Path"></a>The Schema Search Path</h4><p>SHOW search_path;<br>SET search_path TO myschema,public;<br>DROP TABLE mytable;</p>
+<h4 id="Schemas-and-Privileges"><a href="#Schemas-and-Privileges" class="headerlink" title="Schemas and Privileges"></a>Schemas and Privileges</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">REVOKE</span> <span class="keyword">CREATE</span> <span class="keyword">ON</span> <span class="keyword">SCHEMA</span> <span class="keyword">public</span> <span class="keyword">FROM</span> <span class="keyword">PUBLIC</span>;</span><br></pre></td></tr></table></figure>
+<p>不允许所有用户有CREATE的权限，第一个”public”是schema，第二个”PUBLIC”意思是”所有用户”</p>
+<h4 id="The-System-Catalog-Schema"><a href="#The-System-Catalog-Schema" class="headerlink" title="The System Catalog Schema"></a>The System Catalog Schema</h4><p>pg_catalog 它包含系统表和所有内置数据类型、函数、操作符</p>
+<h2 id="数据操作"><a href="#数据操作" class="headerlink" title="数据操作"></a>数据操作</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> products (<span class="keyword">name</span>, price, product_no) <span class="keyword">VALUES</span> (<span class="string">'Cheese'</span>, <span class="number">9.99</span>, <span class="number">1</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> products (product_no, <span class="keyword">name</span>, price) <span class="keyword">VALUES</span></span><br><span class="line">    (<span class="number">1</span>, <span class="string">'Cheese'</span>, <span class="number">9.99</span>),</span><br><span class="line">    (<span class="number">2</span>, <span class="string">'Bread'</span>, <span class="number">1.99</span>),</span><br><span class="line">    (<span class="number">3</span>, <span class="string">'Milk'</span>, <span class="number">2.99</span>);</span><br><span class="line"><span class="keyword">UPDATE</span> mytable <span class="keyword">SET</span> a = <span class="number">5</span>, b = <span class="number">3</span>, c = <span class="number">1</span> <span class="keyword">WHERE</span> a &gt; <span class="number">0</span>;</span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> products <span class="keyword">WHERE</span> price = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><h3 id="表连接"><a href="#表连接" class="headerlink" title="表连接"></a>表连接</h3><ul>
+<li>CROSS JOIN (卡笛尔积 Cartesian product)</li>
+<li>INNER JOIN ON</li>
+<li>INNER JOIN USING</li>
+<li>NATURAL INNER JOIN</li>
+<li>LEFT JOIN</li>
+<li>RIGHT JOIN</li>
+<li>FULL JOIN</li>
+</ul>
+<h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><p>子查询的结果(派生表)必须包围在圆括弧里并且必须赋予一个别名</p>
+<h3 id="表函数"><a href="#表函数" class="headerlink" title="表函数"></a>表函数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> foo (fooid <span class="built_in">int</span>, foosubid <span class="built_in">int</span>, fooname <span class="built_in">text</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> getfoo(<span class="built_in">int</span>) <span class="keyword">RETURNS</span> SETOF foo <span class="keyword">AS</span> $$</span><br><span class="line">    <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> foo <span class="keyword">WHERE</span> fooid = $<span class="number">1</span>;</span><br><span class="line">$$ LANGUAGE SQL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> getfoo(<span class="number">1</span>) <span class="keyword">AS</span> t1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> foo</span><br><span class="line">    <span class="keyword">WHERE</span> foosubid <span class="keyword">IN</span> (</span><br><span class="line">                        <span class="keyword">SELECT</span> foosubid</span><br><span class="line">                        <span class="keyword">FROM</span> getfoo(foo.fooid) z</span><br><span class="line">                        <span class="keyword">WHERE</span> z.fooid = foo.fooid</span><br><span class="line">                      );</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> vw_getfoo <span class="keyword">AS</span> <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> getfoo(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> vw_getfoo;</span><br></pre></td></tr></table></figure>
+<h3 id="LATERAL-Subqueries"><a href="#LATERAL-Subqueries" class="headerlink" title="LATERAL Subqueries"></a>LATERAL Subqueries</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> p1.id, p2.id, v1, v2</span><br><span class="line"><span class="keyword">FROM</span> polygons p1, polygons p2,</span><br><span class="line">     LATERAL vertices(p1.poly) v1,</span><br><span class="line">     LATERAL vertices(p2.poly) v2</span><br><span class="line"><span class="keyword">WHERE</span> (v1 &lt;-&gt; v2) &lt; <span class="number">10</span> <span class="keyword">AND</span> p1.id != p2.id;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> p1.id, p2.id, v1, v2</span><br><span class="line"><span class="keyword">FROM</span> polygons p1 <span class="keyword">CROSS</span> <span class="keyword">JOIN</span> LATERAL vertices(p1.poly) v1,</span><br><span class="line">     polygons p2 <span class="keyword">CROSS</span> <span class="keyword">JOIN</span> LATERAL vertices(p2.poly) v2</span><br><span class="line"><span class="keyword">WHERE</span> (v1 &lt;-&gt; v2) &lt; <span class="number">10</span> <span class="keyword">AND</span> p1.id != p2.id;</span><br></pre></td></tr></table></figure>
+<h3 id="The-GROUP-BY-and-HAVING-Clauses"><a href="#The-GROUP-BY-and-HAVING-Clauses" class="headerlink" title="The GROUP BY and HAVING Clauses"></a>The GROUP BY and HAVING Clauses</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> select_list <span class="keyword">FROM</span> ... [<span class="keyword">WHERE</span> ...] <span class="keyword">GROUP</span> <span class="keyword">BY</span> ... <span class="keyword">HAVING</span> boolean_expression</span><br><span class="line"><span class="keyword">SELECT</span> product_id, p.name, (<span class="keyword">sum</span>(s.units) * (p.price - p.cost)) <span class="keyword">AS</span> profit</span><br><span class="line">    <span class="keyword">FROM</span> products p <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> sales s <span class="keyword">USING</span> (product_id)</span><br><span class="line">    <span class="keyword">WHERE</span> s.date &gt; <span class="keyword">CURRENT_DATE</span> - <span class="built_in">INTERVAL</span> <span class="string">'4 weeks'</span></span><br><span class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> product_id, p.name, p.price, p.cost</span><br><span class="line">    <span class="keyword">HAVING</span> <span class="keyword">sum</span>(p.price * s.units) &gt; <span class="number">5000</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="GROUPING-SETS-CUBE-and-ROLLUP"><a href="#GROUPING-SETS-CUBE-and-ROLLUP" class="headerlink" title="GROUPING SETS, CUBE, and ROLLUP"></a>GROUPING SETS, CUBE, and ROLLUP</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">=&gt; SELECT * FROM items_sold;</span><br><span class="line"> brand | size | sales</span><br><span class="line"><span class="comment">-------+------+-------</span></span><br><span class="line"> Foo   | L    |  10</span><br><span class="line"> Foo   | M    |  20</span><br><span class="line"> Bar   | M    |  15</span><br><span class="line"> Bar   | L    |  5</span><br><span class="line">(4 rows)</span><br><span class="line"></span><br><span class="line">=&gt; SELECT brand, size, sum(sales) FROM items_sold GROUP BY GROUPING SETS ((brand), (size), ());</span><br><span class="line"> brand | size | sum</span><br><span class="line"><span class="comment">-------+------+-----</span></span><br><span class="line"> Foo   |      |  30</span><br><span class="line"> Bar   |      |  20</span><br><span class="line">       | L    |  15</span><br><span class="line">       | M    |  35</span><br><span class="line">       |      |  50</span><br><span class="line">(5 rows)</span><br></pre></td></tr></table></figure>
+<h3 id="Combining-Queries"><a href="#Combining-Queries" class="headerlink" title="Combining Queries"></a>Combining Queries</h3><p>对两个查询的结果进行集合操作(并、交、差)</p>
+<ul>
+<li>query1 UNION [ALL] query2</li>
+<li>query1 INTERSECT [ALL] query2</li>
+<li>query1 EXCEPT [ALL] query2</li>
+</ul>
+<h3 id="Sorting-Rows"><a href="#Sorting-Rows" class="headerlink" title="Sorting Rows"></a>Sorting Rows</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> select_list</span><br><span class="line">    <span class="keyword">FROM</span> table_expression</span><br><span class="line">    <span class="keyword">ORDER</span> <span class="keyword">BY</span> sort_expression1 [<span class="keyword">ASC</span> | <span class="keyword">DESC</span>] [<span class="keyword">NULLS</span> &#123; <span class="keyword">FIRST</span> | <span class="keyword">LAST</span> &#125;]</span><br><span class="line">             [, sort_expression2 [<span class="keyword">ASC</span> | <span class="keyword">DESC</span>] [<span class="keyword">NULLS</span> &#123; <span class="keyword">FIRST</span> | <span class="keyword">LAST</span> &#125;] ...]</span><br></pre></td></tr></table></figure>
+<h3 id="LIMIT-and-OFFSET"><a href="#LIMIT-and-OFFSET" class="headerlink" title="LIMIT and OFFSET"></a>LIMIT and OFFSET</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> select_list</span><br><span class="line">    <span class="keyword">FROM</span> table_expression</span><br><span class="line">    [ <span class="keyword">ORDER</span> <span class="keyword">BY</span> ... ]</span><br><span class="line">    [ <span class="keyword">LIMIT</span> &#123; <span class="built_in">number</span> | ALL &#125; ] [ <span class="keyword">OFFSET</span> <span class="built_in">number</span> ]</span><br></pre></td></tr></table></figure>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>PostgreSQL有着丰富的内置数据类型可用。 用户还可以使用CREATE TYPE命令增加新的数据类型。</p>
+<table>
+<thead>
+<tr>
+<th>名字</th>
+<th>别名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bigint</td>
+<td>int8</td>
+<td>有符号8字节整数</td>
+</tr>
+<tr>
+<td>bigserial</td>
+<td>serial8</td>
+<td>自增8字节整数</td>
+</tr>
+<tr>
+<td>bit [ (n) ]</td>
+<td></td>
+<td>定长位串</td>
+</tr>
+<tr>
+<td>bit varying [ (n) ]</td>
+<td>varbit</td>
+<td>可变长位串</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>bool</td>
+<td>逻辑布尔值(真/假)</td>
+</tr>
+<tr>
+<td>box</td>
+<td></td>
+<td>平面上的矩形</td>
+</tr>
+<tr>
+<td>bytea</td>
+<td></td>
+<td>二进制数据(“字节数组”)</td>
+</tr>
+<tr>
+<td>character varying [ (n) ]</td>
+<td>varchar [ (n) ]</td>
+<td>可变长字符串</td>
+</tr>
+<tr>
+<td>character [ (n) ]</td>
+<td>char [ (n) ]</td>
+<td>定长字符串</td>
+</tr>
+<tr>
+<td>cidr</td>
+<td></td>
+<td>IPv4 或 IPv6 网络地址</td>
+</tr>
+<tr>
+<td>circle</td>
+<td></td>
+<td>平面上的圆</td>
+</tr>
+<tr>
+<td>date</td>
+<td></td>
+<td>日历日期(年, 月, 日)</td>
+</tr>
+<tr>
+<td>double precision</td>
+<td>float8</td>
+<td>双精度浮点数(8字节)</td>
+</tr>
+<tr>
+<td>inet</td>
+<td></td>
+<td>IPv4 或 IPv6 主机地址</td>
+</tr>
+<tr>
+<td>integer</td>
+<td>int, int4</td>
+<td>有符号 4 字节整数</td>
+</tr>
+<tr>
+<td>interval [ fields ] [ (p) ]</td>
+<td></td>
+<td>时间间隔</td>
+</tr>
+<tr>
+<td>line</td>
+<td></td>
+<td>平面上的无限长直线</td>
+</tr>
+<tr>
+<td>lseg</td>
+<td></td>
+<td>平面上的线段</td>
+</tr>
+<tr>
+<td>macaddr</td>
+<td></td>
+<td>MAC (Media Access Control)地址</td>
+</tr>
+<tr>
+<td>money</td>
+<td></td>
+<td>货币金额</td>
+</tr>
+<tr>
+<td>numeric [ (p, s) ]</td>
+<td>decimal [ (p, s) ]</td>
+<td>可选精度的准确数值数据类型</td>
+</tr>
+<tr>
+<td>path</td>
+<td></td>
+<td>平面上的几何路径</td>
+</tr>
+<tr>
+<td>point</td>
+<td></td>
+<td>平面上的点</td>
+</tr>
+<tr>
+<td>polygon</td>
+<td></td>
+<td>平面上的封闭几何路径</td>
+</tr>
+<tr>
+<td>real</td>
+<td>float4</td>
+<td>单精度浮点数(4 字节)</td>
+</tr>
+<tr>
+<td>smallint</td>
+<td>int2</td>
+<td>有符号 2 字节整数</td>
+</tr>
+<tr>
+<td>smallserial</td>
+<td>serial2</td>
+<td>自增 2 字节整数</td>
+</tr>
+<tr>
+<td>serial</td>
+<td>serial4</td>
+<td>自增 4 字节整数</td>
+</tr>
+<tr>
+<td>text</td>
+<td></td>
+<td>可变长字符串</td>
+</tr>
+<tr>
+<td>time [ (p) ] [ without time zone ]</td>
+<td></td>
+<td>一天中的时刻(无时区)</td>
+</tr>
+<tr>
+<td>time [ (p) ] with time zone</td>
+<td>timetz</td>
+<td>一天中的时刻，含时区</td>
+</tr>
+<tr>
+<td>timestamp [ (p) ] [ without time zone ]</td>
+<td></td>
+<td>日期与时刻(无时区)</td>
+</tr>
+<tr>
+<td>timestamp [ (p) ] with time zone</td>
+<td>timestamptz</td>
+<td>日期与时刻，含时区</td>
+</tr>
+<tr>
+<td>tsquery</td>
+<td></td>
+<td>文本检索查询</td>
+</tr>
+<tr>
+<td>tsvector</td>
+<td></td>
+<td>文本检索文档</td>
+</tr>
+<tr>
+<td>txid_snapshot</td>
+<td></td>
+<td>用户级别的事务ID快照</td>
+</tr>
+<tr>
+<td>uuid</td>
+<td></td>
+<td>通用唯一标识符</td>
+</tr>
+<tr>
+<td>xml</td>
+<td></td>
+<td>XML 数据</td>
+</tr>
+<tr>
+<td>json</td>
+<td></td>
+<td>JSON 数据</td>
+</tr>
+</tbody>
+</table>
+<p>如果你要求精确的计算(比如计算货币金额)，应使用numeric(decimal)类型</p>
+<h2 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h2><ul>
+<li>MVCC (Multiversion Concurrency Control)</li>
+<li>Table- and row-level locking</li>
+</ul>
+<h3 id="transaction-isolation"><a href="#transaction-isolation" class="headerlink" title="transaction isolation"></a>transaction isolation</h3><table>
+<thead>
+<tr>
+<th>Isolation Level</th>
+<th>Dirty Read</th>
+<th>Nonrepeatable Read</th>
+<th>Phantom Read</th>
+<th>Serialization Anomaly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read uncommitted</td>
+<td>Allowed, but not in PG</td>
+<td>Possible</td>
+<td>Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>Read committed</td>
+<td>Not possible</td>
+<td>Possible</td>
+<td>Possible</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>Repeatable read</td>
+<td>Not possible</td>
+<td>Not possible</td>
+<td>Allowed, but not in PG</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>Serializable</td>
+<td>Not possible</td>
+<td>Not possible</td>
+<td>Not possible</td>
+<td>Not possible</td>
+</tr>
+</tbody>
+</table>
+<p>PostgreSQL 中默认的隔离级别是Read committed</p>
+<h2 id="默认函数"><a href="#默认函数" class="headerlink" title="默认函数"></a>默认函数</h2><p>random()<br>rank()</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PostgreSQL/" rel="tag"># PostgreSQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/16/install-sentry-on-centos/" rel="next" title="Install Sentry and Supervisor on Centos">
+                <i class="fa fa-chevron-left"></i> Install Sentry and Supervisor on Centos
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/25/Two-Scoops-of-Django-1-8-notes-6/" rel="prev" title="Two Scoops of Django 1.8 学习笔记六">
+                Two Scoops of Django 1.8 学习笔记六 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="xixijun" />
+            
+              <p class="site-author-name" itemprop="name">xixijun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/chen2aaron" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建"><span class="nav-number">2.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">3.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动停止服务"><span class="nav-number">4.</span> <span class="nav-text">启动停止服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建数据库"><span class="nav-number">5.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除数据库"><span class="nav-number">6.</span> <span class="nav-text">删除数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建用户赋予权限"><span class="nav-number">7.</span> <span class="nav-text">创建用户赋予权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行"><span class="nav-number">8.</span> <span class="nav-text">命令行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PostgreSQL-高级特性"><span class="nav-number"></span> <span class="nav-text">PostgreSQL 高级特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#视图"><span class="nav-number">1.</span> <span class="nav-text">视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外键"><span class="nav-number">2.</span> <span class="nav-text">外键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务"><span class="nav-number">3.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#窗口函数"><span class="nav-number">4.</span> <span class="nav-text">窗口函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承"><span class="nav-number">5.</span> <span class="nav-text">继承</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#词法结构"><span class="nav-number"></span> <span class="nav-text">词法结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符和关键字"><span class="nav-number">1.</span> <span class="nav-text">标识符和关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量"><span class="nav-number">2.</span> <span class="nav-text">常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用函数"><span class="nav-number">3.</span> <span class="nav-text">调用函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#位置表示法"><span class="nav-number">3.1.</span> <span class="nav-text">位置表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#名称表示法"><span class="nav-number">3.2.</span> <span class="nav-text">名称表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混合表示法"><span class="nav-number">3.3.</span> <span class="nav-text">混合表示法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据定义"><span class="nav-number"></span> <span class="nav-text">数据定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缺省值"><span class="nav-number">1.</span> <span class="nav-text">缺省值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约束"><span class="nav-number">2.</span> <span class="nav-text">约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改表"><span class="nav-number">3.</span> <span class="nav-text">修改表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#架构schema"><span class="nav-number">4.</span> <span class="nav-text">架构schema</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义schema"><span class="nav-number">4.1.</span> <span class="nav-text">自定义schema</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Public-Schema"><span class="nav-number">4.2.</span> <span class="nav-text">The Public Schema</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Schema-Search-Path"><span class="nav-number">4.3.</span> <span class="nav-text">The Schema Search Path</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Schemas-and-Privileges"><span class="nav-number">4.4.</span> <span class="nav-text">Schemas and Privileges</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-System-Catalog-Schema"><span class="nav-number">4.5.</span> <span class="nav-text">The System Catalog Schema</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据操作"><span class="nav-number"></span> <span class="nav-text">数据操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询"><span class="nav-number"></span> <span class="nav-text">查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#表连接"><span class="nav-number">1.</span> <span class="nav-text">表连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子查询"><span class="nav-number">2.</span> <span class="nav-text">子查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表函数"><span class="nav-number">3.</span> <span class="nav-text">表函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LATERAL-Subqueries"><span class="nav-number">4.</span> <span class="nav-text">LATERAL Subqueries</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-GROUP-BY-and-HAVING-Clauses"><span class="nav-number">5.</span> <span class="nav-text">The GROUP BY and HAVING Clauses</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GROUPING-SETS-CUBE-and-ROLLUP"><span class="nav-number">6.</span> <span class="nav-text">GROUPING SETS, CUBE, and ROLLUP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Combining-Queries"><span class="nav-number">7.</span> <span class="nav-text">Combining Queries</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sorting-Rows"><span class="nav-number">8.</span> <span class="nav-text">Sorting Rows</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LIMIT-and-OFFSET"><span class="nav-number">9.</span> <span class="nav-text">LIMIT and OFFSET</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number"></span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发控制"><span class="nav-number"></span> <span class="nav-text">并发控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#transaction-isolation"><span class="nav-number">1.</span> <span class="nav-text">transaction isolation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认函数"><span class="nav-number"></span> <span class="nav-text">默认函数</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xixijun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">135k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:03</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://xixijun.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://morningchen.com/2015/09/23/Install-PostgreSQL-on-Mac-OS/';
+        this.page.identifier = '2015/09/23/Install-PostgreSQL-on-Mac-OS/';
+        this.page.title = 'Install PostgreSQL on Mac OS';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xixijun.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz",
+                'X-LC-Key': "NuDvIccEvUY0BdEjgiH3xd4F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

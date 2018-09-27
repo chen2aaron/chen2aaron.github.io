@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="12. 表单通用模式Django的表单强大、灵活、扩展性强、健全。因此，Django admin 和 CBVs广泛的使用了表单。事实上，所有重大的Django API 框架用ModelForms 或者类似的实现来作为它们校验的一部分。 结合表单、模型、视图让我们用较少的努力做了较多的事。学习曲线是值得的：一旦你学会了使用这些组件流畅的进行工作，你会发现，Django提供了以惊人的速度创造数量惊人的">
+<meta name="keywords" content="Django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Two Scoops of Django 1.8 学习笔记七">
+<meta property="og:url" content="https://morningchen.com/2015/09/26/Two-Scoops-of-Django-1-8-notes-7/index.html">
+<meta property="og:site_name" content="xixijun blog">
+<meta property="og:description" content="12. 表单通用模式Django的表单强大、灵活、扩展性强、健全。因此，Django admin 和 CBVs广泛的使用了表单。事实上，所有重大的Django API 框架用ModelForms 或者类似的实现来作为它们校验的一部分。 结合表单、模型、视图让我们用较少的努力做了较多的事。学习曲线是值得的：一旦你学会了使用这些组件流畅的进行工作，你会发现，Django提供了以惊人的速度创造数量惊人的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-27T03:56:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Two Scoops of Django 1.8 学习笔记七">
+<meta name="twitter:description" content="12. 表单通用模式Django的表单强大、灵活、扩展性强、健全。因此，Django admin 和 CBVs广泛的使用了表单。事实上，所有重大的Django API 框架用ModelForms 或者类似的实现来作为它们校验的一部分。 结合表单、模型、视图让我们用较少的努力做了较多的事。学习曲线是值得的：一旦你学会了使用这些组件流畅的进行工作，你会发现，Django提供了以惊人的速度创造数量惊人的">
+
+
+
+
+
+
+  <link rel="canonical" href="https://morningchen.com/2015/09/26/Two-Scoops-of-Django-1-8-notes-7/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Two Scoops of Django 1.8 学习笔记七 | xixijun blog</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67508730-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-67508730-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5e3bddc5c3dafc5836408f4b8507b101";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xixijun blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://morningchen.com/2015/09/26/Two-Scoops-of-Django-1-8-notes-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xixijun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xixijun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Two Scoops of Django 1.8 学习笔记七
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-09-26 16:45:28" itemprop="dateCreated datePublished" datetime="2015-09-26T16:45:28+08:00">2015-09-26</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/" itemprop="url" rel="index"><span itemprop="name">Backend</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/09/26/Two-Scoops-of-Django-1-8-notes-7/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/09/26/Two-Scoops-of-Django-1-8-notes-7/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2015/09/26/Two-Scoops-of-Django-1-8-notes-7/" class="leancloud_visitors" data-flag-title="Two Scoops of Django 1.8 学习笔记七">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">11k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">10 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="12-表单通用模式"><a href="#12-表单通用模式" class="headerlink" title="12. 表单通用模式"></a>12. 表单通用模式</h2><p>Django的表单强大、灵活、扩展性强、健全。因此，Django admin 和 CBVs广泛的使用了表单。<br>事实上，所有重大的Django API 框架用ModelForms 或者类似的实现来作为它们校验的一部分。</p>
+<p>结合表单、模型、视图让我们用较少的努力做了较多的事。学习曲线是值得的：<br>一旦你学会了使用这些组件流畅的进行工作，你会发现，Django提供了以惊人的速度创造数量惊人的有用且稳定功能的能力</p>
+<p>这一章明确讲解了Django最好的部分之一：forms, models, CBVs之间的协同工作。<br>它覆盖了五个通用表单模式。每个Django开发者都应该掌握<br><a id="more"></a></p>
+<h3 id="12-1-模式一：简易的ModelForm使用默认校验"><a href="#12-1-模式一：简易的ModelForm使用默认校验" class="headerlink" title="12.1 模式一：简易的ModelForm使用默认校验"></a>12.1 模式一：简易的ModelForm使用默认校验</h3><p>如果你还记得，用CBVs就能实现表单的增加和修改，而且只需要几行代码：</p>
+<pre><code># flavors/views.py
+from django.views.generic import CreateView, UpdateView
+
+from braces.views import LoginRequiredMixin
+
+from .models import Flavor
+
+class FlavorCreateView(LoginRequiredMixin, CreateView):
+    model = Flavor
+    fields = (&apos;title&apos;, &apos;slug&apos;, &apos;scoops_remaining&apos;)
+
+class FlavorUpdateView(LoginRequiredMixin, UpdateView):
+    model = Flavor
+    fields = (&apos;title&apos;, &apos;slug&apos;, &apos;scoops_remaining&apos;)
+</code></pre><p>总结一下我们在这儿是如何使用默认校验的：</p>
+<ul>
+<li>将Flavor作为模型分配到FlavorCreateView和FlavorUpdateView</li>
+<li>这两个视图根据Falvor模型自动生成了一个ModelForm</li>
+<li>这些ModelForm依赖Falvor模型中默认的字段校验规则</li>
+</ul>
+<p>Django提供了很多不错的数据校验，但在实践中还远远不够。<br>我们认识到了这一点，因此将它作为第一步，下一模式中将会演示如何创建一个自定义的字段校验器</p>
+<h3 id="12-2-模式二：ModelForm中自定义表单字段校验"><a href="#12-2-模式二：ModelForm中自定义表单字段校验" class="headerlink" title="12.2 模式二：ModelForm中自定义表单字段校验"></a>12.2 模式二：ModelForm中自定义表单字段校验</h3><p>如果我们想要确定dessert应用中的title字段是否是以<code>Tasty</code>开头该怎么办。可以用简单的自定义字段校验器解决。</p>
+<p>想象一下这个例子：我们的项目中有两个不同的dessert相关的模型：一个描述冰淇淋口味的Flavor模型和一个描述不同种类奶昔的Milkshake模型。假设它们都有title字段。</p>
+<p>为了校验所有可编辑模型的title字段，我们先创建一个validators.py模块</p>
+<pre><code># core/validators.py
+from django.core.exceptions import ValidationError
+
+def validate_tasty(value):
+    &quot;&quot;&quot;Raise a ValidationError if the value doesn&apos;t start with the
+        word &apos;Tasty&apos;.
+    &quot;&quot;&quot;
+    if not value.startswith(u&quot;Tasty&quot;):
+        msg = u&quot;Must start with Tasty&quot;
+        raise ValidationError(msg)
+</code></pre><p>这是一个函数校验器，如果不能通过测试则抛出错误。我们的validate_tasty()函数校验器看起来就是一个简单的字符串检查，而在实践中，表单字段校验器相当复杂。</p>
+<p>为了在两个不同的dessert模型中都能使用到validate_tasty()，我们会把这个校验器放在一个叫做TastyTitleAbstractModel的抽象模型中，我们就能在整个项目中使用了。</p>
+<p>假设我们的Flavor模型和Milkshake模型在各自独立的应用中，把校验器放在任一个应用中都不合理。因此，我们把TastyTitleAbstractModel放在<code>core/models.py</code>核心模块中。</p>
+<pre><code># core/models.py
+from django.db import models
+
+from .validators import validate_tasty
+
+class TastyTitleAbstractModel(models.Model):
+
+    title = models.CharField(max_length=255, validators=[validate_tasty])
+
+    class Meta:
+        abstract = True
+</code></pre><p>如我们所愿，代码最后两行让TastyTitleAbstractModel成为了抽象模型。</p>
+<p>我们修改一下 flavor/models.py 的原始代码，把TastyTitleAbstractModel作为父类：</p>
+<pre><code># flavors/models.py
+from django.core.urlresolvers import reverse
+from django.db import models
+
+from core.models import TastyTitleAbstractModel
+
+class Flavor(TastyTitleAbstractModel):
+    slug = models.SlugField()
+    scoops_remaining = models.IntegerField(default=0)
+
+    def get_absolute_url(self):
+        return reverse(&quot;flavors:detail&quot;, kwargs={&quot;slug&quot;: self.slug})
+</code></pre><p>它可以用到Falvor模型中，也可以用到任何一个与tasty相关的模型中，<br>比如一个描述华夫饼的WaffleCone模型或者一个描述蛋糕的Cake模型。<br>如果他们的title字段不是以<code>Tasty</code>开头的，都会抛出一个校验错误。</p>
+<p>现在，我们来探讨一下可能存在你脑海中的两个疑问：</p>
+<ul>
+<li>如果我们只想在表单中使用validate_tasty()怎么办？</li>
+<li>除了title字段，我们还想在别的字段中使用怎么办？</li>
+</ul>
+<p>那就需要利用这个校验器来创建一个自定义的FalvorForm：</p>
+<pre><code># flavors/forms.py
+from django import forms
+
+from core.validators import validate_tasty
+from .models import Flavor
+
+class FlavorForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(FlavorForm, self).__init__(*args, **kwargs)
+        self.fields[&quot;title&quot;].validators.append(validate_tasty)
+        self.fields[&quot;slug&quot;].validators.append(validate_tasty)
+
+    class Meta:
+        model = Flavor
+</code></pre><p>这个模式最赞的地方是我们没有改变校验器的原始代码，仅仅只是将它导入，并且在新的位置使用了它<br>给这个视图附上自定义表单是我们的下一步，GCBVs中的edit视图会基于视图的模型属性自动生成ModelForm，我们将通过定制的FlavorForm来覆盖默认的。</p>
+<pre><code># flavors/views.py
+from django.contrib import messages
+from django.views.generic import CreateView, UpdateView, DetailView
+
+from braces.views import LoginRequiredMixin
+
+from .models import Flavor
+from .forms import FlavorForm
+
+class FlavorActionMixin(object):
+
+    model = Flavor
+    fields = (&apos;title&apos;, &apos;slug&apos;, &apos;scoops_remaining&apos;)
+
+    @property
+    def success_msg(self):
+        return NotImplemented
+
+    def form_valid(self, form):
+        messages.info(self.request, self.success_msg)
+        return super(FlavorActionMixin, self).form_valid(form)
+
+class FlavorCreateView(LoginRequiredMixin, FlavorActionMixin,
+                            CreateView):
+    success_msg = &quot;created&quot;
+    # Explicitly attach the FlavorForm class
+    form_class = FlavorForm
+
+class FlavorUpdateView(LoginRequiredMixin, FlavorActionMixin,
+                            UpdateView):
+    success_msg = &quot;updated&quot;
+    # Explicitly attach the FlavorForm class
+    form_class = FlavorForm
+
+class FlavorDetailView(DetailView):
+    model = Flavor
+</code></pre><p>现在FlavorCreateView和FlavorUpdateView这两个视图使用新的FlavorForm来校验传入数据。</p>
+<h3 id="12-3-模式三：覆写校验的clean阶段"><a href="#12-3-模式三：覆写校验的clean阶段" class="headerlink" title="12.3 模式三：覆写校验的clean阶段"></a>12.3 模式三：覆写校验的clean阶段</h3><p>我们来讨论一下有趣的校验使用情况：</p>
+<ul>
+<li>多字段校验</li>
+<li>校验涉及已验证的数据库中的现有数据</li>
+</ul>
+<p>这两种场景都需要根据自定义的校验逻辑覆写clean()和clean_field_name()方法</p>
+<p>在默认的校验器和自定义的字段校验器运行之后，Django提供了第二阶段的校验，那就是clean()和clean_field_name()方法。你可能想知道为什么Django提供了更多的钩子进行校验，下是我们最喜欢的原因：</p>
+<ol>
+<li>由于clean()不是针对任何一个特定的字段，clean()方法是用来验证两个或更多的字段互相冲突的场所，</li>
+<li>clean 阶段是一个针对持久类数据校验的更好的场所，由于数据已经有了一些验证，你就不会将数据库的循环浪费在不必要的查询中。</li>
+</ol>
+<p>我们通过另一个例子来探讨一下，也许你想实现一个冰淇淋的订购表单，用户可以指定想要的口味，配料。然后来我们的店里取走。由于我们需要给顾客展示库存不够的情况，我们会用到clean_slug()方法：</p>
+<pre><code># flavors/forms.py
+from django import forms
+from flavors.models import Flavor
+
+class IceCreamOrderForm(forms.Form):
+    &quot;&quot;&quot;Normally done with forms.ModelForm. But we use forms.Form here
+        to demonstrate that these sorts of techniques work on every
+        type of form.
+    &quot;&quot;&quot;
+
+    slug = forms.ChoiceField(&quot;Flavor&quot;)
+    toppings = forms.CharField()
+
+    def __init__(self, *args, **kwargs):
+        super(IceCreamOrderForm, self).__init__(*args,
+                    **kwargs)
+        # We dynamically set the choices here rather than
+        # in the flavor field definition. Setting them in
+        # the field definition means status updates won&apos;t
+        # be reflected in the form without server restarts.
+        self.fields[&quot;slug&quot;].choices = [
+            (x.slug, x.title) for x in Flavor.objects.all()
+        ]
+        # NOTE: We could filter by whether or not a flavor
+        #       has any scoops, but this is an example of
+        #       how to use clean_slug, not filter().
+
+    def clean_slug(self):
+        slug = self.cleaned_data[&quot;slug&quot;]
+        if Flavor.objects.get(slug=slug).scoops_remaining &lt;= 0:
+            msg = u&quot;Sorry, we are out of that flavor.&quot;
+            raise forms.ValidationError(msg)
+        return slug
+</code></pre><p>对于由HTML驱动的视图，如果库存不够了就会抛出Sorry, we are out of that flavor的错误。简直方便的不要不要的。</p>
+<p>现在想象一下，如果我们接到了客户投诉说巧克力太多。是的，这是愚蠢的也不可能发生的，我们只是用这个虚构的例子来为我们的知识点举例。</p>
+<pre><code># attach this code to the previous example
+def clean(self):
+    cleaned_data = super(IceCreamOrderForm, self).clean()
+    slug = cleaned_data.get(&quot;slug&quot;, &quot;&quot;)
+    toppings = cleaned_data.get(&quot;toppings&quot;, &quot;&quot;)
+
+    # Silly &quot;too much chocolate&quot; validation example
+    if u&quot;chocolate&quot; in slug.lower() and \
+           u&quot;chocolate&quot; in toppings.lower():
+        msg = u&quot;Your order has too much chocolate.&quot;
+        raise forms.ValidationError(msg)
+    return cleaned_data
+</code></pre><h3 id="12-4-模式四：破解表单字段-2-CBVs-2-Forms-1-Model"><a href="#12-4-模式四：破解表单字段-2-CBVs-2-Forms-1-Model" class="headerlink" title="12.4 模式四：破解表单字段(2 CBVs, 2 Forms, 1 Model)"></a>12.4 模式四：破解表单字段(2 CBVs, 2 Forms, 1 Model)</h3><p>这一节，我们会深入研究一个模型中对应两个视图/表单的情况。我们将会破解表单来创作一个自定义行为的表单。</p>
+<p>一个商店列表的例子，我们希望这些商店的信息能尽快的存到系统中，但是之后希望还能添加例如电话号码和街道地址的数据。下面是我们的冰淇淋商店IceCreamStore模型：</p>
+<pre><code># stores/models.py
+from django.core.urlresolvers import reverse
+from django.db import models
+
+class IceCreamStore(models.Model):
+    title = models.CharField(max_length=100)
+    block_address = models.TextField()
+    phone = models.CharField(max_length=20, blank=True)
+    description = models.TextField(blank=True)
+
+    def get_absolute_url(self):
+        return reverse(&quot;store_detail&quot;, kwargs={&quot;pk&quot;: self.pk})
+</code></pre><p>默认生成的ModelForm会强制用户输入title和block_address字段，但是允许用户不填phone和description字段</p>
+<p>我们通过下面的表单来实现商店信息的更新：</p>
+<pre><code># stores/forms.py
+# Call phone and description from the self.fields dict-like object
+from django import forms
+
+from .models import IceCreamStore
+
+class IceCreamStoreUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = IceCreamStore
+
+    def __init__(self, *args, **kwargs):
+        # Call the original __init__ method before assigning
+        # field overloads
+        super(IceCreamStoreUpdateForm, self).__init__(*args,
+                            **kwargs)
+        self.fields[&quot;phone&quot;].required = True
+        self.fields[&quot;description&quot;].required = True
+</code></pre><p>一个重要的知识点需要记住！！！Django的表单就是python的类。它们可以作为对象来实现，它们能继承自其他类，也可以当作父类。<br>因此，我们可以这样写我们的两个表单：</p>
+<pre><code># stores/forms.py
+from django import forms
+
+from .models import IceCreamStore
+
+class IceCreamStoreCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = IceCreamStore
+        fields = (&quot;title&quot;, &quot;block_address&quot;, )
+
+class IceCreamStoreUpdateForm(IceCreamStoreCreateForm):
+
+    def __init__(self, *args, **kwargs):
+        super(IceCreamStoreUpdateForm,
+                self).__init__(*args, **kwargs)
+        self.fields[&quot;phone&quot;].required = True
+        self.fields[&quot;description&quot;].required = True
+
+    class Meta(IceCreamStoreCreateForm.Meta):
+        # show all the fields!
+        fields = (&quot;title&quot;, &quot;block_address&quot;, &quot;phone&quot;,
+                &quot;description&quot;, )
+</code></pre><blockquote>
+<p>警告！！！使用Meta.fields！！不要使用Meta.exclude！！！</p>
+</blockquote>
+<p>最后，我们来写对应的CBVs视图：</p>
+<pre><code># stores/views
+from django.views.generic import CreateView, UpdateView
+
+from .forms import IceCreamStoreCreateForm
+from .forms import IceCreamStoreUpdateForm
+from .models import IceCreamStore
+
+class IceCreamCreateView(CreateView):
+    model = IceCreamStore
+    form_class = IceCreamStoreCreateForm
+
+class IceCreamUpdateView(UpdateView):
+    model = IceCreamStore
+    form_class = IceCreamStoreUpdateForm
+</code></pre><h3 id="12-5-模式五：可复用的搜索mixin视图"><a href="#12-5-模式五：可复用的搜索mixin视图" class="headerlink" title="12.5 模式五：可复用的搜索mixin视图"></a>12.5 模式五：可复用的搜索mixin视图</h3><p>在这个例子中，我们将会了解如何在两个对应不同模型的视图中复用一个搜索表单。<br>假设这两个模型都有一个叫做title的字段，这个例子演示了如何在Flavor模型和IceCreamStore模型中使用单一的CBV视图提供简单的搜索功能。</p>
+<p>我们先给视图创建一个简单的mixin搜索：</p>
+<pre><code># core/views.py
+class TitleSearchMixin(object):
+
+    def get_queryset(self):
+        # Fetch the queryset from the parent&apos;s get_queryset
+        queryset = super(TitleSearchMixin, self).get_queryset()
+
+        # Get the q GET parameter
+        q = self.request.GET.get(&quot;q&quot;)
+        if q:
+            # return a filtered queryset
+            return queryset.filter(title__icontains=q)
+        # No q is specified so we return queryset
+        return queryset
+</code></pre><p>接下来就是让它工作在Flavor和IceCreamUpdateView视图中：</p>
+<pre><code># add to flavors/views.py
+from django.views.generic import ListView
+
+from core.views import TitleSearchMixin
+from .models import Flavor
+
+class FlavorListView(TitleSearchMixin, ListView):
+    model = Flavor
+
+
+# add to stores/views.py
+from django.views.generic import ListView
+
+from core.views import TitleSearchMixin
+from .models import Store
+
+class IceCreamStoreListView(TitleSearchMixin, ListView):
+    model = Store
+</code></pre><p>然后给每个ListView定义HTML：</p>
+<pre><code>&lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+    &lt;input type=&quot;text&quot; name=&quot;q&quot; /&gt;
+    &lt;button type=&quot;submit&quot;&gt;search&lt;/button&gt;
+&lt;/form&gt;
+
+
+&lt;form action=&quot;&quot; method=&quot;GET&quot;&gt;
+    &lt;input type=&quot;text&quot; name=&quot;q&quot; /&gt;
+    &lt;button type=&quot;submit&quot;&gt;search&lt;/button&gt;
+&lt;/form&gt;
+</code></pre><p>Mixins是复用代码很好的方式，但是在一个类中使用太多的mixins会制造出非常难维护代码。<br>一如既往的保证代码简洁就行</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Django/" rel="tag"># Django</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/25/Two-Scoops-of-Django-1-8-notes-6/" rel="next" title="Two Scoops of Django 1.8 学习笔记六">
+                <i class="fa fa-chevron-left"></i> Two Scoops of Django 1.8 学习笔记六
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/03/css-notes/" rel="prev" title="写css遇到的问题">
+                写css遇到的问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="xixijun" />
+            
+              <p class="site-author-name" itemprop="name">xixijun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/chen2aaron" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#12-表单通用模式"><span class="nav-number">1.</span> <span class="nav-text">12. 表单通用模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#12-1-模式一：简易的ModelForm使用默认校验"><span class="nav-number">1.1.</span> <span class="nav-text">12.1 模式一：简易的ModelForm使用默认校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-2-模式二：ModelForm中自定义表单字段校验"><span class="nav-number">1.2.</span> <span class="nav-text">12.2 模式二：ModelForm中自定义表单字段校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-3-模式三：覆写校验的clean阶段"><span class="nav-number">1.3.</span> <span class="nav-text">12.3 模式三：覆写校验的clean阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-4-模式四：破解表单字段-2-CBVs-2-Forms-1-Model"><span class="nav-number">1.4.</span> <span class="nav-text">12.4 模式四：破解表单字段(2 CBVs, 2 Forms, 1 Model)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-5-模式五：可复用的搜索mixin视图"><span class="nav-number">1.5.</span> <span class="nav-text">12.5 模式五：可复用的搜索mixin视图</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xixijun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">135k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:03</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://xixijun.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://morningchen.com/2015/09/26/Two-Scoops-of-Django-1-8-notes-7/';
+        this.page.identifier = '2015/09/26/Two-Scoops-of-Django-1-8-notes-7/';
+        this.page.title = 'Two Scoops of Django 1.8 学习笔记七';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xixijun.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz",
+                'X-LC-Key': "NuDvIccEvUY0BdEjgiH3xd4F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

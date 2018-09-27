@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言最近工作中的一个小项目需要做一个车辆信息选择框的三级联动，有点类似省市县的三级联动，下一级依赖上一级的数据。最后的效果是这样因为这一块的代码业务逻辑相当复杂，采用jQuery写的话代码量有点大，而且会把html的代码写在js文件里，不易于阅读和后期维护，所以CTO大大建议用Vue.js来重写。 思考过程 首先是爬取车辆信息的数据，找了一家信息比较全的相关平台，开始了爬虫之旅，待有空写下爬虫的思">
+<meta name="keywords" content="JavaScript,Tornado,Vue,jQuery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue.js 初体验">
+<meta property="og:url" content="https://morningchen.com/2015/12/05/vue-js-notes/index.html">
+<meta property="og:site_name" content="xixijun blog">
+<meta property="og:description" content="前言最近工作中的一个小项目需要做一个车辆信息选择框的三级联动，有点类似省市县的三级联动，下一级依赖上一级的数据。最后的效果是这样因为这一块的代码业务逻辑相当复杂，采用jQuery写的话代码量有点大，而且会把html的代码写在js文件里，不易于阅读和后期维护，所以CTO大大建议用Vue.js来重写。 思考过程 首先是爬取车辆信息的数据，找了一家信息比较全的相关平台，开始了爬虫之旅，待有空写下爬虫的思">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/car_selector.png">
+<meta property="og:updated_time" content="2018-09-27T03:57:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue.js 初体验">
+<meta name="twitter:description" content="前言最近工作中的一个小项目需要做一个车辆信息选择框的三级联动，有点类似省市县的三级联动，下一级依赖上一级的数据。最后的效果是这样因为这一块的代码业务逻辑相当复杂，采用jQuery写的话代码量有点大，而且会把html的代码写在js文件里，不易于阅读和后期维护，所以CTO大大建议用Vue.js来重写。 思考过程 首先是爬取车辆信息的数据，找了一家信息比较全的相关平台，开始了爬虫之旅，待有空写下爬虫的思">
+<meta name="twitter:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/car_selector.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://morningchen.com/2015/12/05/vue-js-notes/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Vue.js 初体验 | xixijun blog</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67508730-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-67508730-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5e3bddc5c3dafc5836408f4b8507b101";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xixijun blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://morningchen.com/2015/12/05/vue-js-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xixijun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xixijun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue.js 初体验
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-12-05 21:53:09" itemprop="dateCreated datePublished" datetime="2015-12-05T21:53:09+08:00">2015-12-05</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Frontend/" itemprop="url" rel="index"><span itemprop="name">Frontend</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Frontend/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/05/vue-js-notes/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/05/vue-js-notes/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2015/12/05/vue-js-notes/" class="leancloud_visitors" data-flag-title="Vue.js 初体验">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">15k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">14 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近工作中的一个小项目需要做一个车辆信息选择框的三级联动，有点类似省市县的三级联动，下一级依赖上一级的数据。最后的效果是这样<br><img src="http://7xi9tp.com1.z0.glb.clouddn.com/car_selector.png" alt="car_selector"><br>因为这一块的代码业务逻辑相当复杂，采用jQuery写的话代码量有点大，而且会把html的代码写在js文件里，不易于阅读和后期维护，所以CTO大大建议用Vue.js来重写。</p>
+<h3 id="思考过程"><a href="#思考过程" class="headerlink" title="思考过程"></a>思考过程</h3><ol>
+<li>首先是爬取车辆信息的数据，找了一家信息比较全的相关平台，开始了爬虫之旅，待有空写下爬虫的思考，这里略过</li>
+<li>拿到大概2万多条数据后，写一个pipeline整理好数据并写入自己的数据库，数据分为3类：品牌、系列、车型，存入3张表里，分别命名为car_brands, car_series, car_models，哦了～有了数据就可以动手了</li>
+<li>后端写好三个handler逻辑，将数据以json的方式传给前端</li>
+</ol>
+<a id="more"></a>
+<h3 id="用-jQuery写"><a href="#用-jQuery写" class="headerlink" title="用 jQuery写"></a>用 jQuery写</h3><p>前端前端来接受我大后端的数据吧～，以下是我之前写的jQuery版本的代码</p>
+<ol>
+<li>第一个focus事件 点击input框框弹出modal选择框，并向后台请求car_brands数据，成功后render到modal里</li>
+<li>第二个click事件 选择第一列品牌后，向后台请求car_series数据，成功后render出该品牌下所有的车系</li>
+<li>第三个click事件 选择第二列车系后，向后台请求car_models数据，成功后render出该车系下所有的型号</li>
+<li>第四个click事件 选择第三列车型后，将<code>确定</code>button激活</li>
+<li>第五个click事件 点击保存按钮后 隐藏modal框，将选好的信息写入input框框，用blur方法激活formvalidation表单校验</li>
+</ol>
+<pre><code>$(&quot;#select-car&quot;).on(&quot;focus&quot;, &apos;input&apos;, (function () {
+    $(&apos;#carModal&apos;).modal(&apos;show&apos;);
+    $(&quot;#choose-brand &gt; .choose-box&quot;).html(&apos;&apos;);
+    $(&quot;#choose-series &gt; .choose-box&quot;).html(&apos;&lt;div class=&quot;cont-default&quot; data-code=&quot;&quot; data-name=&quot;&quot;&gt;请先选择品牌&lt;/div&gt;&apos;);
+    $(&quot;#choose-model &gt; .choose-box&quot;).html(&apos;&lt;div class=&quot;cont-default&quot; data-code=&quot;&quot; data-name=&quot;&quot;&gt;请先选择车系&lt;/div&gt;&apos;);
+    $(&apos;#save-car&apos;).prop(&apos;disabled&apos;, true);
+    $.ajax({
+        url: &quot;/borrow/release/car_brands&quot;,
+        dataType: &quot;json&quot;,
+        success: function (data) {
+            $(&quot;.brand-cata&quot;).html(&quot;&quot;);
+            $.each(data, function(k, v){
+                $(&quot;.brand-cata&quot;).append(&quot;&lt;li&gt;&quot; + v.cata + &quot;&lt;/li&gt;&quot;);
+                $(&quot;#choose-brand &gt; .choose-box&quot;).append(&quot;&lt;div class=cont-tit data-name=&apos;&quot; + v.cata + &quot;&apos;&gt;&quot; + v.cata + &quot;&lt;/div&gt;&quot;);
+                $.each(v.brands, function(k, v){
+                    var b = $(&quot;&lt;div class=&apos;choose-cont&apos; data-code=&apos;&quot; + v.brand_code + &quot;&apos; data-name=&apos;&quot; + v.en_name + &quot;&apos;&gt;&quot; + v.en_name + &quot;&lt;/div&gt;&quot;);
+                    $(&quot;#choose-brand &gt; .choose-box&quot;).append(b);
+                })
+            });
+            $(&quot;.brand-cata li&quot;).on(&quot;click&quot;, function () {
+                var e = $(this).html(),
+                    t = $(&quot;#choose-brand .choose-box .cont-tit[data-name=&quot; + e.toUpperCase() + &quot;]&quot;);
+                t.length &amp;&amp; t.parent().animate({scrollTop: t.parent().scrollTop() + (t.offset().top - t.parent().offset().top)})
+            });
+        },
+        error: function (data) {},
+        fail: function (data) {}
+    });
+}));
+
+
+var loading_flag = false;
+$(&quot;#choose-brand&quot;).on(&quot;click&quot;, &quot;.choose-box &gt; .choose-cont&quot;, function () {
+    if (loading_flag == true) {
+        return false
+    }
+    $(&quot;#choose-series &gt; .choose-box&quot;).html(&apos;&lt;div class=&quot;cont-default&quot; data-code=&quot;&quot; data-name=&quot;&quot;&gt;请先选择品牌&lt;/div&gt;&apos;);
+    $(&quot;#choose-model &gt; .choose-box&quot;).html(&apos;&lt;div class=&quot;cont-default&quot; data-code=&quot;&quot; data-name=&quot;&quot;&gt;请先选择车系&lt;/div&gt;&apos;);
+    $(&apos;#save-car&apos;).prop(&apos;disabled&apos;, true);
+    $(&quot;.choose-cont&quot;).removeClass(&quot;active&quot;);
+    $(this).addClass(&quot;active&quot;);
+
+    $.ajax({
+        url: &quot;/borrow/release/car_series&quot;,
+        data: {&apos;brand_code&apos;: $(this).attr(&apos;data-code&apos;)},
+        dataType: &quot;json&quot;,
+        beforeSend: function () {
+            loading_flag = true;
+        },
+        success: function (data) {
+            loading_flag = false;
+            $(&quot;#choose-series &gt; .choose-box&quot;).html(&quot;&quot;);
+            $.each(data, function (k, v) {
+                $(&quot;#choose-series &gt; .choose-box&quot;).append(&quot;&lt;div class=cont-tit&gt;&quot; + v.factory + &quot;&lt;/div&gt;&quot;);
+                $.each(v.series, function(k, v) {
+                    var s = $(&apos;&lt;div class=&quot;choose-cont&quot; data-code=&quot;&apos; + v.series_code + &apos;&quot; data-name=&quot;&apos; + v.en_name + &apos;&quot;&gt;&apos; + v.en_name + &quot;&lt;/div&gt;&quot;);
+                    $(&quot;#choose-series &gt; .choose-box&quot;).append(s);
+                })
+            });
+        },
+        error: function (data) {
+        },
+        fail: function (data) {
+        }
+    })
+});
+
+$(&quot;#choose-series&quot;).on(&quot;click&quot;, &quot;.choose-box &gt; .choose-cont&quot;, function () {
+    if (loading_flag == true) {
+        return false
+    }
+    $(&quot;#choose-model &gt; .choose-box&quot;).html(&apos;&lt;div class=&quot;cont-default&quot; data-code=&quot;&quot; data-name=&quot;&quot;&gt;请先选择车系&lt;/div&gt;&apos;);
+    $(&quot;#choose-series &gt; .choose-box &gt; .choose-cont&quot;).removeClass(&quot;active&quot;);
+    $(&apos;#save-car&apos;).prop(&apos;disabled&apos;, true);
+    $(this).addClass(&quot;active&quot;);
+    $.ajax({
+        url: &quot;/borrow/release/car_models&quot;,
+        data: {&apos;series_code&apos;: $(this).attr(&apos;data-code&apos;)},
+        dataType: &quot;json&quot;,
+        beforeSend: function () {
+            loading_flag = true;
+        },
+        success: function (data) {
+            loading_flag = false;
+            $(&quot;#choose-model &gt; .choose-box&quot;).html(&quot;&quot;);
+            $.each(data, function (k, v) {
+                $(&quot;#choose-model &gt; .choose-box&quot;).append(&quot;&lt;div class=cont-tit&gt;&quot; + v.year + &apos;款&apos; + &quot;&lt;/div&gt;&quot;);
+                $.each(v.models, function(k, v) {
+                    var m = $(&apos;&lt;div class=&quot;choose-cont&quot; data-code=&quot;&apos; + v.code + &apos;&quot; data-name=&quot;&apos; + v.en_name + &apos;&quot;&gt;&apos; + v.en_name + &quot;&lt;/div&gt;&quot;);
+                    $(&quot;#choose-model &gt; .choose-box&quot;).append(m);
+                })
+            });
+        },
+        error: function (data) {
+        },
+        fail: function (data) {
+        }
+    })
+});
+
+$(&quot;#choose-model&quot;).on(&quot;click&quot;, &quot;.choose-box &gt; .choose-cont&quot;, function () {
+    $(&quot;#choose-model &gt; .choose-box &gt; .choose-cont&quot;).removeClass(&quot;active&quot;);
+    $(this).addClass(&quot;active&quot;);
+    if ($(&quot;#choose-model &gt; .choose-box &gt; .choose-cont.active&quot;).length === 1) {
+        $(&quot;#save-car&quot;).prop(&quot;disabled&quot;, false)
+    }
+});
+
+$(&quot;#save-car&quot;).on(&quot;click&quot;, function () {
+    var car_brand = $(&apos;#choose-brand &gt; .choose-box &gt; .choose-cont.active&apos;).text(),
+        car_series = $(&quot;#choose-series &gt; .choose-box &gt; .choose-cont.active&quot;).text(),
+        car_model = $(&quot;#choose-model &gt; .choose-box &gt; .choose-cont.active&quot;).text();
+    $(&quot;#carModal&quot;).modal(&quot;hide&quot;);
+    $(&quot;#brand&quot;).val(car_brand).blur();
+    $(&quot;#brand-model&quot;).val(car_series).blur();
+    $(&quot;#car-model&quot;).val(car_model).blur();
+    $(&quot;#select-car&quot;).off(&quot;focus&quot;, &quot;input&quot;);
+    $(&quot;#select-car&quot;).on(&quot;focus&quot;, &apos;input&apos;, function(){
+        $(&apos;#carModal&apos;).modal(&apos;show&apos;)
+    })
+});
+</code></pre><p>如果我是刚接手这个项目的码农话，看到这个代码简直要掀桌(ノ=Д=)ノ┻━┻！！！估计就算自己写的过几个月也看不懂了。<br>是时候祭出vue了！！！</p>
+<h3 id="用-Vue-js重写"><a href="#用-Vue-js重写" class="headerlink" title="用 Vue.js重写"></a>用 Vue.js重写</h3><p>过了一遍vue的官方文档，发现有以下几个问题需要解决：</p>
+<ol>
+<li><p>解决tornado 和 vue expression 的冲突</p>
+<p> 因为我们用的是tornado，前端不仅有tornado render来的数据，还有vue的数据，如果都用<code>{{ }}</code>会造成冲突的。google+stackoverflow了一波，发现可以改写vue expression的全局配置。</p>
+<pre><code>Vue.config.delimiters = [&apos;${&apos;, &apos;}&apos;]
+</code></pre><p> 将vue expression 改写成<code>${ }</code>。</p>
+<p> <a href="http://vuejs.org/api/#delimiters。" target="_blank" rel="noopener">http://vuejs.org/api/#delimiters。</a></p>
+</li>
+<li><p>第二个问题就是vue 内部如何传值</p>
+<p> 官方例子中给了我们答案，直接 <code>this.foo = bar</code>就可以改变data里的数据了，简直方便的不要不要的</p>
+<p> <a href="http://vuejs.org/examples/commits.html" target="_blank" rel="noopener">http://vuejs.org/examples/commits.html</a></p>
+</li>
+</ol>
+<p>看看vue.js 的代码，</p>
+<ol>
+<li>改写全局配置，用<code>${ }</code>代替默认的<code>{{ }}</code>expression</li>
+<li>设置loading_flag防止多次ajax请求</li>
+<li><p>新建一个vue的实例，里面包含6条数据和5个方法，他们必须在<code>#select-car</code>那个div里面，否则不能解析</p>
+<ul>
+<li>brand_items, series_items, model_items 用来保存后端传来的json数据</li>
+<li>chosen_brand, chosen_series, chosen_model 用来保存用户当前选择的数据</li>
+<li>show_modal 方法就是jQuery版本中的select-car事件，请求car_brands数据，传给brand_items，其他的方法也类似</li>
+</ul>
+</li>
+</ol>
+<pre><code>Vue.config.delimiters = [&apos;${&apos;, &apos;}&apos;];
+var loading_flag = false;
+var vue_show = new Vue({
+    el: &apos;#select-car&apos;,
+    data: {
+        brand_items: &apos;&apos;,
+        series_items: &apos;&apos;,
+        model_items: &apos;&apos;,
+        chosen_brand: &apos;&apos;,
+        chosen_series: &apos;&apos;,
+        chosen_model: &apos;&apos;
+    },
+    methods: {
+        show_modal: function () {
+            $(&apos;#carModal&apos;).modal(&apos;show&apos;);
+            var self = this;
+            $.ajax({
+                url: &quot;/common/car_brands&quot;,
+                dataType: &quot;json&quot;,
+                success: function(data){
+                    self.brand_items = sort_brands(data);
+                }
+            })
+        },
+        select_brand: function (e) {
+            var self = this;
+
+            if (loading_flag == true) {
+                return false
+            }
+
+            var $target = $(e.target);
+            self.chosen_brand = $target.attr(&apos;data-name&apos;);
+
+            loading_flag = true;
+            $.ajax({
+                url: &quot;/common/car_series&quot;,
+                data: {&apos;brand_code&apos;: $target.attr(&apos;data-code&apos;)},
+                dataType: &quot;json&quot;
+            }).done( function (data) {
+                self.model_items=[];
+                self.series_items = sort_series(data);
+                self.chosen_series = &apos;&apos;;
+                self.chosen_model = &apos;&apos;;
+            }).always(function (data) {
+                loading_flag = false
+            });
+        },
+        select_series: function (e) {
+            var self = this;
+            if (loading_flag == true) {
+                return false
+            }
+
+            var $target = $(e.target);
+            self.chosen_series = $target.attr(&apos;data-name&apos;);
+
+            loading_flag = true;
+            $.ajax({
+                url: &quot;/common/car_models&quot;,
+                data: {&apos;series_code&apos;: $target.attr(&apos;data-code&apos;)},
+                dataType: &quot;json&quot;
+            }).done( function (data) {
+                self.model_items = sort_models(data);
+                self.chosen_model = &apos;&apos;;
+            }).always(function (data) {
+                loading_flag = false
+            });
+        },
+        select_model: function (e) {
+            var self = this;
+            self.chosen_model = $(e.target).attr(&apos;data-name&apos;);
+        },
+        scroll_brands: function (e) {
+            var s = $(e.target).html(),
+                t = $(&quot;#choose-brand .choose-box .cont-tit[data-name=&quot; + s.toUpperCase() + &quot;]&quot;);
+            t.length &amp;&amp; t.parent().animate({scrollTop: t.parent().scrollTop() + (t.offset().top - t.parent().offset().top)})
+        }
+    }
+});
+</code></pre><p>从vue js 中可以看出逻辑清晰，数据和方法显示直观，几乎没什么html代码，因为都写在html页面中了，再来看看html中的vue如何写</p>
+<ol>
+<li>vue 根据<code>el: &#39;#select-car&#39;</code>来判断这个div是不是vue</li>
+<li>input 框绑定了<code>show_modal</code>的click事件，<code>{{ form.car_model }}</code>是tornado 传来的别的数据 和vue无关，不要在意</li>
+<li><code>字母列表</code>用<code>v-for</code>方法循环了<code>brand_items</code>，将左侧的字母render出来，并绑定了<code>scroll_brands</code> click事件</li>
+<li><code>品牌列表</code>用<code>template v-for</code>方法循环了<code>brand_items</code>，用<code>v-bind:class</code>写个三元表达式来判断是不是被选中。<code>template v-for</code>下还有第二层循环<code>v-for</code>，他绑定了<code>select_brand</code>的click事件</li>
+<li><code>车系列表</code>、<code>车型列表</code>与<code>品牌列表</code>类似</li>
+<li><code>确定</code>button 用<code>:disabled</code>写个三元表达式来判断是否选了model，以激活<code>确定</code>button</li>
+</ol>
+<p>这里说下<code>template v-for</code>和<code>v-for</code> 的区别：</p>
+<ul>
+<li><code>v-for</code>只循环自身，不循环别的元素</li>
+<li><code>template v-for</code>循环包裹着的所有元素</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;select-car&quot; class=&quot;select&quot;&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; name=&quot;car_model&quot; id=&quot;car-model&quot; placeholder=&quot;点击选择车型&quot;</span><br><span class="line">           autocomplete=&quot;off&quot; readonly value=`&#123;&#123; form.car_model &#125;&#125;` style=&quot;cursor: pointer&quot; @click=&quot;show_modal&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- Modal --&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;div class=&quot;open-tit&quot;&gt;请选择品牌&lt;/div&gt;</span><br><span class="line">    &lt;ul class=&quot;col-xs-1 brand-cata&quot;&gt;</span><br><span class="line">        &lt;!--字母列表--&gt;</span><br><span class="line">        &lt;li v-for=&quot;item in brand_items&quot; @click=&quot;scroll_brands&quot;&gt;</span><br><span class="line">            $&#123; item.cata &#125;</span><br><span class="line">        &lt;/li&gt;</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">    &lt;div class=&quot;col-xs-10 choose-box&quot;&gt;</span><br><span class="line">        &lt;!--品牌列表--&gt;</span><br><span class="line">        &lt;template v-for=&quot;item in brand_items&quot;&gt;</span><br><span class="line">            &lt;div class=cont-tit data-name=&quot;$&#123; item.cata &#125;&quot;&gt;</span><br><span class="line">                $&#123; item.cata &#125;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;choose-cont&quot; v-bind:class=&quot;[chosen_brand==b.en_name ? &apos;active&apos; : &apos;&apos;]&quot; data-code=&quot;$&#123; b.brand_code &#125;&quot; data-name=&quot;$&#123; b.en_name &#125;&quot;</span><br><span class="line">                 v-for=&quot;b in item.brands&quot; @click=&quot;select_brand&quot;&gt;</span><br><span class="line">                $&#123; b.en_name &#125;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;div class=&quot;open-tit&quot;&gt;请选择车系&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;choose-box&quot;&gt;</span><br><span class="line">        &lt;!--车系列表--&gt;</span><br><span class="line">        &lt;div class=&quot;cont-default&quot; data-code=&quot;&quot; data-name=&quot;&quot; v-bind:class=&quot;[chosen_brand ? &apos;none&apos; : &apos;&apos;]&quot;&gt;请先选择品牌&lt;/div&gt;</span><br><span class="line">        &lt;template v-for=&quot;item in series_items&quot;&gt;</span><br><span class="line">            &lt;div class=cont-tit&gt;$&#123; item.factory &#125;&lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;choose-cont&quot; v-bind:class=&quot;[chosen_series==s.en_name ? &apos;active&apos; : &apos;&apos;]&quot; data-code=&quot;$&#123; s.series_code &#125;&quot; data-name=&quot;$&#123; s.en_name &#125;&quot;</span><br><span class="line">                 v-for=&quot;s in item.series&quot; @click=&quot;select_series&quot;&gt;</span><br><span class="line">                $&#123; s.en_name &#125;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;div class=&quot;open-tit&quot;&gt;请选择车型&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;choose-box&quot;&gt;</span><br><span class="line">        &lt;!--车型列表--&gt;</span><br><span class="line">        &lt;div class=&quot;cont-default&quot; data-code=&quot;&quot; data-name=&quot;&quot; v-bind:class=&quot;[chosen_series ? &apos;none&apos; : &apos;&apos;]&quot;&gt;请先选择车系&lt;/div&gt;</span><br><span class="line">        &lt;template v-for=&quot;item in model_items&quot;&gt;</span><br><span class="line">            &lt;div class=cont-tit&gt;$&#123; item.year + &apos;款&apos; &#125;&lt;/div&gt;</span><br><span class="line">            &lt;div class=&quot;choose-cont&quot; v-bind:class=&quot;[chosen_model==m.en_name ? &apos;active&apos; : &apos;&apos;]&quot; data-code=&quot;$&#123; m.code &#125;&quot; data-name=&quot;$&#123; m.en_name &#125;&quot;</span><br><span class="line">                    v-for=&quot;m in item.models&quot; @click=&quot;select_model&quot;&gt;</span><br><span class="line">                $&#123; m.en_name &#125;</span><br><span class="line">            &lt;/div&gt;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    ...</span><br><span class="line">    &lt;button type=&quot;button&quot; class=&quot;btn btn-primary&quot; id=&quot;save-car&quot; :disabled=&quot;chosen_model ? false : true&quot;&gt;确定&lt;/button&gt;</span><br><span class="line">    ...</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>Vue.js 仅仅是MVVM中的V层，他设计简单，学习周期短，可以快速投入到单页面中</li>
+<li>指令和组件分很清晰，有自己的视图和数据逻辑</li>
+<li>有更好的性能，没有脏检查，并且非常非常容易优化</li>
+</ul>
+<h3 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h3><ul>
+<li>Vue.js官方 <a href="http://vuejs.org/" target="_blank" rel="noopener">http://vuejs.org/</a></li>
+<li>CTO大大的强力助攻，和这么多优秀的小伙伴一起共事简直太棒了~</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+            <a href="/tags/Tornado/" rel="tag"># Tornado</a>
+          
+            <a href="/tags/Vue/" rel="tag"># Vue</a>
+          
+            <a href="/tags/jQuery/" rel="tag"># jQuery</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/03/css-notes/" rel="next" title="写css遇到的问题">
+                <i class="fa fa-chevron-left"></i> 写css遇到的问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/18/growth-hacker-book-review/" rel="prev" title="《Growth Hacker》读后感">
+                《Growth Hacker》读后感 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="xixijun" />
+            
+              <p class="site-author-name" itemprop="name">xixijun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/chen2aaron" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思考过程"><span class="nav-number">2.</span> <span class="nav-text">思考过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-jQuery写"><span class="nav-number">3.</span> <span class="nav-text">用 jQuery写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-Vue-js重写"><span class="nav-number">4.</span> <span class="nav-text">用 Vue.js重写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感谢"><span class="nav-number">6.</span> <span class="nav-text">感谢</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xixijun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">135k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:03</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://xixijun.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://morningchen.com/2015/12/05/vue-js-notes/';
+        this.page.identifier = '2015/12/05/vue-js-notes/';
+        this.page.title = 'Vue.js 初体验';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xixijun.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz",
+                'X-LC-Key': "NuDvIccEvUY0BdEjgiH3xd4F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

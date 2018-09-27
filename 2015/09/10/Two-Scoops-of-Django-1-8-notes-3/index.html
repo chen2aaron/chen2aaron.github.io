@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="7. 查询和数据库层7.1 对单个对象使用get_object_or_404()在详情页面视图中，如果你想接受单个对象，用get_object_or_404()代替get()警告：只在视图中使用!!!只在视图中使用!!!只在视图中使用!!! 7.2 谨慎的使用查询，它可能抛出异常当你通过get_object_or_404()这个快捷方式得到Model的实例的时候，不需要用try-except封装，">
+<meta name="keywords" content="Django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Two Scoops of Django 1.8  学习笔记三">
+<meta property="og:url" content="https://morningchen.com/2015/09/10/Two-Scoops-of-Django-1-8-notes-3/index.html">
+<meta property="og:site_name" content="xixijun blog">
+<meta property="og:description" content="7. 查询和数据库层7.1 对单个对象使用get_object_or_404()在详情页面视图中，如果你想接受单个对象，用get_object_or_404()代替get()警告：只在视图中使用!!!只在视图中使用!!!只在视图中使用!!! 7.2 谨慎的使用查询，它可能抛出异常当你通过get_object_or_404()这个快捷方式得到Model的实例的时候，不需要用try-except封装，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-27T03:56:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Two Scoops of Django 1.8  学习笔记三">
+<meta name="twitter:description" content="7. 查询和数据库层7.1 对单个对象使用get_object_or_404()在详情页面视图中，如果你想接受单个对象，用get_object_or_404()代替get()警告：只在视图中使用!!!只在视图中使用!!!只在视图中使用!!! 7.2 谨慎的使用查询，它可能抛出异常当你通过get_object_or_404()这个快捷方式得到Model的实例的时候，不需要用try-except封装，">
+
+
+
+
+
+
+  <link rel="canonical" href="https://morningchen.com/2015/09/10/Two-Scoops-of-Django-1-8-notes-3/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Two Scoops of Django 1.8  学习笔记三 | xixijun blog</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-67508730-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-67508730-1');
+</script>
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5e3bddc5c3dafc5836408f4b8507b101";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xixijun blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://morningchen.com/2015/09/10/Two-Scoops-of-Django-1-8-notes-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xixijun">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xixijun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Two Scoops of Django 1.8  学习笔记三
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2015-09-10 09:50:17" itemprop="dateCreated datePublished" datetime="2015-09-10T09:50:17+08:00">2015-09-10</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/" itemprop="url" rel="index"><span itemprop="name">Backend</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Backend/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/09/10/Two-Scoops-of-Django-1-8-notes-3/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/09/10/Two-Scoops-of-Django-1-8-notes-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2015/09/10/Two-Scoops-of-Django-1-8-notes-3/" class="leancloud_visitors" data-flag-title="Two Scoops of Django 1.8  学习笔记三">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">6.4k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="7-查询和数据库层"><a href="#7-查询和数据库层" class="headerlink" title="7. 查询和数据库层"></a>7. 查询和数据库层</h2><h3 id="7-1-对单个对象使用get-object-or-404"><a href="#7-1-对单个对象使用get-object-or-404" class="headerlink" title="7.1 对单个对象使用get_object_or_404()"></a>7.1 对单个对象使用<code>get_object_or_404()</code></h3><p>在详情页面视图中，如果你想接受单个对象，用<code>get_object_or_404()</code>代替<code>get()</code><br>警告：只在视图中使用!!!只在视图中使用!!!只在视图中使用!!!</p>
+<h3 id="7-2-谨慎的使用查询，它可能抛出异常"><a href="#7-2-谨慎的使用查询，它可能抛出异常" class="headerlink" title="7.2 谨慎的使用查询，它可能抛出异常"></a>7.2 谨慎的使用查询，它可能抛出异常</h3><p>当你通过<code>get_object_or_404()</code>这个快捷方式得到Model的实例的时候，不需要用try-except封装，<br>因为<code>get_object_or_404()</code>已经帮你封装好了。<br>然而，在其他大多数情况下，你需要使用try-except。一些tips:</p>
+<h4 id="7-2-1-ObjectDoesNotExist-vs-DoesNotExist"><a href="#7-2-1-ObjectDoesNotExist-vs-DoesNotExist" class="headerlink" title="7.2.1 ObjectDoesNotExist vs. DoesNotExist"></a>7.2.1 ObjectDoesNotExist vs. DoesNotExist</h4><p>ObjectDoesNotExist允许被使用在任何model对象中，但是DoesNotExist只能在一些特定的model中使用</p>
+<pre><code>from django.core.exceptions import ObjectDoesNotExist
+
+from flavors.models import Flavor
+from store.exceptions import OutOfStock
+
+def list_flavor_line_item(sku):
+    try:
+        return Flavor.objects.get(sku=sku, quantity__gt=0)
+    except Flavor.DoesNotExist:
+        msg = &quot;We are out of {0}&quot;.format(sku)
+        raise OutOfStock(msg)
+
+def list_any_line_item(model, sku):
+    try:
+        return model.objects.get(sku=sku, quantity__gt=0)
+    except ObjectDoesNotExist:
+        msg = &quot;We are out of {0}&quot;.format(sku)
+        raise OutOfStock(msg)
+</code></pre><a id="more"></a>
+<h4 id="7-2-2-当你只是想要一个对象，但是得到了多个"><a href="#7-2-2-当你只是想要一个对象，但是得到了多个" class="headerlink" title="7.2.2 当你只是想要一个对象，但是得到了多个"></a>7.2.2 当你只是想要一个对象，但是得到了多个</h4><p>如果你的查询可能会返回多个对象，用<code>MultipleObjectsReturned</code>来检查</p>
+<pre><code>from flavors.models import Flavor
+from store.exceptions import OutOfStock, CorruptedDatabase
+
+def list_flavor_line_item(sku):
+    try:
+        return Flavor.objects.get(sku=sku, quantity__gt=0)
+    except Flavor.DoesNotExist:
+        msg = &quot;We are out of {}&quot;.format(sku)
+        raise OutOfStock(msg)
+    except Flavor.MultipleObjectsReturned:
+        msg = &quot;Multiple items have SKU {}. Please fix!&quot;.format(sku)
+        raise CorruptedDatabase(msg)
+</code></pre><h3 id="7-3-使用lazy-evaluation-让查询更清晰"><a href="#7-3-使用lazy-evaluation-让查询更清晰" class="headerlink" title="7.3 使用lazy evaluation 让查询更清晰"></a>7.3 使用lazy evaluation 让查询更清晰</h3><p>Django 的ORM 非常强大，它让代码清晰易读，利于维护。<br>通过lazy evaluation， 意味着在数据真正被使用之前，ORM不会调用SQL。<br>我们可以尽可能多的连接ORM方法和函数，直到拿到结果，django都不会接触到数据库层。</p>
+<h3 id="7-4-学习高级的查询工具"><a href="#7-4-学习高级的查询工具" class="headerlink" title="7.4 学习高级的查询工具"></a>7.4 学习高级的查询工具</h3><p>ORM 容易学，直观，涵盖了许多用例，然而还有若干件事情不能做好。在查询集返回后，我们会在python里处理更多的数据。<br>这是耻辱，因为每一个数据库的管理和传输都比python(或ruby, javascript, go, java等等这些语言)要快。<br>取代用python管理数据，我们通常会使用django的高级查询工具。这样做，我们不仅提高了性能，<br>而且比起我们自己创建的基于python的解决办法的代码，我们更喜欢使用已经被测试过的代码。</p>
+<h4 id="7-4-1-查询表达式"><a href="#7-4-1-查询表达式" class="headerlink" title="7.4.1 查询表达式"></a>7.4.1 查询表达式</h4><p>当在数据库上执行读取时，查询表达式被使用在创建值或计算。下面这个例子中，列出所有平均订单数大于一次的客户</p>
+<pre><code># Bad Example
+from models.customers import Customer
+
+
+customers = []
+for customer in Customer.objects.iterate():
+    if customer.scoop_ordered &gt; customer.srore_visits:
+        customers.append(customer)
+</code></pre><p>这个例子让我们不寒而栗，为什么？</p>
+<ul>
+<li>它用python来一个个遍历数据库中所有的顾客记录，这太慢了而且还占用内存</li>
+<li>在使用的情况下，它都可能产生竞态(race condition)，当我们运行这段代码时，<br>如果在别的地方，恰好customers正在与数据库进行交互，不是READ,而是UPDATE，那么这段代码的遍历会损失掉一些数据</li>
+</ul>
+<p>幸运的是，django提供了一个更有效的，解决竞态(race condition)问题的方法</p>
+<pre><code>from django.db.models import F
+
+from models.customers import Customer
+
+customers = Customer.objects.filter(scoops_ordered__gt=F(&apos;store_visits&apos;))
+</code></pre><p><code>F()</code>这个方法可以让数据库它自己来执行比较，类似下面的SQL语句：</p>
+<pre><code>SELECT * from customers_customer where scoops_ordered &gt; store_visits
+</code></pre><h4 id="7-4-2-数据库函数"><a href="#7-4-2-数据库函数" class="headerlink" title="7.4.2 数据库函数"></a>7.4.2 数据库函数</h4><p>UPPER(), LOWER(), COALESCE(), CONCAT(), LENGTH(), SUBSTR()</p>
+<p><a href="https://docs.djangoproject.com/en/1.8/ref/models/database-functions/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/ref/models/database-functions/</a></p>
+<h3 id="7-5-不要抛弃原始的SQL语句，除非有必要"><a href="#7-5-不要抛弃原始的SQL语句，除非有必要" class="headerlink" title="7.5 不要抛弃原始的SQL语句，除非有必要"></a>7.5 不要抛弃原始的SQL语句，除非有必要</h3><p>大多数情况下我们都会使用ORM来进行数据管理和操作，<br>那么什么时候该使用SQL语句呢，如果使用SQL语句能大大的简化python代码，不要犹豫，用吧。<br>比如说你连结了若干个查询集操作，而且每个操作都是在庞大的数据下进行的，用SQL语句也许会更有效。</p>
+<h3 id="7-6-根据需要加上索引"><a href="#7-6-根据需要加上索引" class="headerlink" title="7.6 根据需要加上索引"></a>7.6 根据需要加上索引</h3><p>给任何model字段加上<code>db_index=True</code>都是容易的，但是判断该什么时候使用的话就不是那么容易了。<br>我们更倾向于开始的时候不加索引，根据需要再加<br>什么时候考虑加上索引：</p>
+<ul>
+<li>这个索引使用频繁，占据了所有查询的10-20%</li>
+<li>有真实数据，或者接近真实数据，因此我们可以分析出索引的结果</li>
+<li>我们能通过跑测试来判断这个索引是否产生了改善的结果</li>
+</ul>
+<h3 id="7-7-事务-Transactions"><a href="#7-7-事务-Transactions" class="headerlink" title="7.7 事务(Transactions)"></a>7.7 事务(Transactions)</h3><p>django1.8的ORM默认行为是当查询调用时自动提交，在数据改变的情况下，这意味着每时每刻a.create() 或者 update()都在被调用，<br>它立刻改变了数据库里的数据。它的优势是让初期开发者更好的理解ORM，<br>劣势是如果一个视图需要存在2个或者多个数据更改，而只有一个更改成功了，那么这个数据可能有崩溃的风险</p>
+<p>解决这个风险的办法是通过使用数据库事务，<br>一个数据库事务通常包含了一个序列的对数据库的读/写操作。它的存在包含有以下两个目的：</p>
+<ol>
+<li>为数据库操作序列提供了一个从失败中恢复到正常状态的方法，同时提供了数据库即使在异常状态下仍能保持一致性的方法。</li>
+<li>当多个应用程序在并发访问数据库时，可以在这些应用程序之间提供一个隔离方法，以防止彼此的操作互相干扰。<br>当事务被提交给了DBMS（数据库管理系统），则DBMS（数据库管理系统）需要确保该事务中的所有操作都成功完成且其结果被永久保存在数据库中，如果事务中有的操作没有成功完成，则事务中的所有操作都需要被回滚，回到事务执行前的状态;同时，该事务对数据库或者其他事务的执行无影响，所有的事务都好像在独立的运行。</li>
+</ol>
+<p>并非任意的对数据库的操作序列都是数据库事务。数据库事务拥有以下四个特性，习惯上被称之为ACID特性。</p>
+<ul>
+<li>原子性（Atomicity）：事务作为一个整体被执行，包含在其中的对数据库的操作要么全部被执行，要么都不执行。</li>
+<li>一致性（Consistency）：事务应确保数据库的状态从一个一致状态转变为另一个一致状态。一致状态的含义是数据库中的数据应满足完整性约束。</li>
+<li>隔离性（Isolation）：多个事务并发执行时，一个事务的执行不应影响其他事务的执行。</li>
+<li>持久性（Durability）：已被提交的事务对数据库的修改应该永久保存在数据库中。</li>
+</ul>
+<p>django提供了一个强大的，相当易用的事务机制，在相对直观的模式中使用装饰器和上下文管理器保障了项目中数据的完整性。</p>
+<h4 id="7-7-1-在一个事务中封装每个http-request"><a href="#7-7-1-在一个事务中封装每个http-request" class="headerlink" title="7.7.1 在一个事务中封装每个http request"></a>7.7.1 在一个事务中封装每个http request</h4><pre><code># settings/base.py
+
+DATABASES = {
+    &apos;default&apos;: {
+        # ...
+        &apos;ATOMIC_REQUESTS&apos;: True,
+    },
+}
+</code></pre><p>django中通过设置ATOMIC_REQUESTS 让处理事务里的所有web请求变得更容易。通过设置’ATOMIC_REQUESTS’: True,<br>所有的requests都被封装在了事务中，包括只读数据。这种方法的优势是保证了安全性：所有在视图中的数据查询都被保护起来了，<br>劣势是性能受到了影响。我们无法告诉你这会影响多少性能，因为它依赖独立的数据库设计和不同的数据库引擎</p>
+<p>当用ATOMIC_REQUESTS的时候，还有一件事情需要牢记，出现错误的时候只有数据库的状态会回滚。<br>发出一封确认邮件，然后封装的request事务回滚了，出现这种情况会令人相当尴尬。这个问题可能会发生在数据库以外的任何的<code>写入</code>过程中：<br>发送邮件，短信服务，调用第三方API，写入系统文件等等。然而，当写一个能create/update/delete的views的时候，而且它不与数据库条目进行交互，<br>你应该给view加上transaction.non_atomic_requests()装饰器</p>
+<pre><code># flavors/views.py
+
+from django.db import transaction
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+
+from .models import Flavor
+
+@transaction.non_atomic_requests
+def posting_flavor_status(request, pk, status):
+    flavor = get_object_or_404(Flavor, pk=pk)
+
+    # This will execute in autocommit mode (Django&apos;s default).
+    flavor.latest_status_change_attempt = timezone.now()
+    flavor.save()
+
+    with transaction.atomic():
+        # This code executes inside a transaction.
+        flavor.status = status
+        flavor.latest_status_change_success = timezone.now()
+        flavor.save()
+        return HttpResponse(&quot;Hooray&quot;)
+
+    # If the transaction fails, return the appropriate status
+    return HttpResponse(&quot;Sadness&quot;, status_code=400)
+</code></pre><h4 id="7-7-2-明确的事务声明"><a href="#7-7-2-明确的事务声明" class="headerlink" title="7.7.2 明确的事务声明"></a>7.7.2 明确的事务声明</h4><p>明确的事务声明是给站点增加性能的方式之一，换句话说，就是指定哪个视图和业务逻辑封装在事务中，哪个不封装。<br>当谈到事务的时候，下面是一些好的准则：</p>
+<ul>
+<li>不修改数据的数据库操作不该被封装在事务中</li>
+<li>修改数据的数据库操作应该被封装在事务中</li>
+<li>包含数据库的修改的特殊情况，需要数据库的读取和性能方面的考虑可能会影响到前两个准则</li>
+</ul>
+<p>如果还是不太清楚的话，下面这张表可以很好的解释：</p>
+<table>
+<thead>
+<tr>
+<th>目的</th>
+<th>ORM方法</th>
+<th>通常情况下使用事务</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>创建数据</td>
+<td>.create(), .bulk_create(), .get_or_create()</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>接收数据</td>
+<td>.get(), .filter(), .count(), .iterate(), .exists(), .exclude(), .in_bulk, 等等</td>
+<td></td>
+</tr>
+<tr>
+<td>修改数据</td>
+<td>.update()</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>删除数据</td>
+<td>.delete()</td>
+<td>可以</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-7-3-django-http-StreamingHttpResponse-and-Transactions"><a href="#7-7-3-django-http-StreamingHttpResponse-and-Transactions" class="headerlink" title="7.7.3 django.http.StreamingHttpResponse and Transactions"></a>7.7.3 django.http.StreamingHttpResponse and Transactions</h4><p>如果视图函数正在返回一个django.http.StreamingHttpResponse，一旦response发生，它不可能去处理事务错误。如果你的项目中用到了这个response方法，那么ATOMIC_REQUESTS应该遵循下面其中一个：</p>
+<ul>
+<li>把ATOMIC_REQUESTS设置成默认的False，然后明确事务声明，或者…</li>
+<li>在django.db.transaction.non_atomic_requests装饰器中封装view</li>
+</ul>
+<h4 id="7-7-4-MySQL中的事务处理"><a href="#7-7-4-MySQL中的事务处理" class="headerlink" title="7.7.4 MySQL中的事务处理"></a>7.7.4 MySQL中的事务处理</h4><p>MyISAM不支持事务处理，InnoDB支持</p>
+<ul>
+<li><a href="https://docs.djangoproject.com/en/1.8/topics/db/transactions/#transactions-in-mysql" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/topics/db/transactions/#transactions-in-mysql</a></li>
+<li><a href="http://dev.mysql.com/doc/refman/5.0/en/sql-syntax-transactions.html" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.0/en/sql-syntax-transactions.html</a></li>
+</ul>
+<h4 id="7-7-5-关于Django-ORM-事务处理的资料"><a href="#7-7-5-关于Django-ORM-事务处理的资料" class="headerlink" title="7.7.5 关于Django ORM 事务处理的资料"></a>7.7.5 关于Django ORM 事务处理的资料</h4><ul>
+<li>文档 <a href="https://docs.djangoproject.com/en/1.8/topics/db/transactions/" target="_blank" rel="noopener">https://docs.djangoproject.com/en/1.8/topics/db/transactions/</a></li>
+<li>real python <a href="https://realpython.com/blog/python/transaction-management-with-django-1-6/" target="_blank" rel="noopener">https://realpython.com/blog/python/transaction-management-with-django-1-6/</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Django/" rel="tag"># Django</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/07/Two-Scoops-of-Django-1-8-notes-2/" rel="next" title="Two Scoops of Django 1.8 学习笔记二">
+                <i class="fa fa-chevron-left"></i> Two Scoops of Django 1.8 学习笔记二
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/12/Two-Scoops-of-Django-1-8-notes-4/" rel="prev" title="Two Scoops of Django 1.8 学习笔记四">
+                Two Scoops of Django 1.8 学习笔记四 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="xixijun" />
+            
+              <p class="site-author-name" itemprop="name">xixijun</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/chen2aaron" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-查询和数据库层"><span class="nav-number">1.</span> <span class="nav-text">7. 查询和数据库层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-对单个对象使用get-object-or-404"><span class="nav-number">1.1.</span> <span class="nav-text">7.1 对单个对象使用get_object_or_404()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-谨慎的使用查询，它可能抛出异常"><span class="nav-number">1.2.</span> <span class="nav-text">7.2 谨慎的使用查询，它可能抛出异常</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-1-ObjectDoesNotExist-vs-DoesNotExist"><span class="nav-number">1.2.1.</span> <span class="nav-text">7.2.1 ObjectDoesNotExist vs. DoesNotExist</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-2-当你只是想要一个对象，但是得到了多个"><span class="nav-number">1.2.2.</span> <span class="nav-text">7.2.2 当你只是想要一个对象，但是得到了多个</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-使用lazy-evaluation-让查询更清晰"><span class="nav-number">1.3.</span> <span class="nav-text">7.3 使用lazy evaluation 让查询更清晰</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-学习高级的查询工具"><span class="nav-number">1.4.</span> <span class="nav-text">7.4 学习高级的查询工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-1-查询表达式"><span class="nav-number">1.4.1.</span> <span class="nav-text">7.4.1 查询表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-4-2-数据库函数"><span class="nav-number">1.4.2.</span> <span class="nav-text">7.4.2 数据库函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-5-不要抛弃原始的SQL语句，除非有必要"><span class="nav-number">1.5.</span> <span class="nav-text">7.5 不要抛弃原始的SQL语句，除非有必要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-6-根据需要加上索引"><span class="nav-number">1.6.</span> <span class="nav-text">7.6 根据需要加上索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-7-事务-Transactions"><span class="nav-number">1.7.</span> <span class="nav-text">7.7 事务(Transactions)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-7-1-在一个事务中封装每个http-request"><span class="nav-number">1.7.1.</span> <span class="nav-text">7.7.1 在一个事务中封装每个http request</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-7-2-明确的事务声明"><span class="nav-number">1.7.2.</span> <span class="nav-text">7.7.2 明确的事务声明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-7-3-django-http-StreamingHttpResponse-and-Transactions"><span class="nav-number">1.7.3.</span> <span class="nav-text">7.7.3 django.http.StreamingHttpResponse and Transactions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-7-4-MySQL中的事务处理"><span class="nav-number">1.7.4.</span> <span class="nav-text">7.7.4 MySQL中的事务处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-7-5-关于Django-ORM-事务处理的资料"><span class="nav-number">1.7.5.</span> <span class="nav-text">7.7.5 关于Django ORM 事务处理的资料</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xixijun</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">135k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">2:03</span>
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+  
+    <script id="dsq-count-scr" src="https://xixijun.disqus.com/count.js" async></script>
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://morningchen.com/2015/09/10/Two-Scoops-of-Django-1-8-notes-3/';
+        this.page.identifier = '2015/09/10/Two-Scoops-of-Django-1-8-notes-3/';
+        this.page.title = 'Two Scoops of Django 1.8  学习笔记三';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xixijun.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        loadComments();
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "PFLV5FerghrKpFrPxiFRQPJN-gzGzoHsz",
+                'X-LC-Key': "NuDvIccEvUY0BdEjgiH3xd4F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
