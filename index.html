@@ -1782,7 +1782,8 @@
 
       
         
-          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近工作中的一个小项目需要做一个车辆信息选择框的三级联动，有点类似省市县的三级联动，下一级依赖上一级的数据。最后的效果是这样<br><img src="http://7xi9tp.com1.z0.glb.clouddn.com/car_selector.png" alt="car_selector"><br>因为这一块的代码业务逻辑相当复杂，采用jQuery写的话代码量有点大，而且会把html的代码写在js文件里，不易于阅读和后期维护，所以CTO大大建议用Vue.js来重写。</p>
+          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近工作中的一个小项目需要做一个车辆信息选择框的三级联动，有点类似省市县的三级联动，下一级依赖上一级的数据。最后的效果是这样</p>
+<p>因为这一块的代码业务逻辑相当复杂，采用jQuery写的话代码量有点大，而且会把html的代码写在js文件里，不易于阅读和后期维护，所以CTO大大建议用Vue.js来重写。</p>
 <h3 id="思考过程"><a href="#思考过程" class="headerlink" title="思考过程"></a>思考过程</h3><ol>
 <li>首先是爬取车辆信息的数据，找了一家信息比较全的相关平台，开始了爬虫之旅，待有空写下爬虫的思考，这里略过</li>
 <li>拿到大概2万多条数据后，写一个pipeline整理好数据并写入自己的数据库，数据分为3类：品牌、系列、车型，存入3张表里，分别命名为car_brands, car_series, car_models，哦了～有了数据就可以动手了</li>
