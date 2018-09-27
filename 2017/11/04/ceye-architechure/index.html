@@ -109,7 +109,7 @@
 
 
   <meta name="description" content="1. CEYE是什么CEYE是一个用来检测 带外（Out-of-Band）流量的监控平台，如DNS查询和HTTP请求。它可以帮助安全研究人员在测试漏洞时收集信息（例如SSRF / XXE / RFI / RCE）。 2. 为什么会有CEYE提到为什么会有CEYE就必须提到它的使用场景了。 有两种常见的情况会导致许多漏洞扫描工具漏扫：  漏洞检测或漏洞利用需要进一步的用户或系统交互 一些漏洞类型没有">
-<meta name="keywords" content="React,Python,Architechure,CEYE">
+<meta name="keywords" content="Python,React,Architechure,CEYE">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CEYE.IO">
 <meta property="og:url" content="https://morningchen.com/2017/11/04/ceye-architechure/index.html">
@@ -571,9 +571,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/React/" rel="tag"># React</a>
-          
             <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/React/" rel="tag"># React</a>
           
             <a href="/tags/Architechure/" rel="tag"># Architechure</a>
           
@@ -1086,10 +1086,12 @@
           if (results.length > 0) {
             var counter = results[0];
             
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text(counter.time + 1);
-            
             Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
             
             .fail(function ({ responseJSON }) {
                 console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
