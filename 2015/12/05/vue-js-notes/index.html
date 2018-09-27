@@ -86,7 +86,7 @@
     root: '/',
     scheme: 'Muse',
     version: '6.4.1',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -109,7 +109,7 @@
 
 
   <meta name="description" content="前言最近工作中的一个小项目需要做一个车辆信息选择框的三级联动，有点类似省市县的三级联动，下一级依赖上一级的数据。最后的效果是这样因为这一块的代码业务逻辑相当复杂，采用jQuery写的话代码量有点大，而且会把html的代码写在js文件里，不易于阅读和后期维护，所以CTO大大建议用Vue.js来重写。 思考过程 首先是爬取车辆信息的数据，找了一家信息比较全的相关平台，开始了爬虫之旅，待有空写下爬虫的思">
-<meta name="keywords" content="JavaScript,Tornado,Vue,jQuery">
+<meta name="keywords" content="Tornado,JavaScript,Vue,jQuery">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue.js 初体验">
 <meta property="og:url" content="https://morningchen.com/2015/12/05/vue-js-notes/index.html">
@@ -124,6 +124,8 @@
 <meta name="twitter:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/car_selector.png">
 
 
+
+  <link rel="alternate" href="/atom.xml" title="xixijun's blog" type="application/atom+xml" />
 
 
 
@@ -251,7 +253,7 @@
           
           <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档<span class="badge">27</span></a>
   </li>
         
         
@@ -259,7 +261,7 @@
           
           <li class="menu-item menu-item-tags">
     <a href="/tags/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签<span class="badge">38</span></a>
   </li>
         
         
@@ -267,7 +269,7 @@
           
           <li class="menu-item menu-item-categories">
     <a href="/categories/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类<span class="badge">18</span></a>
   </li>
         
         
@@ -757,16 +759,59 @@ var vue_show = new Vue({
     
 
     
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果我的文章对你有很大帮助 那么不妨？</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
 
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="xixijun 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="xixijun 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>xixijun</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://morningchen.com/2015/12/05/vue-js-notes/" title="Vue.js 初体验">https://morningchen.com/2015/12/05/vue-js-notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
     
 
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
-          
             <a href="/tags/Tornado/" rel="tag"># Tornado</a>
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
           
             <a href="/tags/Vue/" rel="tag"># Vue</a>
           
@@ -1026,6 +1071,13 @@ var vue_show = new Vue({
           
 
           
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
 
           
             <div class="links-of-author motion-element">
@@ -1042,6 +1094,24 @@ var vue_show = new Vue({
           
 
           
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Friends
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://liusihao.com/" title="刘思昊" target="_blank">刘思昊</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.iloved.one/" title="印哲端" target="_blank">印哲端</a>
+                  </li>
+                
+              </ul>
+            </div>
           
 
           
@@ -1062,7 +1132,7 @@ var vue_show = new Vue({
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思考过程"><span class="nav-number">2.</span> <span class="nav-text">思考过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-jQuery写"><span class="nav-number">3.</span> <span class="nav-text">用 jQuery写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-Vue-js重写"><span class="nav-number">4.</span> <span class="nav-text">用 Vue.js重写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感谢"><span class="nav-number">6.</span> <span class="nav-text">感谢</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思考过程"><span class="nav-text">思考过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-jQuery写"><span class="nav-text">用 jQuery写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-Vue-js重写"><span class="nav-text">用 Vue.js重写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感谢"><span class="nav-text">感谢</span></a></li></ol></div>
             
 
           </div>
@@ -1082,7 +1152,7 @@ var vue_show = new Vue({
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2015 – <span itemprop="copyrightYear">2018</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heartbeat"></i>
   </span>
@@ -1114,7 +1184,7 @@ var vue_show = new Vue({
 
 
 
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
 
 
 
@@ -1122,12 +1192,30 @@ var vue_show = new Vue({
 
 
 
-  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.1</div>
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a></div>
 
 
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      已有<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人来过啦！
+      
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      共<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次到访
+      
+    </span>
+  
+</div>
+
 
 
 
@@ -1143,6 +1231,8 @@ var vue_show = new Vue({
     
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
         
       </div>
     
