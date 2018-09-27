@@ -108,20 +108,20 @@
 
 
 
-  <meta name="description" content="安装Redis其中分为三步：  brew install redis 安装后根据提示进行以下两步  ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents 创建个连接 类似window的创建快捷方式  redis-server /usr/local/etc/redis.conf 启动redis服务器，然后就看到了这么炫酷的界面:)">
+  <meta name="description" content="安装Redis 其中分为三步：  brew install redis 安装后根据提示进行以下两步  ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents 创建个连接 类似window的创建快捷方式  redis-server /usr/local/etc/redis.conf 启动redis服务器，然后就看到了这么炫酷的界面:)">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis学习笔记">
 <meta property="og:url" content="https://morningchen.com/2015/07/17/Redis-notes/index.html">
 <meta property="og:site_name" content="xixijun&#39;s blog">
-<meta property="og:description" content="安装Redis其中分为三步：  brew install redis 安装后根据提示进行以下两步  ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents 创建个连接 类似window的创建快捷方式  redis-server /usr/local/etc/redis.conf 启动redis服务器，然后就看到了这么炫酷的界面:)">
+<meta property="og:description" content="安装Redis 其中分为三步：  brew install redis 安装后根据提示进行以下两步  ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents 创建个连接 类似window的创建快捷方式  redis-server /usr/local/etc/redis.conf 启动redis服务器，然后就看到了这么炫酷的界面:)">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/redis安装.jpg">
-<meta property="og:updated_time" content="2018-09-27T03:52:48.000Z">
+<meta property="og:image" content="https://morningchen.com/2015/07/17/Redis-notes/redis.jpg">
+<meta property="og:updated_time" content="2018-09-27T14:08:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis学习笔记">
-<meta name="twitter:description" content="安装Redis其中分为三步：  brew install redis 安装后根据提示进行以下两步  ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents 创建个连接 类似window的创建快捷方式  redis-server /usr/local/etc/redis.conf 启动redis服务器，然后就看到了这么炫酷的界面:)">
-<meta name="twitter:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/redis安装.jpg">
+<meta name="twitter:description" content="安装Redis 其中分为三步：  brew install redis 安装后根据提示进行以下两步  ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents 创建个连接 类似window的创建快捷方式  redis-server /usr/local/etc/redis.conf 启动redis服务器，然后就看到了这么炫酷的界面:)">
+<meta name="twitter:image" content="https://morningchen.com/2015/07/17/Redis-notes/redis.jpg">
 
 
 
@@ -437,7 +437,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">216</span>
+                <span title="本文字数">217</span>
               
 
               
@@ -471,7 +471,8 @@
       
 
       
-        <h2 id="安装Redis"><a href="#安装Redis" class="headerlink" title="安装Redis"></a>安装Redis</h2><p><img src="http://7xi9tp.com1.z0.glb.clouddn.com/redis安装.jpg" alt="redis"><br>其中分为三步：</p>
+        <h2 id="安装Redis"><a href="#安装Redis" class="headerlink" title="安装Redis"></a>安装Redis</h2><p><img src="redis.jpg" alt="redis"></p>
+<p>其中分为三步：</p>
 <ul>
 <li><p>brew install redis</p>
 <p>安装后根据提示进行以下两步</p>
@@ -674,6 +675,8 @@
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
                     
+                    
+                      
                     
                       
                     
@@ -1029,14 +1032,9 @@
             })
           } else {
             
-              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
-                .done(function () {
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(1);
-                })
-                .fail(function () {
-                  console.log('Failed to create');
-                });
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
             
           }
         })

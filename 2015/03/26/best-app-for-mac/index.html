@@ -116,12 +116,12 @@
 <meta property="og:site_name" content="xixijun&#39;s blog">
 <meta property="og:description" content="为什么选择 Mac? 相比一般用户，专业用户有一个很大的特点是：他们清楚自己要什么。从另一个方面看，他们也清楚自己不需要什么，以及如何用替代工具达到一样的目的。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/QQ20150326-2@2x.png">
-<meta property="og:updated_time" content="2018-09-27T03:36:48.000Z">
+<meta property="og:image" content="https://morningchen.com/2015/03/26/best-app-for-mac/QQ20150326-2@2x.png">
+<meta property="og:updated_time" content="2018-09-27T13:49:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Best app for Mac">
 <meta name="twitter:description" content="为什么选择 Mac? 相比一般用户，专业用户有一个很大的特点是：他们清楚自己要什么。从另一个方面看，他们也清楚自己不需要什么，以及如何用替代工具达到一样的目的。">
-<meta name="twitter:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/QQ20150326-2@2x.png">
+<meta name="twitter:image" content="https://morningchen.com/2015/03/26/best-app-for-mac/QQ20150326-2@2x.png">
 
 
 
@@ -502,7 +502,7 @@ brew install curl
 </code></pre><h3 id="2-Xcode"><a href="#2-Xcode" class="headerlink" title="2. Xcode"></a>2. Xcode</h3><p>直接进app store搜索吧</p>
 <p>之前没装Xcode的时候配置环境各种报错，安装后一切清净了</p>
 <h3 id="3-日常软件："><a href="#3-日常软件：" class="headerlink" title="3. 日常软件："></a>3. 日常软件：</h3><ul>
-<li><p>Evernote 笔记之神，我用了3年了，主要用来写日志 &amp; 收集平时看到各方面的好文<br><img src="http://7xi9tp.com1.z0.glb.clouddn.com/QQ20150326-2@2x.png" alt="image"></p>
+<li><p>Evernote 笔记之神，我用了3年了，主要用来写日志 &amp; 收集平时看到各方面的好文<br><img src="QQ20150326-2@2x.png" alt="image"></p>
 </li>
 <li><p>Xmind 思维导图</p>
 </li>
@@ -729,6 +729,8 @@ brew install curl
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
                     
+                    
+                      
                     
                       
                     
@@ -1084,14 +1086,9 @@ brew install curl
             })
           } else {
             
-              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
-                .done(function () {
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(1);
-                })
-                .fail(function () {
-                  console.log('Failed to create');
-                });
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
             
           }
         })

@@ -116,12 +116,12 @@
 <meta property="og:site_name" content="xixijun&#39;s blog">
 <meta property="og:description" content="前言对接API过程中的一些总结，写的比较简陋，不过收获不少，深入了解了HTTP：  Web 客户端与服务器是如何通信的; (表示 Web 内容的)资源来自何方; Web 事务是怎样工作的; HTTP 通信所使用的报文格式; 底层 TCP 网络传输;">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/Tornado对接API基本流程.png">
-<meta property="og:updated_time" content="2018-09-27T03:56:09.000Z">
+<meta property="og:image" content="https://morningchen.com/2015/07/10/Tornado-API/Tornado.png">
+<meta property="og:updated_time" content="2018-09-27T14:10:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tornado对接API基本流程">
 <meta name="twitter:description" content="前言对接API过程中的一些总结，写的比较简陋，不过收获不少，深入了解了HTTP：  Web 客户端与服务器是如何通信的; (表示 Web 内容的)资源来自何方; Web 事务是怎样工作的; HTTP 通信所使用的报文格式; 底层 TCP 网络传输;">
-<meta name="twitter:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/Tornado对接API基本流程.png">
+<meta name="twitter:image" content="https://morningchen.com/2015/07/10/Tornado-API/Tornado.png">
 
 
 
@@ -487,7 +487,7 @@
 <li>底层 TCP 网络传输;</li>
 </ul>
 <a id="more"></a>
-<h2 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h2><p><img src="http://7xi9tp.com1.z0.glb.clouddn.com/Tornado对接API基本流程.png" alt="image"></p>
+<h2 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h2><p><img src="Tornado.png" alt="image"></p>
 <p>① 用户GET请求访问页面</p>
 <p>② handler中GET请求触发，从数据库中拿取需要呈现给用户的数据</p>
 <pre><code>info = self.db.get(&apos;select * from users where user_id=%s&apos;, user_id)
@@ -717,6 +717,8 @@
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
                     
+                    
+                      
                     
                       
                     
@@ -1072,14 +1074,9 @@
             })
           } else {
             
-              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
-                .done(function () {
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(1);
-                })
-                .fail(function () {
-                  console.log('Failed to create');
-                });
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
             
           }
         })

@@ -116,12 +116,12 @@
 <meta property="og:site_name" content="xixijun&#39;s blog">
 <meta property="og:description" content="9. FBVs最佳实践9.1 FBVs的优势虽然FBVs不能像CBVs一样有继承。但它确实有更显著的功能优势写FBVs的时候我们遵循以下指南：  越少代码越好 杜绝重复的代码 Views应该处理演示逻辑。如果有必要的话，试着把业务逻辑放在models中或者forms中 保证views的简洁 用他们写自定义的403，404，500错误处理 使用复杂的嵌套-如果要避免阻塞的话  9.2 传递HttpR">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/view+modelform_flow.png">
-<meta property="og:updated_time" content="2018-09-27T03:56:43.000Z">
+<meta property="og:image" content="https://morningchen.com/2015/09/14/Two-Scoops-of-Django-1-8-notes-5/view+modelform_flow.png">
+<meta property="og:updated_time" content="2018-09-27T14:12:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Two Scoops of Django 1.8 学习笔记五">
 <meta name="twitter:description" content="9. FBVs最佳实践9.1 FBVs的优势虽然FBVs不能像CBVs一样有继承。但它确实有更显著的功能优势写FBVs的时候我们遵循以下指南：  越少代码越好 杜绝重复的代码 Views应该处理演示逻辑。如果有必要的话，试着把业务逻辑放在models中或者forms中 保证views的简洁 用他们写自定义的403，404，500错误处理 使用复杂的嵌套-如果要避免阻塞的话  9.2 传递HttpR">
-<meta name="twitter:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/view+modelform_flow.png">
+<meta name="twitter:image" content="https://morningchen.com/2015/09/14/Two-Scoops-of-Django-1-8-notes-5/view+modelform_flow.png">
 
 
 
@@ -837,7 +837,7 @@ class Flavor(models.Model):
 <li>FlavorUpdateView 对应在一个表单中编辑口味</li>
 <li>FlavorDetailView 对应用于风味创作和风味更新的确认页面</li>
 </ol>
-<p><img src="http://7xi9tp.com1.z0.glb.clouddn.com/view+modelform_flow.png" alt="views+modelform_flow"></p>
+<p><img src="view+modelform_flow.png" alt="views+modelform_flow"></p>
 <p>需要注意的是我们要尽可能的紧扣Django的命名约定。这三个view分别是Django中CreateView, UpdateView和DetailView的子类。<br>很容易就能写出这些views，因为Django给我们提供了大部分的用法：</p>
 <pre><code># flavors/views.py
 from django.views.generic import CreateView, UpdateView, DetailView
@@ -1286,6 +1286,8 @@ class PDFFlavorView(LoginRequiredMixin, View):
                     
                       
                     
+                      
+                    
                     <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
@@ -1566,14 +1568,9 @@ class PDFFlavorView(LoginRequiredMixin, View):
             })
           } else {
             
-              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
-                .done(function () {
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(1);
-                })
-                .fail(function () {
-                  console.log('Failed to create');
-                });
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
             
           }
         })

@@ -116,12 +116,12 @@
 <meta property="og:site_name" content="xixijun&#39;s blog">
 <meta property="og:description" content="写作目的本文章是对Django搭建简易博客教程的学习总结，并记录我在做此项目中遇到的一些问题，希望通过它加深自己对Django以及Python的理解。 运行环境 Mac OS X Yosemite 10.10.2 iTerm + zsh + oh-my-zsh Sublime Text 3 Python 2.7.9 Django 1.8 bootstrap-admin 0.3.5 Markdown">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/QQ20150407-2@2x.png">
-<meta property="og:updated_time" content="2018-09-27T03:50:20.000Z">
+<meta property="og:image" content="https://morningchen.com/2015/04/07/Django-notes-part1/QQ20150407-2@2x.png">
+<meta property="og:updated_time" content="2018-09-27T13:55:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Django学习笔记part1">
 <meta name="twitter:description" content="写作目的本文章是对Django搭建简易博客教程的学习总结，并记录我在做此项目中遇到的一些问题，希望通过它加深自己对Django以及Python的理解。 运行环境 Mac OS X Yosemite 10.10.2 iTerm + zsh + oh-my-zsh Sublime Text 3 Python 2.7.9 Django 1.8 bootstrap-admin 0.3.5 Markdown">
-<meta name="twitter:image" content="http://7xi9tp.com1.z0.glb.clouddn.com/QQ20150407-2@2x.png">
+<meta name="twitter:image" content="https://morningchen.com/2015/04/07/Django-notes-part1/QQ20150407-2@2x.png">
 
 
 
@@ -619,7 +619,7 @@ class Article(models.Model) :
 
     class Meta:  #按时间下降排序
         ordering = [&apos;-date_time&apos;]
-</code></pre><p>这里面的逻辑是这样的：<br><img src="http://7xi9tp.com1.z0.glb.clouddn.com/QQ20150407-2@2x.png" alt="models"></p>
+</code></pre><p>这里面的逻辑是这样的：<br><img src="QQ20150407-2@2x.png" alt="models"></p>
 <h4 id="激活模型"><a href="#激活模型" class="headerlink" title="激活模型"></a>激活模型</h4><p>上面的那点模型代码给Django提供了大量的信息。有了这些代码，Django就能够：</p>
 <ul>
 <li>为这个应用创建数据库表结构（CREATE TABLE语句）。</li>
@@ -892,6 +892,8 @@ Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;licen
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
                     
+                    
+                      
                     
                       
                     
@@ -1247,14 +1249,9 @@ Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;licen
             })
           } else {
             
-              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
-                .done(function () {
-                  var $element = $(document.getElementById(url));
-                  $element.find('.leancloud-visitors-count').text(1);
-                })
-                .fail(function () {
-                  console.log('Failed to create');
-                });
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
             
           }
         })
